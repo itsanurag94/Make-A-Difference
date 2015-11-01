@@ -3,7 +3,14 @@
 	session_start();
  
 	//Include database connection details
-	require_once('connection.php');
+	$mysql_hostname = "localhost";
+	$mysql_user = "root";
+	$mysql_password = "Aravind";
+	$mysql_database = "mad";
+	$prefix = "";
+
+	$bd = mysql_connect($mysql_hostname, $mysql_user, $mysql_password) or die("Could not connect database");
+	mysql_select_db($mysql_database, $bd) or die("Could not select database");
  
 	//Array to store validation errors
 	$errmsg_arr = array();
@@ -47,12 +54,21 @@
 	$qry="SELECT * FROM user_reg WHERE email='$email' AND password='$password'";
 	$result=mysql_query($qry);
  
+
 	//Check whether the query was successful or not
 	if($result) {
 		if(mysql_num_rows($result) > 0) {
 			//Login Successful
-			session_regenerate_id();
+			
 			$user = mysql_fetch_assoc($result);
+			if($user['active'] == 0) {
+				echo "Your account is not yet activated.";
+				header("location: index.php");
+				exit();
+			}
+
+//			$user = mysql_fetch_assoc($result);
+			session_regenerate_id();
 			$_SESSION['SESS_MEMBER_ID'] = $user['user_id'];
 			$_SESSION['SESS_EMAIL'] = $user['email'];
 			$_SESSION['SESS_LAST_NAME'] = $user['password'];
