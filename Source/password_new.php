@@ -1,28 +1,26 @@
 <?php
-echo "Password updated successfully";
+//echo "Password updated successfully";
 session_start();
-require_once('connection_1.php');
+require_once('connection.php');
 
-$email_id = $_SESSION['SESS_EMAIL'];
-echo $email_id;
+$email = $_SESSION['SESS_EMAIL'];
+echo $email;
 	
-$password1 = $_POST['password'];
-$password2 = $_POST['re-password'];
+$entered_password_1 = $_POST['new_password'];
+$reentered_password_2 = $_POST['reenter_new_password'];
 
-if($password1==$password2)
+echo $entered_password_1;
+echo $reentered_password_2;
+
+
+if($entered_password_1==$reentered_password_2)
 {
 	echo "Here";
-	$newpassword=md5($password2);
-	$sql = "Update user_reg SET password='$newpassword' where email='$email_id'";
-	mysql_query($sql);
-//	echo "Password updated successfully";
-//	mysql_query($newpassd);
+	$new_password=md5($entered_password_1);
+	$query = "Update user_reg SET password='$new_password' where email='$email'";
+	mysqli_query($link, $query);
 	echo "Password updated successfully";
-//	sleep(5);
-//	if(session_destroy()) // Destroying All Sessions
-//	{
-	header("Location: successfully_changed.php"); // Redirecting To Home Page
-//	}
+	header("Location: index.php"); // Redirecting To Home Page
 }
 else
 {

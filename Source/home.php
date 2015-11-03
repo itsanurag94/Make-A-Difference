@@ -44,7 +44,7 @@
 
 $mysql_hostname = "localhost";
 $mysql_user = "root";
-$mysql_password = "Aravind";
+$mysql_password = "abhamishram13";
 $mysql_database = "mad";
 $prefix = "";
 

@@ -1,24 +1,28 @@
 <?php
+echo "Hello";
 session_start();
-require_once('connection_1.php');
-$email_id = $_SESSION['SESS_EMAIL'];
-echo $email_id;
-//echo md5('123');
-//echo $email_id;
+
+require_once('connection.php');
+
+$email = $_SESSION['SESS_EMAIL'];
+echo $email;
 echo "<br>";
 
-$password = $_POST['password'];
+$password_entered = $_POST['password'];
 echo $_POST['password'];
-$password=md5($password);
+$password_entered=md5($password_entered);
 
-echo $password;
+echo $password_entered;
 echo "<br>";
 
-$passwd="SELECT password FROM user_reg where email='$email_id' and password='$password'";
-$result=mysql_query($passwd);
+
+$query="SELECT password FROM user_reg where email='".$email."' and password='".$password_entered."'";
+$result=mysqli_query($link, $query);
 if($result) 
 	{
-		if(mysql_num_rows($result) > 0)
+		echo "Here";
+		$num_rows=mysqli_num_rows($result);
+		if( $num_rows > 0)
 		{
 			//$passd=mysql_fetch_assoc($result);
 			//$current_password=$passd['password'];
@@ -28,14 +32,5 @@ if($result)
 			header("location: change_password.php");
 	}
 
-
-//echo $current_password;
-//echo "<br>";
-//if ($current_password==$password)
-//{
-	
-//}
-//else
-//echo "Error";
-
 ?>
+
