@@ -13,6 +13,7 @@ if(isset($_GET['pID']) && !empty($_GET['pID'])){
     // Verify data
 
     $pid = $_GET['pID']; // Set pID variable
+    $img_url = "http://127.0.1.1/mad/problem_images/";
    
     $search = "SELECT * FROM Problems WHERE pID='$pid'";
     $result = mysql_query($search);
@@ -21,11 +22,15 @@ if(isset($_GET['pID']) && !empty($_GET['pID'])){
 
 
     if($matches>0) {
+
+    	echo $resname1;
+    	echo "<br>";
     	$title = $problem['title'];
     	$to_whom = $problem['to_whom'];
     	$description = $problem['description'];
     	$location = $problem['location'];
     	$votes = $problem['votes'];
+    	$img_path = $problem['img_path'];
 
 		echo $title;
 		echo "<br>";
@@ -36,6 +41,12 @@ if(isset($_GET['pID']) && !empty($_GET['pID'])){
 		echo $location;
 		echo "<br>";
 		echo $votes;
+		echo "<br>";
+		
+		if($img_path !== 'NULL')
+  		{
+  			echo '<img src="'.$img_url.$problem['img_path'].'" />'; 
+		}
 		}
     }
 
