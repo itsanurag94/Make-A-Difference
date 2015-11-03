@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Make a contribution, see the difference</title>
+<title>Make a A Difference</title>
 <style type="text/css">
 body {
 	background-color: #585858;
@@ -152,7 +152,7 @@ width: 250px;
 
 <h1 style="font-color:orange;"><strong>Welcome to MaD.</strong> Please login.</h1>
 
-<form action="login_exec.php" method="post">
+<form action="login_execute.php" method="post">
 
 <tr>
     <td colspan="2">

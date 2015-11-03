@@ -3,40 +3,24 @@
 	session_start();
  
 	//Include database connection details
-	$mysql_hostname = "localhost";
-	$mysql_user = "root";
-	$mysql_password = "Aravind";
-	$mysql_database = "mad";
-	$prefix = "";
+	require_once('connection.php');
 
-	$bd = mysql_connect($mysql_hostname, $mysql_user, $mysql_password) or die("Could not connect database");
-	mysql_select_db($mysql_database, $bd) or die("Could not select database");
- 
 	//Array to store validation errors
 	$errmsg_arr = array();
  
 	//Validation error flag
 	$errflag = false;
  
-	//Function to sanitize values received from the form. Prevents SQL injection
-	function clean($str) {
-		$str = @trim($str);
-		if(get_magic_quotes_gpc()) {
-			$str = stripslashes($str);
-		}
-		return mysql_real_escape_string($str);
-	}
- 
 	//Sanitize the POST values
-	$email = clean($_POST['email']);
-	$password = clean($_POST['pswd']);
- 
+	$email = mysqli_real_escape_string($link, $_POST['email']);
+	$pswd = mysqli_real_escape_string($link, $_POST['pswd']);
+	
 	//Input Validations
 	if($email == '') {
 		$errmsg_arr[] = 'Username missing';
 		$errflag = true;
 	}
-	if($password == '') {
+	if($pswd == '') {
 		$errmsg_arr[] = 'Password missing';
 		$errflag = true;
 	}
@@ -49,19 +33,20 @@
 		exit();
 	}
  	
- 	$password = md5($password);
-	//Create query
-	$qry="SELECT * FROM user_reg WHERE email='$email' AND password='$password'";
-	$result=mysql_query($qry);
- 
+ 	$pswd = md5($pswd);
 
+	//Create query
+	$query="SELECT * FROM user_reg WHERE email='$email' AND password='$pswd'";
+	$result=mysqli_query($link, $query);
+ 
+	$num_rows = mysqli_num_rows($result);
 	//Check whether the query was successful or not
 	if($result) {
-		if(mysql_num_rows($result) > 0) {
+		if($num_rows > 0) {
 			//Login Successful
 			
-			$user = mysql_fetch_assoc($result);
-			if($user['active'] == 0) {
+			$citizen = mysqli_fetch_assoc($result);
+			if($citizen['active'] == 0) {
 				echo "Your account is not yet activated.";
 				header("location: index.php");
 				exit();
@@ -69,9 +54,9 @@
 
 //			$user = mysql_fetch_assoc($result);
 			session_regenerate_id();
-			$_SESSION['SESS_MEMBER_ID'] = $user['user_id'];
-			$_SESSION['SESS_EMAIL'] = $user['email'];
-			$_SESSION['SESS_PASSWORD'] = $user['password'];
+			$_SESSION['SESS_MEMBER_ID'] = $citizen['user_id'];
+			$_SESSION['SESS_EMAIL'] = $citizen['email'];
+			$_SESSION['SESS_PASSWORD'] = $citizen['password'];
 			session_write_close();
 			header("location: home.php");
 			exit();

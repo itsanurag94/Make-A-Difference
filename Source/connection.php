@@ -1,11 +1,5 @@
 <?php
-/*
-$mysql_hostname = "localhost";
-$mysql_user = "root";
-$mysql_password = "Aravind";
-$mysql_database = "mad";
-$prefix = "";
-*/
+
 $link = mysqli_connect("localhost", "root", "Aravind", "mad");
  
 // Check connection

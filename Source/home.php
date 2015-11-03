@@ -1,6 +1,8 @@
 
 <?php
 	session_start();
+
+	require_once('connection.php');
 	include_once 'common.php';
 	require_once('auth.php');
 ?>
@@ -42,36 +44,25 @@
 
 <?php
 
-$mysql_hostname = "localhost";
-$mysql_user = "root";
-$mysql_password = "abhamishram13";
-$mysql_database = "mad";
-$prefix = "";
-
-$bd = mysql_connect($mysql_hostname, $mysql_user, $mysql_password) or die("Could not connect database");
-mysql_select_db($mysql_database, $bd) or die("Could not select database");
-
 $email = $_SESSION['SESS_EMAIL'];
 
-$qry="SELECT district FROM users where email = '".$email."'";
-$result = mysql_query($qry);
+$query="SELECT district FROM users where email = '".$email."'";
+$result = mysqli_query($link, $query);
+$citizen = mysqli_fetch_assoc($result);
+$location = $citizen["district"];
 
+$query="SELECT * FROM Problems where location = '$location'";
+$result=mysqli_query($link, $query);
+$num_rows = mysqli_num_rows($result);
 
-$row = mysql_fetch_assoc($result);
-$location = $row["district"];
-
-$qry="SELECT * FROM Problems where location = '$location'";
-$result=mysql_query($qry);
-
-
-if (mysql_num_rows($result) > 0) 
+if ( $num_rows > 0) 
 	{
 		echo "<br>";
 
     // output data of each row
-   		 while($row = mysql_fetch_assoc($result)) 
+   		 while($problem = mysqli_fetch_assoc($result)) 
    		 {
-        	echo "<br>Title: <a href='problem.php?pID=".$row["pID"]."'>".$row["title"]." </a>  To_whom: " . $row["to_whom"]. "  Description" . $row["description"]. "  Location: ".$row["location"]."<br>";
+        	echo "<br>Title: <a href='problem.php?pID=".$problem["pID"]."'>".$problem["title"]." </a>  To_whom: " . $problem["to_whom"]. "  Description" . $problem["description"]. "  Location: ".$problem["location"]."<br>";
    		 }
    	}
 

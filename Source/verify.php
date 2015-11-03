@@ -1,12 +1,3 @@
-<?php
-    //Start session
-    session_start();    
-    //Unset the variables stored in session
-    unset($_SESSION['SESS_MEMBER_ID']);
-    unset($_SESSION['SESS_EMAIL']);
-    unset($_SESSION['SESS_PASSWORD']);
-?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -155,26 +146,25 @@ width: 250px;
 <h1 style="font-color:orange;"><strong>Welcome to MaD.</strong> Please login.</h1>
 
 <?php
-
-mysql_connect("localhost", "root", "Aravind") or die(mysql_error()); // Connect to database server(localhost) with username and password.
-mysql_select_db("mad") or die(mysql_error()); // Select registration database.
-
-
-//require_once('connection.php');
+require_once('connection.php');
 
 if(isset($_GET['email']) && !empty($_GET['email']) AND isset($_GET['hash']) && !empty($_GET['hash'])){
     // Verify data
-    $email = mysql_escape_string($_GET['email']); // Set email variable
-    $hash = mysql_escape_string($_GET['hash']); // Set hash variable
-                 
-
-    $search = mysql_query("SELECT email, password, active FROM user_reg WHERE email='".$email."' AND active='0'") or die(mysql_error()); 
-    $match  = mysql_num_rows($search);
+    $email = mysqli_escape_string($link, $_GET['email']); // Set email variable
+    $hash = mysqli_escape_string($link, $_GET['hash']); // Set hash variable
     
-    if($match > 0){
+    $query = "SELECT email, password, active FROM user_reg WHERE email='".$email."' AND active='0'";
+    $result = mysqli_query($link, $query);
+    $num_rows  = mysqli_num_rows($result);
+    
+    if($num_rows > 0){
         // We have a match, activate the account
-        mysql_query("UPDATE user_reg SET active='1' WHERE email='".$email."' AND active='0'") or die(mysql_error());
-        echo '<div >Your account has been activated, you can now login</div>';
+        $query = "UPDATE user_reg SET active='1' WHERE email='".$email."' AND active='0'";
+        if(mysqli_query($link, $query)){
+            echo '<div >Your account has been activated, you can now login</div>';
+        }else{
+            echo "Query failed";
+        }
     }else{
         // No match -> invalid url or account has already been activated.
         echo '<div >The url is either invalid or you already have activated your account.</div>';
@@ -186,7 +176,6 @@ if(isset($_GET['email']) && !empty($_GET['email']) AND isset($_GET['hash']) && !
 }
 
 ?>
-
 
 </div> <!-- end login -->
 </body>

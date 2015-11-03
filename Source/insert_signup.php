@@ -64,9 +64,8 @@ if(mysqli_query($link, $sql)){
 //    echo "Records added successfully.";
 
 //send verification mail
-//	$from = "makeadifferencetransformers@gmail.com";
-//	$from_name = "MakeADifference";
 
+	//random hash to be included in verification url
 	$hash_random = md5(rand(0,1000));
 
 	$to      = $email; // Send email to our user

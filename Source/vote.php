@@ -1,21 +1,25 @@
 <?php
-require_once('connection_1.php');
+require_once('connection.php');
 
 if(isset($_GET['pID']) && !empty($_GET['pID'])){
     // Verify data
 
-    $pid = $_GET['pID']; // Set pID variable
-    $search = "SELECT * FROM Problems WHERE pID='$pid'";
-    $result = mysql_query($search);
-    $matches = mysql_num_rows($result);
-if($matches>0) {
-    $problem = mysql_fetch_assoc($result);
-	$votes = $problem['votes'];
-	$votes = $votes + 1;
-	$update_votes = "UPDATE Problems SET votes='$votes' where pID='".$pid."'";
+    $pid = mysqli_escape_string($link, $_GET['pID']); // Set pid variable
+    $query = "SELECT * FROM Problems WHERE pID='$pid'";
+    $result = mysqli_query($link, $query);
+    $num_rows = mysqli_num_rows($result);
 
-	$result = mysql_query($update_votes);
-	//header("location: problem.php?pID=".$pid."");
+	if($num_rows>0) {
+	    $problem = mysqli_fetch_assoc($result);
+		$votes = $problem['votes'];
+		$votes = $votes + 1;
+
+		$query = "UPDATE Problems SET votes='$votes' where pID='".$pid."'";
+
+		$result = mysqli_query($link, $query);
+		if($result){
+			header("location: problem.php?pID=".$pid."");
+		}
 	}
 
 }

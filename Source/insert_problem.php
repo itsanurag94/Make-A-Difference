@@ -1,15 +1,7 @@
 <?php
 
-include_once 'common.php';
+require_once('connection.php');
 
-$link = mysqli_connect("localhost", "root", "Aravind", "mad");
- 
-// Check connection
-if($link === false)
-{
-    die("ERROR: Could not connect. " . mysqli_connect_error());
-}
- 
 $title = mysqli_real_escape_string($link, $_POST['title']);
 $to_whom = mysqli_real_escape_string($link, $_POST['to_whom']);
 $description = mysqli_real_escape_string($link, $_POST['description']); 
@@ -93,8 +85,8 @@ $resw = fopen($resname, "w");
 
 
 
-$sql = "INSERT INTO Problems VALUES ('','$title', '$to_whom', '$description', '$location','0','$resname1')";
-if(mysqli_query($link, $sql))
+$query = "INSERT INTO Problems VALUES ('','$title', '$to_whom', '$description', '$location','0','$resname1')";
+if(mysqli_query($link, $query))
 {
   //echo "We have receive your valuable suggestions.";
   //echo "<br>";
