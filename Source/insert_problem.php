@@ -17,7 +17,7 @@ $location = mysqli_real_escape_string($link, $_POST['location']);
 
 // attempt insert query execution
 
-$sql = "INSERT INTO Problems VALUES ('','$title', '$to_whom', '$description', '$location')";
+$sql = "INSERT INTO Problems VALUES ('','$title', '$to_whom', '$description', '$location', '0')";
 if(mysqli_query($link, $sql))
 {
 //	echo "$location";

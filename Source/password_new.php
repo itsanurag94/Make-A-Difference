@@ -1,8 +1,7 @@
 <?php
 echo "Password updated successfully";
-
-require_once('connection.php');
 session_start();
+require_once('connection_1.php');
 
 $email_id = $_SESSION['SESS_EMAIL'];
 echo $email_id;

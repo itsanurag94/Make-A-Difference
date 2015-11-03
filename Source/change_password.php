@@ -7,7 +7,6 @@
 
 <body>
 	<h2>
-	Hi!! 
 	<? php
 	echo $email_id; 
 	?>

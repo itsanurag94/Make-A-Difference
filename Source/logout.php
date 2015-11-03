@@ -1,7 +1,9 @@
 <?php
 session_start();
-if(session_destroy()) // Destroying All Sessions
-{
-header("Location: index.php"); // Redirecting To Home Page
-}
+unset($_SESSION['SESS_MEMBER_ID']);
+unset($_SESSION['SESS_EMAIL']);
+unset($_SESSION['SESS_PASSWORD']);
+session_destroy();
+header("Location: index.php");
+exit;
 ?>

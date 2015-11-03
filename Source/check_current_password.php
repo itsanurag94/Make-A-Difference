@@ -1,6 +1,6 @@
 <?php
-require_once('connection.php');
 session_start();
+require_once('connection_1.php');
 $email_id = $_SESSION['SESS_EMAIL'];
 echo $email_id;
 //echo md5('123');

@@ -71,7 +71,7 @@
 			session_regenerate_id();
 			$_SESSION['SESS_MEMBER_ID'] = $user['user_id'];
 			$_SESSION['SESS_EMAIL'] = $user['email'];
-			$_SESSION['SESS_LAST_NAME'] = $user['password'];
+			$_SESSION['SESS_PASSWORD'] = $user['password'];
 			session_write_close();
 			header("location: home.php");
 			exit();

@@ -1,7 +1,8 @@
 
 <?php
+	session_start();
 	include_once 'common.php';
-//	require_once('auth.php');
+	require_once('auth.php');
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +13,8 @@
 
 <body style="text-align:center;">
 
-<a href="logout.php" align="right" class="style1">Logout </p>
+<a href="logout.php" align="right" class="style1">Logout </a><br>
+<a href="change_password.php" align="right" class="style1">Change Password</a>
 
 <div id="languages">
 	<a href="index.php?lang=en"><img src="images/en.png" /></a>
@@ -34,19 +36,28 @@
 <b>View problems nearby</b>
 
 <?php
-require_once('connection.php');
+
+$mysql_hostname = "localhost";
+$mysql_user = "root";
+$mysql_password = "Aravind";
+$mysql_database = "mad";
+$prefix = "";
+
+$bd = mysql_connect($mysql_hostname, $mysql_user, $mysql_password) or die("Could not connect database");
+mysql_select_db($mysql_database, $bd) or die("Could not select database");
 
 $email = $_SESSION['SESS_EMAIL'];
 
-$qry="SELECT district FROM users where email = '$email'";
-$result=mysql_query($qry);
+$qry="SELECT district FROM users where email = '".$email."'";
+$result = mysql_query($qry);
 
-$row=mysql_fetch_assoc($result);
+
+$row = mysql_fetch_assoc($result);
 $location = $row["district"];
 
-
-$qry="SELECT title, to_whom, description, location FROM Problems where location = '$location'";
+$qry="SELECT * FROM Problems where location = '$location'";
 $result=mysql_query($qry);
+
 
 if (mysql_num_rows($result) > 0) 
 	{
@@ -55,8 +66,7 @@ if (mysql_num_rows($result) > 0)
     // output data of each row
    		 while($row = mysql_fetch_assoc($result)) 
    		 {
-
-        	echo "<br>Title: " . $row["title"]. "  To_whom: " . $row["to_whom"]. "  Description" . $row["description"]. "  Location: ".$row["location"]."<br>";
+        	echo "<br>Title: <a href='problem.php?pID=".$row["pID"]."'>".$row["title"]." </a>  To_whom: " . $row["to_whom"]. "  Description" . $row["description"]. "  Location: ".$row["location"]."<br>";
    		 }
    	}
 
