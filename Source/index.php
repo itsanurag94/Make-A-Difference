@@ -150,6 +150,9 @@ width: 250px;
 <div class="Background"></div>
 <div id="login">
 
+<a href="govt_signup.php" align="right" class="style1">Sign up for govt dept. </a><br>
+<a href="signup.php" align="right" class="style1">Sign up for citizens</a>
+
 <h1 style="font-color:orange;"><strong>Welcome to MaD.</strong> Please login.</h1>
 
 <form action="login_execute.php" method="post">
@@ -178,8 +181,6 @@ Password : <input type="password" name="pswd" id="pswd" /><br>
 
 </fieldset>
 </form>
-
-
 
 <p><span class="btn-round">or</span></p>
 <p>
