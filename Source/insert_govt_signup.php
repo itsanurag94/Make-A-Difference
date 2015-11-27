@@ -4,66 +4,80 @@ server with default setting (user 'root' with no password) */
 
 require_once('connection.php');
 require('phpmailer/class.phpmailer.php');
-echo $_POST['email'];
+
 if(isset($_POST['email']) && !empty($_POST['email']) AND isset($_POST['pswd']) && !empty($_POST['pswd']) AND isset($_POST['confirm_pswd']) && !empty($_POST['confirm_pswd']) AND isset($_POST['district']) && !empty($_POST['district']))
 {
  
 // Escape user inputs for security
-$f_name = mysqli_real_escape_string($link, $_POST['f_name']);
-$l_name = mysqli_real_escape_string($link, $_POST['l_name']);
+$d_name = mysqli_real_escape_string($link, $_POST['d_name']);
 $email = mysqli_real_escape_string($link, $_POST['email']);
 $pswd = mysqli_real_escape_string($link, $_POST['pswd']);
 $confirm_pswd = mysqli_real_escape_string($link, $_POST['confirm_pswd']);
-$mob = mysqli_real_escape_string($link, $_POST['mob']);
-$address_line1 = mysqli_real_escape_string($link, $_POST['address_line1']);
-$address_line2 = mysqli_real_escape_string($link, $_POST['address_line2']);
+$contact_no = mysqli_real_escape_string($link, $_POST['contact_no']);
 $city = mysqli_real_escape_string($link, $_POST['city']);
 $district = mysqli_real_escape_string($link, $_POST['district']);
 $state = mysqli_real_escape_string($link, $_POST['state']);
 $pin_code = mysqli_real_escape_string($link, $_POST['pin_code']);
 }
 
-else
+else 
 {
-//	echo "Hello1";
-//	echo $f_name;
-	header("location: signup.php");
+	echo "Hello";
+//	header("location: new_govt_signup.php");
 } 
 //email validation
 
 if(!eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$", $email)){
     // Return Error - Invalid Email
     $msg = 'The email you have entered is invalid, please try again.';
-    header("location: new_signup.php");
+    echo $msg;
+//    header("location: new_govt_signup.php");
 }
 
 
-if($pswd==$confirm_pswd){
+if($pswd==$confirm_pswd)
+{
 	$hash = md5($pswd);
 }
-else{
-	echo "Passwords do not match";
-	header("location: new_signup.php");
+else
+{
+//	echo "Passwords do not match";
+	header("location: new_govt_signup.php");
+	exit;
 }
 
-//Valid Email (from the regular expression above)
-//$msg = 'Your account has been made, <br /> please verify it by clicking the activation link that has been send to your email.';
+$query="Select * from govt_reg where email='$email'";
+$result=mysqli_query($link,$query);
+$num_rows=mysqli_num_rows($result);
+
+$query1="Select * from govt_reg where email='$email'";
+$result1=mysqli_query($link,$query1);
+$num_rows_1=mysqli_num_rows($result1);
+
+if($num_rows>0 || $num_rows_1>0)
+{
+	echo "Email already registered with us. Try again";
+	//header("location: govt_signup.php");
+	echo "<br>Click here to sign up again: <a href='new_govt_signup.php'></a>";
+	exit;
+}
+
+$sql = "INSERT INTO govt_dept VALUES ('','$d_name', '$email', '$contact_no', '$city', '$district', '$state', '$pin_code')";
 
 
-// attempt insert query execution
-$sql = "INSERT INTO users VALUES ('','$f_name', '$l_name', '$email', '$mob', '$address_line1', '$address_line2', '$city', '$district', '$state', '$pin_code')";
-
-
-if(mysqli_query($link, $sql)){
+if(mysqli_query($link, $sql))
+{
 //    echo "Records added successfully.";
-} else{
+} 
+else
+{
     echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
 }
 
-$sql = "INSERT INTO user_reg VALUES('$email', '$hash', '0')";
+$sql = "INSERT INTO govt_reg VALUES('$email', '$hash', '0')";
 
 if(mysqli_query($link, $sql)){
-    echo "Records added successfully.";
+//    echo "Records added successfully.";
 
 //send verification mail
 

@@ -42,7 +42,8 @@ float:right;
 margin-right: 135px;
 text-align: center;
 }
-form fieldset input[type="text"], input[type="password"] {
+form fieldset input[type="text"], input[type="password"] 
+{
 background-color: #e5e5e5;
 border: none;
 border-radius: 3px;
@@ -57,7 +58,8 @@ padding: 0px 10px;
 width: 280px;
 -webkit-appearance:none;
 }
-form fieldset input[type="submit"] {
+form fieldset input[type="submit"] 
+{
 background-color: #008dde;
 border: none;
 border-radius: 3px;
@@ -71,12 +73,14 @@ text-transform: uppercase;
 width: 300px;
 -webkit-appearance:none;
 }
-form fieldset a {
+form fieldset a 
+{
 color: #5a5656;
 font-size: 10px;
 }
 form fieldset a:hover { text-decoration: underline; }
-.btn-round {
+.btn-round 
+{
 background-color: orange;
 border-radius: 50%;
 -moz-border-radius: 50%;
@@ -91,7 +95,8 @@ text-align: center;
 text-transform: uppercase;
 width: 50px;
 }
-.facebook-before {
+.facebook-before 
+{
 background-color: #0064ab;
 border-radius: 3px 0px 0px 3px;
 -moz-border-radius: 3px 0px 0px 3px;
@@ -104,7 +109,8 @@ line-height: 50px;
 text-align: center;
 width: 50px;
 }
-.facebook {
+.facebook 
+{
 background-color: #0079ce;
 border: none;
 border-radius: 0px 3px 3px 0px;
@@ -116,7 +122,8 @@ height: 50px;
 text-transform: uppercase;
 width: 250px;
 }
-.twitter-before {
+.twitter-before 
+{
 background-color: #189bcb;
 border-radius: 3px 0px 0px 3px;
 -moz-border-radius: 3px 0px 0px 3px;
@@ -129,7 +136,8 @@ line-height: 50px;
 text-align: center;
 width: 50px;
 }
-.twitter {
+.twitter 
+{
 background-color: #1bb2e9;
 border: none;
 border-radius: 0px 3px 3px 0px;
@@ -141,19 +149,73 @@ height: 50px;
 text-transform: uppercase;
 width: 250px;
 }
-.Footer{
+.Footer
+{
 	position: margin-bottom;
 }
 </style>
 </head>
 <body>
+
+<!--         ***********************       GOVERNMENT LOGIN  *********************************           -->
+
+
 <div class="Background"></div>
-<div id="login">
+<div id="login" style="float:left;">
 
-<a href="govt_signup.php" align="right" class="style1">Sign up for govt dept. </a><br>
-<a href="signup.php" align="right" class="style1">Sign up for citizens</a>
+<a href="govt_signup.php" align="right" style="color:orange;">Sign up for govt dept. </a><br>
+<h1 style="font-color:orange;"><strong></strong>Government login.</h1>
 
-<h1 style="font-color:orange;"><strong>Welcome to MaD.</strong> Please login.</h1>
+<form action="govt_login_execute.php" method="post">
+
+<tr>
+    <td colspan="2">
+		<!--the code bellow is used to display the message of the input validation-->
+		 <?php
+			if( isset($_SESSION['ERRMSG_ARR']) && is_array($_SESSION['ERRMSG_ARR']) && count($_SESSION['ERRMSG_ARR']) >0 ) {
+			echo '<ul class="err">';
+			foreach($_SESSION['ERRMSG_ARR'] as $msg) {
+				echo '<li>',$msg,'</li>'; 
+				}
+			echo '</ul>';
+			unset($_SESSION['ERRMSG_ARR']);
+			}
+		?>
+	</td>
+  </tr>
+
+<fieldset><br>
+Email : <input type="email" name="govt_email" id="govt_email" /><br>
+Password : <input type="password" name="govt_pswd" id="govt_pswd" /><br>
+<p style="color:orange;"><a href="#">Forgot Password?</a></p>
+<p><input type="submit" value="Login"></p>
+
+</fieldset>
+</form>
+
+<p><span class="btn-round">or</span></p>
+<p>
+<a class="facebook-before"></a>
+<button class="facebook">Login Using Facbook</button>
+</p>
+<p>
+<a class="twitter-before"></a>
+<button class="twitter">Login Using Twitter</button>
+</p>
+</div> <!-- end login -->
+
+
+<h2>Welcome to MaD. Together, we will make difference.</h2>
+
+<!--           ***************************   Citizen Login     **********************************************8     -->
+
+
+<div class="Background"></div>
+<div id="login" style="float:right;">
+
+<a href="signup.php" align="right" style="color:orange;">Sign up for citizens</a>
+
+<h1 style="font-color:orange;"><strong></strong>Citizen login.</h1>
 
 <form action="login_execute.php" method="post">
 
@@ -192,5 +254,6 @@ Password : <input type="password" name="pswd" id="pswd" /><br>
 <button class="twitter">Login Using Twitter</button>
 </p>
 </div> <!-- end login -->
+
 </body>
 </html>

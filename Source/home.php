@@ -11,64 +11,70 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+		<link href="homepage.css" rel="stylesheet" type="text/css" media="all" />
 	</head>
 
-<body style="text-align:center;">
-
-<a href="logout.php" align="right" class="style1">Logout </a><br>
-<a href="change_password.php" align="right" class="style1">Change Password</a>
-
+<body style="text-align:center; background:white; ">
+		
+		<div class="account_manage">
+		<div class="change_password">
+		<form action="change_password.php">
+			<button class="Change_password">Change password</button>
+		</form>
+		</div>
+		&nbsp;
+		&nbsp;
+		&nbsp;
+		<div class="logout">
+		<form action="logout.php">
+			<button class="Logout">Logout</button>
+		</form>
+		</div>
+		</div>
+<!--
 <div id="languages">
 	<a href="index.php?lang=en"><img src="images/en.png" /></a>
 	<a href="index.php?lang=de"><img src="images/de.jpg" /></a>
 	<a href="index.php?lang=es"><img src="images/es.png" /></a>
 </div>
-
-<b>Create Event</b><br><br>
+-->
+<div class="Main" >
+	<br>
+	<h1>Post Problems</h1>
+	<br><br>
 	<form action="insert_problem.php" method="post" ENCTYPE="multipart/form-data">
-		<input type="text" value="<?php echo $lang['HEADER_TITLE']; ?>" name="title" id="title"><br><br>
-		<input type="text" value="<?php echo $lang['MENU_ABOUT_US']; ?>" name = "to_whom" id="to_whom"><br><br>
-		<input type="text" value="<?php echo $lang['SLOGAN']; ?>" name = "description" id="description"><br><br>
-		<input type="text" value="<?php echo $lang['MENU_HOME']; ?>" name = "location" id="location"><br><br>
-		<P>Please browse and double-click the file to upload. Your filename must have one of the following extensions: .doc, .pdf, .ppt, .pps, .xls, .csv, .rtf, .txt, .htm, .html, .jpg, .gif, .png</p>
+		<div class="input-sign details">
+		<input type="text" placeholder="Title" name="title" id="title"><br><br>
+		</div>
+		<div class="input-sign details">
+		<input type="text" placeholder="Department" name = "to_whom" id="to_whom"><br><br>
+		</div>   
+		<div class="input-sign details">
+		<input type="text" placeholder="Description" name = "description" id="description"><br><br>
+		</div>
+		<div class="input-sign details">
+		<input type="text" placeholder="District" name = "location" id="location"><br><br>
+		</div>
+		<P></p>
  	    <P>File name: <br><INPUT class="inputform" TYPE="file" name="userfile" style="width:250px;"></p>
 <!--        <P><INPUT class="inputform" TYPE="submit" VALUE="Upload File"></p>    -->
+		<div class="input-sign details">
 		<INPUT class="inputform" TYPE=hidden name="MAX_FILE_SIZE" value="513024">
+		</div>
+		<div class="input-sign details">
 		<INPUT class="inputform" TYPE=hidden name="users_ID" value="<?print($users_ID);?>">
-		<input type="submit" value="<?php echo $lang['MENU_OUR_PRODUCTS']; ?>"><br><br>
+		</div>
+		<div class="submit">
+		<input class="bluebutton submitbotton" type="submit" value="<?php echo $lang['MENU_OUR_PRODUCTS']; ?>"><br><br>
+		</div>
 	</form>
+</div>
 
-
-
-<b>View problems nearby</b>
-
-<?php
-
-$email = $_SESSION['SESS_EMAIL'];
-
-$query="SELECT district FROM users where email = '".$email."'";
-$result = mysqli_query($link, $query);
-$citizen = mysqli_fetch_assoc($result);
-$location = $citizen["district"];
-
-$query="SELECT * FROM Problems where location = '$location'";
-$result=mysqli_query($link, $query);
-$num_rows = mysqli_num_rows($result);
-
-if ( $num_rows > 0) 
-	{
-		echo "<br>";
-
-    // output data of each row
-   		 while($problem = mysqli_fetch_assoc($result)) 
-   		 {
-        	echo "<br>Title: <a href='problem.php?pID=".$problem["pID"]."'>".$problem["title"]." </a>  To_whom: " . $problem["to_whom"]. "  Description" . $problem["description"]. "  Location: ".$problem["location"]."<br>";
-   		 }
-   	}
-
-
-
-?>
+<div class="submit">
+<form action="view_problem.php">
+	<input class="bluebutton submitbotton" type="submit" value="View Problems in your location"><br><br>
+</form>
+</div>
 
 </body>
 </html>

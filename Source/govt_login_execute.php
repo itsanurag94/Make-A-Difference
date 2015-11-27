@@ -12,9 +12,10 @@
 	$errflag = false;
  
 	//Sanitize the POST values
-	$email = mysqli_real_escape_string($link, $_POST['email']);
-	$pswd = mysqli_real_escape_string($link, $_POST['pswd']);
-	
+	$email = mysqli_real_escape_string($link, $_POST['govt_email']);
+	$pswd = mysqli_real_escape_string($link, $_POST['govt_pswd']);
+	//echo $email;
+	//echo $pswd;
 	//Input Validations
 	if($email == '') {
 		$errmsg_arr[] = 'Username missing';
@@ -28,15 +29,15 @@
 	//If there are input validations, redirect back to the login form
 	if($errflag) {
 		$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
+//		echo "Hello";
 		session_write_close();
 		header("location: new_index.php");
 		exit();
 	}
  	
  	$pswd = md5($pswd);
-
 	//Create query
-	$query="SELECT * FROM user_reg WHERE email='$email' AND password='$pswd'";
+	$query="SELECT * FROM govt_reg WHERE email='$email' AND password='$pswd'";
 	$result=mysqli_query($link, $query);
  
 	$num_rows = mysqli_num_rows($result);
@@ -48,6 +49,7 @@
 			$citizen = mysqli_fetch_assoc($result);
 			if($citizen['active'] == 0) {
 				echo "Your account is not yet activated.";
+//				echo "Hello1";
 				header("location: new_index.php");
 				exit();
 			}
@@ -57,9 +59,9 @@
 			$_SESSION['SESS_MEMBER_ID'] = $citizen['user_id'];
 			$_SESSION['SESS_EMAIL'] = $citizen['email'];
 			$_SESSION['SESS_PASSWORD'] = $citizen['password'];
-			$_SESSION['SESS_USER_TYPE'] = 0;
+			$_SESSION['SESS_USER_TYPE'] = 1;
 			session_write_close();
-			header("location: home.php");
+			header("location: govt_home.php");
 			exit();
 		}else {
 			//Login failed
@@ -68,6 +70,7 @@
 			if($errflag) {
 				$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
 				session_write_close();
+//				echo "Hello2";
 				header("location: new_index.php");
 				exit();
 			}

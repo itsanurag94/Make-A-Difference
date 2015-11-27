@@ -1,0 +1,184 @@
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,dl,dt,dd,ol,nav ul,nav li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline;}
+article, aside, details, figcaption, figure,footer, header, hgroup, menu, nav, section {display: block;}
+ol,ul{list-style:none;margin:0;padding:0;}
+blockquote,q{quotes:none;}
+blockquote:before,blockquote:after,q:before,q:after{content:'';content:none;}
+table{border-collapse:collapse;border-spacing:0;}
+/* start editing from here */
+a{text-decoration:none;}
+.txt-rt{text-align:right;}/* text align right */
+.txt-lt{text-align:left;}/* text align left */
+.txt-center{text-align:center;}/* text align center */
+.float-rt{float:right;}/* float right */
+.float-lt{float:left;}/* float left */
+.clear{clear:both;}/* clear float */
+.pos-relative{position:relative;}/* Position Relative */
+.pos-absolute{position:absolute;}/* Position Absolute */
+.vertical-base{	vertical-align:baseline;}/* vertical align baseline */
+.vertical-top{	vertical-align:top;}/* vertical align top */
+.underline{	padding-bottom:5px;	border-bottom: 1px solid #eee; margin:0 0 20px 0;}/* Add 5px bottom padding and a underline */
+nav.vertical ul li{	display:block;}/* vertical menu */
+nav.horizontal ul li{	display: inline-block;}/* horizontal menu */
+body
+{
+	background:url(../images/4.jpg) 100% 100%;
+}
+.input-sign input[type="text"] 
+{
+	padding: 11px 11px;
+	border: 1px solid #FFF;
+	line-height: 18px;
+	color: #87aa32;
+	width: 53%;
+	margin: 0;
+	font-size:0.9em;
+	outline: none;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 600;
+	border-bottom: 1px solid #DDD;
+	display: inline-block;
+}
+
+.submit {
+	text-align: center;
+	padding: 1.7em 1em;
+}
+
+.bluebutton {
+	background: rgb(43,163,255);
+	background: -moz-radial-gradient(center, ellipse cover,  rgb(43,163,255) 0%, rgb(50,171,253) 3%, rgb(54,175,252) 6%, rgb(58,177,247) 13%, rgb(54,165,233) 29%, rgb(43,132,195) 61%, rgb(36,110,169) 87%, rgb(34,105,165) 90%, rgb(31,96,156) 94%, rgb(23,73,133) 100%);
+	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgb(43,163,255)), color-stop(3%,rgb(50,171,253)), color-stop(6%,rgb(54,175,252)), color-stop(13%,rgb(58,177,247)), color-stop(29%,rgb(54,165,233)), color-stop(61%,rgb(43,132,195)), color-stop(87%,rgb(36,110,169)), color-stop(90%,rgb(34,105,165)), color-stop(94%,rgb(31,96,156)), color-stop(100%,rgb(23,73,133)));
+	background: -webkit-radial-gradient(center, ellipse cover,  rgb(43,163,255) 0%,rgb(50,171,253) 3%,rgb(54,175,252) 6%,rgb(58,177,247) 13%,rgb(54,165,233) 29%,rgb(43,132,195) 61%,rgb(36,110,169) 87%,rgb(34,105,165) 90%,rgb(31,96,156) 94%,rgb(23,73,133) 100%);
+	background: -o-radial-gradient(center, ellipse cover,  rgb(43,163,255) 0%,rgb(50,171,253) 3%,rgb(54,175,252) 6%,rgb(58,177,247) 13%,rgb(54,165,233) 29%,rgb(43,132,195) 61%,rgb(36,110,169) 87%,rgb(34,105,165) 90%,rgb(31,96,156) 94%,rgb(23,73,133) 100%);
+	background: -ms-radial-gradient(center, ellipse cover,  rgb(43,163,255) 0%,rgb(50,171,253) 3%,rgb(54,175,252) 6%,rgb(58,177,247) 13%,rgb(54,165,233) 29%,rgb(43,132,195) 61%,rgb(36,110,169) 87%,rgb(34,105,165) 90%,rgb(31,96,156) 94%,rgb(23,73,133) 100%);
+	background: radial-gradient(ellipse at center,  rgb(43,163,255) 0%,rgb(50,171,253) 3%,rgb(54,175,252) 6%,rgb(58,177,247) 13%,rgb(54,165,233) 29%,rgb(43,132,195) 61%,rgb(36,110,169) 87%,rgb(34,105,165) 90%,rgb(31,96,156) 94%,rgb(23,73,133) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2ba3ff', endColorstr='#174985',GradientType=1 );
+	border:1.5px solid #0158B6;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	line-height: 20px;
+	font-size: 16px;
+	padding: 2px 2px;
+	color: #FFF;
+	font-family: 'Open Sans', sans-serif;
+	margin-left: 10px;
+	cursor: pointer;
+	outline: none;
+	-webkit-appearance: none;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+	text-shadow: 0 0 3px #2E2E2E;
+	display: inline-block;
+}
+.Logout
+{
+	background-color: rgb(43,163,255);
+	color: black;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	line-height: 10px;
+	font-size: 16px;
+	padding: 7px 21px;
+	font-family: 'Open Sans', sans-serif;
+	cursor: pointer;
+	outline: none;
+	-webkit-appearance: none;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+	text-shadow: 0 0 3px #2E2E2E;
+	display: inline-block;
+}
+.Change_password
+{
+	background-color: rgb(43,163,255);
+	color: black;
+	margin-left:5px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	line-height: 10px;
+	font-size: 16px;
+	padding: 7px 21px;
+	font-family: 'Open Sans', sans-serif;
+	cursor: pointer;
+	outline: none;
+	-webkit-appearance: none;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+	text-shadow: 0 0 3px #2E2E2E;
+	display: inline-block;
+}
+.account_manage
+{
+	margin-top: 5px;
+    overflow: hidden;
+}
+.change_password
+{
+	display: inline-block;
+}
+.logout
+{
+	display: inline-block;
+}
+.Main
+{
+	position: relative;
+	margin-top: 10px;
+	border-width: 10px;
+	border-color: #775BBA;
+	font-family: sans-serif;
+	padding: 1px 1px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border: 5px solid #022426;
+	background-color: grey;
+	width: 60%;
+	margin-left: 250px;
+}
+.view_problem
+{
+	color:black;
+	font-style: italic;
+}
+.view_problem1
+{
+	display:inline-block;
+}
+.Problem
+{
+	border: 1px solid blue;
+	border-width: 2px;
+	border-radius: 3px;
+}
+.Problem_title
+{
+text-align: center;
+}
+.Problem_towhom
+{
+text-align: center;
+}
+.Problem_description
+{
+text-align: center;
+}
+.Problem_votes
+{
+text-align:center;
+}
+.Problem_location
+{
+text-align:center;
+}
+.Welcome_Message
+{
+	text-align: center;
+	font-size: 25px;
+
+}

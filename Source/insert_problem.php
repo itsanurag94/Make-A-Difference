@@ -1,7 +1,8 @@
 <?php
 
 require_once('connection.php');
-
+session_start();
+$email = $_SESSION['SESS_EMAIL'];
 $title = mysqli_real_escape_string($link, $_POST['title']);
 $to_whom = mysqli_real_escape_string($link, $_POST['to_whom']);
 $description = mysqli_real_escape_string($link, $_POST['description']); 
@@ -9,12 +10,12 @@ $location = mysqli_real_escape_string($link, $_POST['location']);
 
 // attempt insert query execution
 
-$okext = array(".doc", ".pdf", ".ppt", ".pps", ".xls", ".csv", ".rtf", ".txt", ".htm", ".html", ".jpg", ".gif", ".png"); 
+$okext = array(".doc", ".pdf", ".ppt", ".pps", ".xls", ".csv", ".rtf", ".txt", ".htm", ".html", ".jpg", ".gif", ".png", ".svg");
+
 //echo "Hello";
 //check for oversize files or empty uploads 
 $thesize = $_FILES['userfile']['size']; 
-echo $_FILES['userfile']['name'];
-echo $thesize;
+
 if (($thesize > 513024))
 { 
 print(' 
@@ -41,8 +42,7 @@ $contents = fread ($fd, filesize($filename));
 fclose($fd); 
 
 //set the path for your saving directory 
-$respath = "/var/www/html/mad/problem_images/";    //include trailing slash 
-
+$respath = "/var/www/html/Source/problem_images/";    //include trailing slash 
 
 //check for valid file extension 
 $resext = ""; 
@@ -78,14 +78,16 @@ $resname = $respath.$_FILES['userfile']['name'];
 
 
 $resname1 = $_FILES['userfile']['name'];
+
+
 $resw = fopen($resname, "w"); 
     fwrite($resw, $contents); 
     fclose($resw);
 
+echo $resname1;
 
 
-
-$query = "INSERT INTO Problems VALUES ('','$title', '$to_whom', '$description', '$location','0','$resname1')";
+$query = "INSERT INTO Problems VALUES ('','$title', '$to_whom', '$description', '$location','$resname1', '0','$email')";
 if(mysqli_query($link, $query))
 {
   //echo "We have receive your valuable suggestions.";

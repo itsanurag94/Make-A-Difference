@@ -5,7 +5,8 @@ session_start();
 require_once('connection.php');
 
 $email = $_SESSION['SESS_EMAIL'];
-echo $email;
+$user_type = $_SESSION['SESS_USER_TYPE'];
+//echo $user_type;
 echo "<br>";
 
 $password_entered = $_POST['password'];
@@ -15,8 +16,12 @@ $password_entered=md5($password_entered);
 echo $password_entered;
 echo "<br>";
 
-
+if($user_type==0)
 $query="SELECT password FROM user_reg where email='".$email."' and password='".$password_entered."'";
+
+if($user_type==1)
+$query="SELECT password FROM govt_reg where email='".$email."' and password='".$password_entered."'";
+
 $result=mysqli_query($link, $query);
 if($result) 
 	{
