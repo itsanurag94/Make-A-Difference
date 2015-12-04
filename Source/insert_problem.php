@@ -1,18 +1,23 @@
 <?php
 
+require_once('auth.php');
 require_once('connection.php');
 session_start();
 $email = $_SESSION['SESS_EMAIL'];
+$cID = $_SESSION['SESS_MEMBER_ID'];
+
 $title = mysqli_real_escape_string($link, $_POST['title']);
 $to_whom = mysqli_real_escape_string($link, $_POST['to_whom']);
 $description = mysqli_real_escape_string($link, $_POST['description']); 
-//$location = mysqli_real_escape_string($link, $_POST['location']);
 
-$query = "Select district, pin_code from users where email='".$email."'";
+$query = "SELECT district, pin_code FROM Citizen_reg WHERE email='".$email."'";
 $result = mysqli_query($link, $query);
-$district = mysqli_fetch_assoc($result); 
-$location = $district['district'];
-$pin_code = $district['pin_code'];
+$citizen = mysqli_fetch_assoc($result); 
+
+$city = $citizen['city'];
+$district = $citizen['district'];
+$state = $citizen['state'];
+$pin_code = $citizen['pin_code'];
 // attempt insert query execution
 
 $okext = array(".doc", ".pdf", ".ppt", ".pps", ".xls", ".csv", ".rtf", ".txt", ".htm", ".html", ".jpg", ".gif", ".png", ".svg");
@@ -91,8 +96,35 @@ $resw = fopen($resname, "w");
 
 echo $resname1;
 
+$query = "SELECT gID FROM Govt where dep_name = '$to_whom' AND district = '$district' AND state = '$state'";
+$result = mysqli_query($link, $query);
+if($result)
+{
+  $govt = mysqli_fetch_assoc($result);
+  $gID = $govt['gID'];
+}
 
-$query = "INSERT INTO Problems VALUES ('','$title', '$to_whom', '$description', '$location','$resname1', '$email','','0',now(),'$pin_code')";
+$query = "INSERT INTO Problem VALUES ('','$cID', $title', '$description', '$gID', '$city','$district', '$state', '$pin_code', 'NOW()', '0')";
+if(mysqli_query($link, $query))
+{
+}
+
+$query = "SELECT pID, date_created FROM Problem where pID = (SELECT MAX(pID) FROM Problem)";
+$result = mysqli_query($link, $query);
+if($result)
+{
+  $problem = mysqli_fetch_assoc($result);
+  $pID = $problem['pID'];
+  $date_created = $problem['date_created'];
+}
+
+$query = "INSERT INTO Problem_media VALUES ('', '$pID', '$resname1')";
+if(mysqli_query($link, $query))
+{
+}
+
+$query = "INSERT INTO Problem_status (pID, status, date_created) VALUES ('$pID', 'created', '$date_created')";
+
 if(mysqli_query($link, $query))
 {
   //echo "We have receive your valuable suggestions.";

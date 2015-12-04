@@ -21,21 +21,21 @@
 <?php
 
 $email = $_SESSION['SESS_EMAIL'];
+$gID = $_SESSION['SESS_MEMBER_ID'];
 
-echo "<br>";
-echo $email;
-$query="SELECT district, d_name FROM govt_dept where email = '".$email."'";
+/*
+$query = "SELECT gID FROM Govt where email = '".$email."'";
 $result = mysqli_query($link, $query);
 $govt = mysqli_fetch_assoc($result);
-$location = $govt["district"];
-$department = $govt["d_name"];
+$dep_name = $govt["dep_name"];
+$district = $govt["district"];
+$state = $govt["state"];
+*/
 
-//echo $location;
-$query="SELECT * FROM Problems where location = '$location' and To_Whom='$department'";
+$query="SELECT * FROM Problem where to_whom='$gID'";
 $result=mysqli_query($link, $query);
 $num_rows = mysqli_num_rows($result);
-//echo $num_rows;
-echo "$num_rows";
+
 if ($num_rows > 0)
 	{
 		echo "<br>";
@@ -43,13 +43,13 @@ if ($num_rows > 0)
    		 while($problem = mysqli_fetch_assoc($result)) 
    		 {
    		 	$votes=$problem['votes'];
-   			$query_1 = "SELECT email FROM users where district = '".$location."' ";
+   			$query_1 = "SELECT cID FROM Citizen where district = '".$problem['district']."' and state = '".$problem['state']."' ";
    			$result_1 = mysqli_query($link, $query_1);
    			$number_users = mysqli_num_rows($result_1);
    	//		$number_of_users = $number_users['count'];
    	//		echo $number_users;
    			if($votes > $number_users/2)
-        	echo "<br>Title: <a href='problem.php?pID=".$problem["pID"]."'>".$problem["title"]." </a>  To_whom: " . $problem["description"]. " <br> Description ". $problem["To_Whom"]." <br> Location: ".$problem["location"]." <br><br>";
+        	echo "<br>Title: <a href='problem.php?pID=".$problem["pID"]."'>".$problem["title"]." </a>  Description ".$problem["description"]." <br><br>";
    		 }
    	}
 ?>

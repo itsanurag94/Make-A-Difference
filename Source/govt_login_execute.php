@@ -29,13 +29,13 @@
 		$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
 		session_write_close();
 
-		header("location: new_index.php");
+		header("location: index.php");
 		exit();
 	}
  	
  	$pswd = md5($pswd);
 	//Create query
-	$query="SELECT * FROM govt_reg WHERE email='$email' AND password='$pswd'";
+	$query="SELECT * FROM Govt_reg WHERE email='$email' AND password='$pswd'";
 	$result=mysqli_query($link, $query);
  
 	$num_rows = mysqli_num_rows($result);
@@ -45,20 +45,19 @@
 	    {
 			//Login Successful
 			
-			$citizen = mysqli_fetch_assoc($result);
-			if($citizen['active'] == 0)
+			$govt = mysqli_fetch_assoc($result);
+			if($govt['active'] == 0)
 		    {
 				echo "Your account is not yet activated.";
-				header("location: new_index.php");
+				header("location: index.php");
 				exit();
 			}
 
 			session_regenerate_id();
-			$_SESSION['SESS_MEMBER_ID'] = $citizen['user_id'];
-			$_SESSION['SESS_EMAIL'] = $citizen['email'];
-			$_SESSION['SESS_PASSWORD'] = $citizen['password'];
+			$_SESSION['SESS_MEMBER_ID'] = $govt['user_id'];
+			$_SESSION['SESS_EMAIL'] = $govt['email'];
+			$_SESSION['SESS_PASSWORD'] = $govt['password'];
 			$_SESSION['SESS_USER_TYPE'] = 1;
-			$_SESSION['User_Type']=1;
 			session_write_close();
 			header("location: govt_home.php");
 			exit();
@@ -71,7 +70,7 @@
 			{
 				$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
 				session_write_close();
-				header("location: new_index.php");
+				header("location: index.php");
 				exit();
 			}
 		}

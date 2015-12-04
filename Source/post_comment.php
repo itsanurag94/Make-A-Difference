@@ -1,6 +1,7 @@
 <?php
 session_start();
 //echo $_SESSION['SESS_EMAIL'];
+require_once('auth.php');
 require_once('connection.php');
 if(isset($_GET['pID']) && !empty($_GET['pID']))
 {

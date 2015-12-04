@@ -37,7 +37,7 @@ if(!eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$
     // Return Error - Invalid Email
     $msg = 'The email you have entered is invalid, please try again.';
     echo "Invalid Signup_2";
-//    header("location: new_signup.php");
+//    header("location: signup.php");
 }
 
 
@@ -49,7 +49,7 @@ else
 {
 	echo "Passwords do not match";
 	echo "Invalid Signup_2";
-//	header("location: new_signup.php");
+//	header("location: signup.php");
 }
 	
 //Valid Email (from the regular expression above)

@@ -20,14 +20,14 @@
 
 	$email = $_SESSION['SESS_EMAIL'];
 
-	$query="SELECT district, pin_code FROM users where email = '".$email."'";
+	$query="SELECT district, pin_code FROM Citizen where email = '".$email."'";
 	$result = mysqli_query($link, $query);
 	$citizen = mysqli_fetch_assoc($result);
-	$location = $citizen['district'];
+	$district = $citizen['district'];
 	$pin_code = $citizen['pin_code'];
 
 
-	$query="SELECT * FROM Problems where pin_code = '$pin_code'";
+	$query="SELECT * FROM Problem where pin_code = '$pin_code'";
 	$result=mysqli_query($link, $query);
 	$num_rows = mysqli_num_rows($result);
 
@@ -38,8 +38,8 @@
  		while($problem = mysqli_fetch_assoc($result)) 
    		{
    		 	echo "<div class='Problem'>";
-        	echo "<div class='view_problem'><br>Title: ".$problem["title"]." &nbsp &nbsp &nbsp  Department: " . $problem["description"]. "<br><br></div>";
-        	echo "<div class='view_problem1'><br>Description: ".$problem["To_Whom"]."&nbsp &nbsp District: " . $problem["location"]. "<br></div>";
+        	echo "<div class='view_problem'><br>Title: ".$problem["title"]." &nbsp &nbsp &nbsp  Description: " . $problem["description"]. "<br><br></div>";
+        	echo "<div class='view_problem1'><br>Department: ".$problem["to_whom"]."&nbsp &nbsp District: " . $problem["pin_code"]. "<br></div>";
         	echo "&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp";
         	echo "<div class='bluebutton'><form action='problem.php?pID=".$problem["pID"]."' method='post'><input class='bluebutton submitbotton' type='submit' value='View Problem' /></form></div>";
    			echo "</div>";
