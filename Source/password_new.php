@@ -18,12 +18,12 @@ if($entered_password_1==$reentered_password_2)
 	echo "Here";
 	$new_password=md5($entered_password_1);
 	if($user_type==0)
-	$query = "Update user_reg SET password='$new_password' where email='$email'";
+	$query = "UPDATE Citizen_reg SET password='$new_password' where email='$email'";
 	if($user_type==1)
-	$query = "Update govt_reg SET password='$new_password' where email='$email'";
+	$query = "UPDATE Govt_reg SET password='$new_password' where email='$email'";
 	mysqli_query($link, $query);
 	echo "Password updated successfully";
-	header("Location: new_index.php"); // Redirecting To Home Page
+	header("Location: home.php"); // Redirecting To Home Page
 }
 else
 {

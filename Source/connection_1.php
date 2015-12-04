@@ -1,6 +1,6 @@
 <?php
 
-$link = mysqli_connect("localhost", "root", "Aravind", "MAD");
+$link = mysqli_connect("localhost", "root", "Aravind", "mad");
  
 // Check connection
 if($link === false){

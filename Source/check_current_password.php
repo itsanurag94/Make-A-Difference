@@ -10,17 +10,13 @@ $user_type = $_SESSION['SESS_USER_TYPE'];
 echo "<br>";
 
 $password_entered = $_POST['password'];
-echo $_POST['password'];
 $password_entered=md5($password_entered);
 
-echo $password_entered;
-echo "<br>";
-
 if($user_type==0)
-$query="SELECT password FROM user_reg where email='".$email."' and password='".$password_entered."'";
+$query="SELECT password FROM Citizen_reg where email='".$email."' and password='".$password_entered."'";
 
 if($user_type==1)
-$query="SELECT password FROM govt_reg where email='".$email."' and password='".$password_entered."'";
+$query="SELECT password FROM Govt_reg where email='".$email."' and password='".$password_entered."'";
 
 $result=mysqli_query($link, $query);
 if($result) 
@@ -31,7 +27,7 @@ if($result)
 		{
 			//$passd=mysql_fetch_assoc($result);
 			//$current_password=$passd['password'];
-			header("location: Create_new_password.php");
+			header("location: create_new_password.php");
 		}
 		else
 			header("location: change_password.php");

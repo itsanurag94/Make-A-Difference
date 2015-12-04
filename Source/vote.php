@@ -14,12 +14,12 @@ if(isset($_GET['pID']) && !empty($_GET['pID'])){
     
    // if(!$result)
    // {
-   // 	echo "Query to insert into user_voted failed";
+   // 	echo "Query to insert into Citizen_voted_problem failed";
    // }
 
     if($vote_downvote==0)
     {
-    $query = "INSERT INTO user_voted value('$email', '$pid')";
+    $query = "INSERT INTO Citizen_voted_problem value('$pid', '$email')";
     $result = mysqli_query($link, $query);
     $query = "SELECT * FROM Problems WHERE pID='$pid'";
     $result = mysqli_query($link, $query);
@@ -58,7 +58,7 @@ if(isset($_GET['pID']) && !empty($_GET['pID'])){
 		$query = "UPDATE Problems SET votes='$votes' where pID='".$pid."'";
 		$result = mysqli_query($link, $query);
 
-		$query = "DELETE FROM user_voted where pID='".$pid."' and email='$email'";
+		$query = "DELETE FROM Citizen_voted_problem where pID='".$pid."' and email='$email'";
 		$result = mysqli_query($link, $query);
 		if($result)
 		{

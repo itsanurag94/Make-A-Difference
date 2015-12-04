@@ -29,17 +29,17 @@
 	if($errflag) {
 		$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
 		session_write_close();
-		header("location: new_index.php");
+		header("location: index.php");
 		exit();
 	}
  	
  	$pswd = md5($pswd);
 
 	//Create query
-	$query="SELECT * FROM user_reg WHERE email='$email' AND password='$pswd'";
+	$query="SELECT * FROM Citizen_reg WHERE email='$email' AND password='$pswd'";
 	$result=mysqli_query($link, $query);
- 
 	$num_rows = mysqli_num_rows($result);
+
 	//Check whether the query was successful or not
 	if($result) {
 		if($num_rows > 0) {
@@ -48,13 +48,13 @@
 			$citizen = mysqli_fetch_assoc($result);
 			if($citizen['active'] == 0) {
 				echo "Your account is not yet activated.";
-				header("location: new_index.php");
+				header("location: index.php");
 				exit();
 			}
 
 //			$user = mysql_fetch_assoc($result);
 			session_regenerate_id();
-			$_SESSION['SESS_MEMBER_ID'] = $citizen['user_id'];
+			$_SESSION['SESS_MEMBER_ID'] = $citizen['cID'];
 			$_SESSION['SESS_EMAIL'] = $citizen['email'];
 			$_SESSION['SESS_PASSWORD'] = $citizen['password'];
 			$_SESSION['SESS_USER_TYPE'] = 0;
@@ -68,7 +68,7 @@
 			if($errflag) {
 				$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
 				session_write_close();
-				header("location: new_index.php");
+				header("location: index.php");
 				exit();
 			}
 		}

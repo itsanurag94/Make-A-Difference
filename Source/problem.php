@@ -113,7 +113,7 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
         }
     }
     $email = $_SESSION['SESS_EMAIL'];
-    $query = "SELECT * from user_voted where pID = '$pid' and email = '$email' ";
+    $query = "SELECT * from Citizen_voted_problem where pID = '$pid' and email = '$email' ";
     $result = mysqli_query($link, $query);
     $num_rows = mysqli_num_rows($result);
     if ($num_rows>0)

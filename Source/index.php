@@ -1,100 +1,13 @@
-<?php
-	//Start session
-	session_start();	
-	//Unset the variables stored in session
-	unset($_SESSION['SESS_MEMBER_ID']);
-	unset($_SESSION['SESS_EMAIL']);
-	unset($_SESSION['SESS_PASSWORD']);
-?>
-
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
-<meta charset="utf-8">
-<title>Make a A Difference</title>
+<title>Login form and sign up</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'> -->
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
 <style type="text/css">
-body {
-	background-color: #585858;
-	background-image:url("http://creativevantage.org/wp-content/uploads/2013/09/Make-a-Difference.jpg");
-	background-size: 63% 100%;
-	background-attachment: fixed;
-	background-repeat: no-repeat;
-	color: orange;
-	font-family: 'Open Sans', Arial, Helvetica, sans-serif;
-	font-size: 16px;
-	line-height: 1.5em;
-}
-a { text-decoration: none; }
-h1 { font-size: 1em; }
-h1, p {
-margin-bottom: 10px;
-}
-strong {
-font-weight: bold;
-}
-.uppercase { text-transform: uppercase; }
 
-/* ---------- LOGIN ---------- */
-#login {
-margin: 50px auto;
-width: 300px;
-float:right;
-margin-right: 135px;
-text-align: center;
-}
-form fieldset input[type="text"], input[type="password"] 
-{
-background-color: #e5e5e5;
-border: none;
-border-radius: 3px;
--moz-border-radius: 3px;
--webkit-border-radius: 3px;
-color: #5a5656;
-font-family: 'Open Sans', Arial, Helvetica, sans-serif;
-font-size: 14px;
-height: 50px;
-outline: none;
-padding: 0px 10px;
-width: 280px;
--webkit-appearance:none;
-}
-form fieldset input[type="submit"] 
-{
-background-color: #008dde;
-border: none;
-border-radius: 3px;
--moz-border-radius: 3px;
--webkit-border-radius: 3px;
-color: #f4f4f4;
-cursor: pointer;
-font-family: 'Open Sans', Arial, Helvetica, sans-serif;
-height: 50px;
-text-transform: uppercase;
-width: 300px;
--webkit-appearance:none;
-}
-form fieldset a 
-{
-color: #5a5656;
-font-size: 10px;
-}
-form fieldset a:hover { text-decoration: underline; }
-.btn-round 
-{
-background-color: orange;
-border-radius: 50%;
--moz-border-radius: 50%;
--webkit-border-radius: 50%;
-color: black;
-display: block;
-font-size: 12px;
-height: 50px;
-line-height: 50px;
-margin: 30px 125px;
-text-align: center;
-text-transform: uppercase;
-width: 50px;
-}
 .facebook-before 
 {
 background-color: #0064ab;
@@ -108,6 +21,7 @@ height: 50px;
 line-height: 50px;
 text-align: center;
 width: 50px;
+margin-left: 110px;
 }
 .facebook 
 {
@@ -135,6 +49,7 @@ height: 50px;
 line-height: 50px;
 text-align: center;
 width: 50px;
+margin-left: 110px;
 }
 .twitter 
 {
@@ -149,111 +64,118 @@ height: 50px;
 text-transform: uppercase;
 width: 250px;
 }
-.Footer
+.citizen_signup 
 {
-	position: margin-bottom;
+background-color: grey;
+border: none;
+border-radius: 0px 3px 3px 0px;
+-moz-border-radius: 0px 3px 3px 0px;
+-webkit-border-radius: 0px 3px 3px 0px;
+color: black;
+cursor: pointer;
+height: 50px;
+text-transform: uppercase;
+width: 250px;
+margin-left: 130px;
+margin-top: 160px;
+}
+.govt_signup 
+{
+background-color: grey;
+border: none;
+border-radius: 0px 3px 3px 0px;
+-moz-border-radius: 0px 3px 3px 0px;
+-webkit-border-radius: 0px 3px 3px 0px;
+color: black;
+cursor: pointer;
+height: 50px;
+text-transform: uppercase;
+width: 250px;
+margin-left: 530px;
+margin-top: 10px;
 }
 </style>
 </head>
 <body>
+	<div style="margin-top:50px;">
+	<!--start member-login -->
+	<h1 style="text-align:center; font-size:40px; color:#C04551;"> Welcome to MaD! Together, we will make difference. </h1>
+		<div class="member-login" style="float:left; margin-left:50px;">
+				<form class="login"  action="govt_login_execute.php" method="post" >
+					<?php
+					if( isset($_SESSION['ERRMSG_ARR']) && is_array($_SESSION['ERRMSG_ARR']) && count($_SESSION['ERRMSG_ARR']) >0 ) 
+					{
+					echo '<ul class="err">';
+					foreach($_SESSION['ERRMSG_ARR'] as $msg) {
+					echo '<li>',$msg,'</li>'; 
+					}
+					echo '</ul>';
+					unset($_SESSION['ERRMSG_ARR']);
+					}
+					?>
+					<div class="formtitle">Government Login</div>
+					<div class="input">
+						<input type="text" placeholder="Email" name="govt_email" id="govt_email" /> 
+					</div>
+					<div class="input">
+						<input type="password"  placeholder="Password" name="govt_pswd" id="govt_pswd" />
+					</div>
+					<div class="buttons">
+						<a href="#">Forgot password?</a>
+						<input class="bluebutton" type="submit" value="Login" />
+						<div class="clear"> </div>
+					</div>
+				</form>
+		</div>
+		
+		<div class="member-login" style="float:right;margin-right:50px;">
+				<form class="login"  action="login_execute.php" method="post" >
+					<?php
+					if( isset($_SESSION['ERRMSG_ARR']) && is_array($_SESSION['ERRMSG_ARR']) && count($_SESSION['ERRMSG_ARR']) >0 ) 
+					{
+					echo '<ul class="err">';
+					foreach($_SESSION['ERRMSG_ARR'] as $msg) {
+					echo '<li>',$msg,'</li>'; 
+					}
+					echo '</ul>';
+					unset($_SESSION['ERRMSG_ARR']);
+					}
+					?>
+					<div class="formtitle">Citizen Login</div>
+					<div class="input">
+						<input type="text" placeholder="Email"  name="email" id="email"/> 
+					</div>
+					<div class="input">
+						<input type="password"  placeholder="Password" name="pswd" id="pswd"/>
+					</div>
+					<div class="buttons">
+						<a href="#">Forgot password?</a>
+						<input class="bluebutton" type="submit" value="Login" />
+						<div class="clear"> </div>
+					</div>
+				</form>
+		</div>
 
-<!--         ***********************       GOVERNMENT LOGIN  *********************************           -->
-
-
-<div class="Background"></div>
-<div id="login" style="float:left;">
-
-<a href="govt_signup.php" align="right" style="color:orange;">Sign up for govt dept. </a><br>
-<h1 style="font-color:orange;"><strong></strong>Government login.</h1>
-
-<form action="govt_login_execute.php" method="post">
-
-<tr>
-    <td colspan="2">
-		<!--the code bellow is used to display the message of the input validation-->
-		 <?php
-			if( isset($_SESSION['ERRMSG_ARR']) && is_array($_SESSION['ERRMSG_ARR']) && count($_SESSION['ERRMSG_ARR']) >0 ) {
-			echo '<ul class="err">';
-			foreach($_SESSION['ERRMSG_ARR'] as $msg) {
-				echo '<li>',$msg,'</li>'; 
-				}
-			echo '</ul>';
-			unset($_SESSION['ERRMSG_ARR']);
-			}
-		?>
-	</td>
-  </tr>
-
-<fieldset><br>
-Email : <input type="email" name="govt_email" id="govt_email" /><br>
-Password : <input type="password" name="govt_pswd" id="govt_pswd" /><br>
-<p style="color:orange;"><a href="#">Forgot Password?</a></p>
-<p><input type="submit" value="Login"></p>
-
-</fieldset>
-</form>
-
-<p><span class="btn-round">or</span></p>
-<p>
-<a class="facebook-before"></a>
-<button class="facebook">Login Using Facbook</button>
-</p>
-<p>
-<a class="twitter-before"></a>
-<button class="twitter">Login Using Twitter</button>
-</p>
-</div> <!-- end login -->
-
-
-<h2>Welcome to MaD. Together, we will make difference.</h2>
-
-<!--           ***************************   Citizen Login     **********************************************8     -->
-
-
-<div class="Background"></div>
-<div id="login" style="float:right;">
-
-<a href="signup.php" align="right" style="color:orange;">Sign up for citizens</a>
-
-<h1 style="font-color:orange;"><strong></strong>Citizen login.</h1>
-
-<form action="login_execute.php" method="post">
-
-<tr>
-    <td colspan="2">
-		<!--the code bellow is used to display the message of the input validation-->
-		 <?php
-			if( isset($_SESSION['ERRMSG_ARR']) && is_array($_SESSION['ERRMSG_ARR']) && count($_SESSION['ERRMSG_ARR']) >0 ) {
-			echo '<ul class="err">';
-			foreach($_SESSION['ERRMSG_ARR'] as $msg) {
-				echo '<li>',$msg,'</li>'; 
-				}
-			echo '</ul>';
-			unset($_SESSION['ERRMSG_ARR']);
-			}
-		?>
-	</td>
-  </tr>
-
-<fieldset><br>
-Email : <input type="email" name="email" id="email" /><br>
-Password : <input type="password" name="pswd" id="pswd" /><br>
-<p style="color:orange;"><a href="#">Forgot Password?</a></p>
-<p><input type="submit" value="Login"></p>
-
-</fieldset>
-</form>
-
-<p><span class="btn-round">or</span></p>
-<p>
-<a class="facebook-before"></a>
-<button class="facebook">Login Using Facbook</button>
-</p>
-<p>
-<a class="twitter-before"></a>
-<button class="twitter">Login Using Twitter</button>
-</p>
-</div> <!-- end login -->
-
+		</div> <!-- end login -->
+		<div style="margin-top:120px;">
+		<p>
+			<a class="facebook-before"></a>
+			<button class="facebook">Login Using Facbook</button>
+		</p>
+		<p>
+			<a class="twitter-before"></a>
+			<button class="twitter">Login Using Twitter</button>
+		</p>
+		</div>
+		<div>
+		<form action="new_signup.php">
+		<button class="citizen_signup">Citizen Signup</button>
+		</form>
+		<form action="new_govt_signup.php">
+		<button class="govt_signup">Government Signup</button>
+		</form>
+		</div>
+		</div>
+	<!--		<p class="copy_right" style="float:bottom;">&#169; 2014 Template by<a href="iiits.ac.in" target="_blank">&nbsp;MaD Team</a> </p> -->
 </body>
 </html>

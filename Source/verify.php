@@ -153,13 +153,13 @@ if(isset($_GET['email']) && !empty($_GET['email']) AND isset($_GET['hash']) && !
     $email = mysqli_escape_string($link, $_GET['email']); // Set email variable
     $hash = mysqli_escape_string($link, $_GET['hash']); // Set hash variable
     
-    $query = "SELECT email, password, active FROM user_reg WHERE email='".$email."' AND active='0'";
+    $query = "SELECT email, password, active FROM Citizen_reg WHERE email='".$email."' AND active='0'";
     $result = mysqli_query($link, $query);
     $num_rows  = mysqli_num_rows($result);
     
     if($num_rows > 0){
         // We have a match, activate the account
-        $query = "UPDATE user_reg SET active='1' WHERE email='".$email."' AND active='0'";
+        $query = "UPDATE Citizen_reg SET active='1' WHERE email='".$email."' AND active='0'";
         if(mysqli_query($link, $query)){
             echo '<div >Your account has been activated, you can now login</div>';
         }else{

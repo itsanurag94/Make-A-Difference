@@ -9,11 +9,11 @@ if(isset($_POST['email']) && !empty($_POST['email']) AND isset($_POST['pswd']) &
 {
  
 // Escape user inputs for security
-$d_name = mysqli_real_escape_string($link, $_POST['d_name']);
+$dep_name = mysqli_real_escape_string($link, $_POST['d_name']);
 $email = mysqli_real_escape_string($link, $_POST['email']);
 $pswd = mysqli_real_escape_string($link, $_POST['pswd']);
 $confirm_pswd = mysqli_real_escape_string($link, $_POST['confirm_pswd']);
-$contact_no = mysqli_real_escape_string($link, $_POST['contact_no']);
+$contact_num = mysqli_real_escape_string($link, $_POST['contact_no']);
 $city = mysqli_real_escape_string($link, $_POST['city']);
 $district = mysqli_real_escape_string($link, $_POST['district']);
 $state = mysqli_real_escape_string($link, $_POST['state']);
@@ -23,7 +23,7 @@ $pin_code = mysqli_real_escape_string($link, $_POST['pin_code']);
 else 
 {
 	echo "Hello";
-//	header("location: new_govt_signup.php");
+//	header("location: govt_signup.php");
 } 
 //email validation
 
@@ -31,7 +31,7 @@ if(!eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$
     // Return Error - Invalid Email
     $msg = 'The email you have entered is invalid, please try again.';
     echo $msg;
-//    header("location: new_govt_signup.php");
+//    header("location: govt_signup.php");
 }
 
 
@@ -42,45 +42,52 @@ if($pswd==$confirm_pswd)
 else
 {
 //	echo "Passwords do not match";
-	header("location: new_govt_signup.php");
+	header("location: govt_signup.php");
 	exit;
 }
 
-$query="Select * from govt_reg where email='$email'";
+$query="SELECT * from Govt_reg where email='$email'";
 $result=mysqli_query($link,$query);
 $num_rows=mysqli_num_rows($result);
 
-$query1="Select * from govt_reg where email='$email'";
-$result1=mysqli_query($link,$query1);
-$num_rows_1=mysqli_num_rows($result1);
-
-if($num_rows>0 || $num_rows_1>0)
+if($num_rows>0)
 {
 	echo "Email already registered with us. Try again";
 	//header("location: govt_signup.php");
-	echo "<br>Click here to sign up again: <a href='new_govt_signup.php'></a>";
+	echo "<br>Click here to sign up again: <a href='govt_signup.php'></a>";
 	exit;
 }
 
-$sql = "INSERT INTO govt_dept VALUES ('','$d_name', '$email', '$contact_no', '$city', '$district', '$state', '$pin_code')";
+$query = "INSERT INTO Govt_reg (gID, email, password, active) VALUES('','$email', '$hash', '0')";
 
-
-if(mysqli_query($link, $sql))
+if(mysqli_query($link, $query))
 {
 //    echo "Records added successfully.";
 } 
 else
 {
-    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+    echo "ERROR: Could not able to execute $query. " . mysqli_error($link);
 }
 
-$sql = "INSERT INTO govt_reg VALUES('$email', '$hash', '0')";
+$query = "SELECT gID FROM Govt_reg where email = '$email'";
+$result = mysqli_query($link, $query);
+$num_rows = mysqli_num_rows($result);
 
-if(mysqli_query($link, $sql)){
-//    echo "Records added successfully.";
+if($result)
+{
+	if ($num_rows > 0)
+	{
+		$govt = mysqli_fetch_assoc($result);
+		$gID = $govt['gID'];
+	}
+}
+
+
+$query = "INSERT INTO Govt VALUES ('$gID','$dep_name', '$email', '$contact_num', '$city', '$district', '$state', '$pin_code')";
+
+if(mysqli_query($link, $query)){
 
 //send verification mail
-
 	//random hash to be included in verification url
 	$hash_random = md5(rand(0,1000));
 
@@ -97,7 +104,7 @@ if(mysqli_query($link, $sql)){
 	------------------------
 	 
 	Please click this link to activate your account:
-	localhost/Source/verify.php?email='.$email.'&hash='.$hash_random.'
+	localhost/mad/verify.php?email='.$email.'&hash='.$hash_random.'
 	 
 	'; // Our message above including the link
 	                     
@@ -130,7 +137,7 @@ if(mysqli_query($link, $sql)){
 
 	exit();
 } else{
-    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+    echo "ERROR: Could not able to execute $query. " . mysqli_error($link);
 }
 
 // close connection
