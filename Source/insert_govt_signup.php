@@ -46,14 +46,11 @@ else
 	exit;
 }
 
-<<<<<<< HEAD
 $query="SELECT * from Govt_reg where email='$email'";
 $result=mysqli_query($link,$query);
 $num_rows=mysqli_num_rows($result);
 
 if($num_rows>0)
-=======
->>>>>>> 6a45b7354e37ca33921924320801d062e6fba41e
 {
 	echo "Email already registered with us. Try again";
 	//header("location: govt_signup.php");

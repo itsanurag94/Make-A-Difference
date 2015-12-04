@@ -32,10 +32,7 @@
 	{
 		$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
 		session_write_close();
-<<<<<<< HEAD
 		header("location: index.php");
-=======
->>>>>>> 6a45b7354e37ca33921924320801d062e6fba41e
 		exit();
 	}
  	
@@ -44,8 +41,6 @@
 	//Create query
 	$query="SELECT * FROM Citizen_reg WHERE email='$email' AND password='$pswd'";
 	$result=mysqli_query($link, $query);
-<<<<<<< HEAD
-=======
 	 
 	$num_rows = mysqli_num_rows($result);
 	//Check whether the query was successful or not.
@@ -53,7 +48,6 @@
 	{
 		if($num_rows > 0) 
 		{
->>>>>>> 6a45b7354e37ca33921924320801d062e6fba41e
 			//Login Successful
 			
 			$citizen = mysqli_fetch_assoc($result);

@@ -25,13 +25,10 @@ $pin_code = mysqli_real_escape_string($link, $_POST['pin_code']);
 
 else
 {
-<<<<<<< HEAD
 	echo "Invalid Signup_1";
-=======
 //	echo "Hello1";
 //	echo $email;
 //	header("location: signup.php");
->>>>>>> 6a45b7354e37ca33921924320801d062e6fba41e
 } 
 //email validation
 
@@ -39,10 +36,7 @@ if(!eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$
 {
     // Return Error - Invalid Email
     $msg = 'The email you have entered is invalid, please try again.';
-<<<<<<< HEAD
     echo "Invalid Signup_2";
-=======
->>>>>>> 6a45b7354e37ca33921924320801d062e6fba41e
 //    header("location: new_signup.php");
 }
 
@@ -54,10 +48,7 @@ if($pswd==$confirm_pswd)
 else
 {
 	echo "Passwords do not match";
-<<<<<<< HEAD
 	echo "Invalid Signup_2";
-=======
->>>>>>> 6a45b7354e37ca33921924320801d062e6fba41e
 //	header("location: new_signup.php");
 }
 	
@@ -66,7 +57,6 @@ else
 
 
 // attempt insert query execution
-<<<<<<< HEAD
 $query = "INSERT INTO Citizen_reg (cID, email, password, active) VALUES('','$email', '$hash', '0')";
 
 if(mysqli_query($link, $query)){
@@ -86,17 +76,11 @@ if($result)
 		$citizen = mysqli_fetch_assoc($result);
 		$cID = $citizen['cID'];
 	}
-=======
 
-
->>>>>>> 6a45b7354e37ca33921924320801d062e6fba41e
 }
 
 
-<<<<<<< HEAD
 $query = "INSERT INTO Citizen VALUES ('$cID','$f_name', '$l_name', '$email', '$mob', '$dob', '$address_line1', '$address_line2', '$city', '$district', '$state', '$pin_code','')";
-=======
->>>>>>> 6a45b7354e37ca33921924320801d062e6fba41e
 
 if(mysqli_query($link, $query)){
 //send verification mail
@@ -152,11 +136,8 @@ if(mysqli_query($link, $query)){
 	}
 
 	exit();
-<<<<<<< HEAD
 } else{
     echo "ERROR: Could not able to execute $query. " . mysqli_error($link);
-=======
->>>>>>> 6a45b7354e37ca33921924320801d062e6fba41e
 }
 
 // close connection
