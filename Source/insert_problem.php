@@ -6,8 +6,13 @@ $email = $_SESSION['SESS_EMAIL'];
 $title = mysqli_real_escape_string($link, $_POST['title']);
 $to_whom = mysqli_real_escape_string($link, $_POST['to_whom']);
 $description = mysqli_real_escape_string($link, $_POST['description']); 
-$location = mysqli_real_escape_string($link, $_POST['location']);
+//$location = mysqli_real_escape_string($link, $_POST['location']);
 
+$query = "Select district, pin_code from users where email='".$email."'";
+$result = mysqli_query($link, $query);
+$district = mysqli_fetch_assoc($result); 
+$location = $district['district'];
+$pin_code = $district['pin_code'];
 // attempt insert query execution
 
 $okext = array(".doc", ".pdf", ".ppt", ".pps", ".xls", ".csv", ".rtf", ".txt", ".htm", ".html", ".jpg", ".gif", ".png", ".svg");
@@ -87,7 +92,7 @@ $resw = fopen($resname, "w");
 echo $resname1;
 
 
-$query = "INSERT INTO Problems VALUES ('','$title', '$to_whom', '$description', '$location','$resname1', '0','$email')";
+$query = "INSERT INTO Problems VALUES ('','$title', '$to_whom', '$description', '$location','$resname1', '$email','','0',now(),'$pin_code')";
 if(mysqli_query($link, $query))
 {
   //echo "We have receive your valuable suggestions.";

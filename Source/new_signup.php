@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Login form and sign up</title>
+<title>Sign up</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'> -->
@@ -13,7 +13,7 @@
 			<!----------start form----------- -->
 
 			<form class="sign" action="insert_signup.php" method="post">
-				<div class="formtitle" style="text-align:center;">Sign Up and Become part of MaD community.</div>
+				<div class="formtitle" style="text-align:center;">Sign Up to shop.</div>
 
 				<!----------start top_section---------- -->
 
@@ -33,7 +33,7 @@
 							<input type="text"  placeholder="Mobile Number" name="mob" id="mob" required /> 
 						</div>
 						<div class="input password">
-							<input type="password"  placeholder="Confirm Password" name="pswd" id="pswd" required/><span></span>
+							<input type="password"  placeholder="Confirm Password" name="confirm_pswd" id="confirm_pswd" required/><span></span>
 						</div>
 						<div class="clear"> </div>
 					</div>
@@ -89,7 +89,7 @@
 							<input type="text" placeholder="State" name="state" id="state" required/> 
 						</div>
 						<div class="input-sign details1">
-							<input type="text" placeholder="Pincode" name="pincode" id="pin_code" required/>
+							<input type="text" placeholder="Pincode" name="pin_code" id="pin_code" required/>
 						</div>
 						<div class="clear"> </div>
 					</div>
@@ -105,6 +105,6 @@
 			<!----------end form---------- -->
 		</div>
 		<!----------start copyright---------- -->
-			<p class="copy_right">&#169; 2014 Template by<a href="iiits.ac.in" target="_blank">&nbsp;MaD Team</a> </p>
+			<p class="copy_right">&#169; 2014 Template by<a href="iiits.ac.in" target="_blank">&nbsp;Shopping Portal</a> </p>
 </body>
 </html>

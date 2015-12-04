@@ -52,9 +52,6 @@
 		<div class="input-sign details">
 		<input type="text" placeholder="Description" name = "description" id="description"><br><br>
 		</div>
-		<div class="input-sign details">
-		<input type="text" placeholder="District" name = "location" id="location"><br><br>
-		</div>
 		<P></p>
  	    <P>File name: <br><INPUT class="inputform" TYPE="file" name="userfile" style="width:250px;"></p>
 <!--        <P><INPUT class="inputform" TYPE="submit" VALUE="Upload File"></p>    -->

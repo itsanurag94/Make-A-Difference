@@ -16,20 +16,26 @@
 	$pswd = mysqli_real_escape_string($link, $_POST['pswd']);
 	
 	//Input Validations
-	if($email == '') {
+	if($email == '') 
+	{
 		$errmsg_arr[] = 'Username missing';
 		$errflag = true;
 	}
-	if($pswd == '') {
+	if($pswd == '') 
+	{
 		$errmsg_arr[] = 'Password missing';
 		$errflag = true;
 	}
  
 	//If there are input validations, redirect back to the login form
-	if($errflag) {
+	if($errflag) 
+	{
 		$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
 		session_write_close();
+<<<<<<< HEAD
 		header("location: index.php");
+=======
+>>>>>>> 6a45b7354e37ca33921924320801d062e6fba41e
 		exit();
 	}
  	
@@ -38,20 +44,25 @@
 	//Create query
 	$query="SELECT * FROM Citizen_reg WHERE email='$email' AND password='$pswd'";
 	$result=mysqli_query($link, $query);
+<<<<<<< HEAD
+=======
+	 
 	$num_rows = mysqli_num_rows($result);
-
-	//Check whether the query was successful or not
-	if($result) {
-		if($num_rows > 0) {
+	//Check whether the query was successful or not.
+	if($result) 
+	{
+		if($num_rows > 0) 
+		{
+>>>>>>> 6a45b7354e37ca33921924320801d062e6fba41e
 			//Login Successful
 			
 			$citizen = mysqli_fetch_assoc($result);
-			if($citizen['active'] == 0) {
+			if($citizen['active'] == 0) 
+			{
 				echo "Your account is not yet activated.";
 				header("location: index.php");
 				exit();
 			}
-
 //			$user = mysql_fetch_assoc($result);
 			session_regenerate_id();
 			$_SESSION['SESS_MEMBER_ID'] = $citizen['cID'];
@@ -61,18 +72,24 @@
 			session_write_close();
 			header("location: home.php");
 			exit();
-		}else {
+		}
+		else 
+		{
 			//Login failed
 			$errmsg_arr[] = 'user name and password not found';
 			$errflag = true;
-			if($errflag) {
+			if($errflag) 
+			{
 				$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
 				session_write_close();
 				header("location: index.php");
 				exit();
 			}
 		}
-	}else {
+	}
+
+	else 
+	{
 		die("Query failed");
 	}
 ?>
