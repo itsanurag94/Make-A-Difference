@@ -57,7 +57,7 @@ else
 
 
 // attempt insert query execution
-$query = "INSERT INTO Citizen_reg (cID, email, password, active) VALUES('','$email', '$hash', '0')";
+$query = "INSERT INTO Citizen_reg VALUES('','$email', '$hash', 'NOW()' '0')";
 
 if(mysqli_query($link, $query)){
 //    echo "Records added successfully.";
@@ -80,7 +80,7 @@ if($result)
 }
 
 
-$query = "INSERT INTO Citizen VALUES ('$cID','$f_name', '$l_name', '$email', '$mob', '$dob', '$address_line1', '$address_line2', '$city', '$district', '$state', '$pin_code','')";
+$query = "INSERT INTO Citizen VALUES ('$cID','$f_name', '$l_name', '$email', '$mob', '$dob', '$address_line1', '$address_line2', '$city', '$district', '$state', '$pin_code','','')";
 
 if(mysqli_query($link, $query)){
 //send verification mail
