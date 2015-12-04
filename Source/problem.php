@@ -24,10 +24,11 @@
 </div>
 <br>
 <br>
+
+
 <?php
 
 require_once('connection.php');
-
 session_start();
 $email = $_SESSION['SESS_EMAIL'];
 echo "<div class='Welcome_Message'>";
@@ -38,20 +39,28 @@ echo "</div>";
 if(isset($_GET['pID']) && !empty($_GET['pID']))
 {
     // Verify data
-
     $pid = mysqli_escape_string($link, $_GET['pID']); // Set pid variable
-    $query2 = "SELECT * FROM user_voted WHERE pID='$pid' and email='$email'";
-    $result2 = mysqli_query($link,$query2);
-    $num_rows_2 = mysqli_num_rows($result2);
-    $query = "SELECT * FROM Problems WHERE pID='$pid'";
-    $result = mysqli_query($link, $query);
-    
+
+    $query = "SELECT * FROM user_voted WHERE pID='$pid' and email='$email'";
+    $result = mysqli_query($link,$query);
     $num_rows = mysqli_num_rows($result);
-    $problem = mysqli_fetch_assoc($result);
+
+    $query1 = "SELECT * FROM Problems WHERE pID='$pid'";
+    $result1 = mysqli_query($link, $query1);
+    $problem = mysqli_fetch_assoc($result1);
+    $num_rows_1 = mysqli_num_rows($result1);
+  
+    $query2 = "SELECT * FROM Problem_responded WHERE pID='$pid'";
+    $result2 = mysqli_query($link, $query2);
+    $response_date = mysqli_fetch_assoc($result2);
+
+    $query3 = "SELECT * FROM Problem_notified WHERE pID='$pid'";
+    $result3 = mysqli_query($link, $query3);
+    $notified_date = mysqli_fetch_assoc($result3);
     
-    if($num_rows>0) 
+    if($num_rows_1>0) 
     {
-        echo $resname1;
+    //    echo $resname1;
         echo "<br>";
         $title = $problem['title'];
         $description = $problem['description'];
@@ -59,6 +68,11 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
         $location = $problem['location'];
         $votes = $problem['votes'];
         $img_path = $problem['img_path'];
+        $date_time = $problem['date_created'];
+        $date_respond_date=$response_date['date_responded'];
+        $notification_date=$notified_date['date_notified'];
+     //   $date_time = '01-12-2015';
+        $img_url=localhost;
 
         echo "<div class='Problem_title'>";
         echo  $title;
@@ -75,43 +89,214 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
         echo "<div class='Problem_location'>";
         echo $location;
         echo "</div>";
+         echo "<div class='Problem_votes'>";
+        if($img_path !== 'NULL')
+        {
+           echo "<img src='/Source/problem_images/".$problem['img_path']."' height='100px' width='100px' />"; 
+        }
         echo "<br>";
-        echo "<div class='Problem_votes'>";
+        echo "Number of votes      :            ";
         echo $votes;
-        echo "</div>";
         echo "<br>";
-    
- //       if($img_path !== 'NULL')
- //       {
- //           echo '<img src="'.$img_url.$problem['img_path'].'" />'; 
- //       }
+        echo "<br>";
+
+        echo "Problem Posted:  ";
+        echo $date_time;
+        echo "<br>";
+
+        echo "Problem Notified:  ";
+        echo $notification_date;
+        echo "<br>";
+
+        echo "Problem Responded:  ";
+        echo $date_respond_date;
+        echo "<br>";
+    }
+}
+
+//echo $_SESSION['SESS_USER_TYPE'];
+if($_SESSION['SESS_USER_TYPE']==1)
+{
+	$query = "SELECT * FROM Problem_responded WHERE pID=".$problem["pID"]."";
+    $result = mysqli_query($link, $query);
+    $num_rows = mysqli_num_rows($result);
+
+    if($num_rows>0)
+    {
+    	$query1 = "SELECT * FROM Problem_responded WHERE pID=".$problem["pID"]."";
+    	$result1 = mysqli_query($link, $query1);
+    	$response = mysqli_fetch_assoc($result1);
+    	$response = $response['response'];
+    	$response_likes = $response['likes'];
+        echo "<br> <br>";
+        echo "Response from the government       :                 ";
+
+  //      echo "<br>";
+    //    echo "<div class='Problem_votes'>";
+    	echo $response;
+    	echo "<br>";
+   // 	echo $response_likes;
+    	echo "<br>";
+   //     echo "</div>";
+    }
+    else
+    {
+			echo 
+			"</form>
+			<form action='post_response.php?pID=".$problem["pID"]."' method='post' >
+			<input class='test' value='Write a Response' name='Response' id='Response'><br><br>
+			<input type='submit' value='Post Response' id='post_comment'><br>
+			</form>";
+	}
+}
+
+if($_SESSION['SESS_USER_TYPE']==0)
+{
+    $query = "SELECT * FROM Problem_responded WHERE pID=".$problem["pID"]."";
+    $result = mysqli_query($link, $query);
+    $num_rows = mysqli_num_rows($result);
+
+    if($num_rows>0)
+    {
+        $query1 = "SELECT * FROM Problem_responded WHERE pID=".$problem["pID"]."";
+        $result1 = mysqli_query($link, $query1);
+        $response = mysqli_fetch_assoc($result1);
+        $response = $response['response'];
+        $response_likes = $response['likes'];
+        echo "<br>";
+    //    echo "<div class='Problem_votes'>";
+        echo $response;
+        echo "<br>";
+   //   echo $response_likes;
+        echo "<br>";
+   //     echo "</div>";
+    }
+    else
+    {
+        echo "<br>";
+        echo "Problem yet not taken up by the government";
     }
 }
 ?>
-<!--
-<form action="vote.php?pID=<?php echo $_GET['pID']; ?>" method="post">
-<input class="inputform" TYPE=hidden name="users_ID" value="<?print($users_ID);?>"> <br>
-<button onclick="this.disabled=true;document.getElementById('downvote').disabled=false;" type="submit" class="positive" name="vote" id="vote">Vote</button>
-<button onclick="this.disabled=true;document.getElementById('vote').disabled=false;" type="submit" class="negative" name="downvote" id="downvote" disabled>Downvote</button>
-</form>-->
-
 <?php
-
+    echo "<br>";
     echo "<h4>Comments</h4>";
     $pid = $_GET['pID'];
-    $query1 = "SELECT comment, f_name FROM Comments WHERE pID='$pid'";
+    $query1 = "SELECT comment_id, comment, f_name, likes FROM Comments WHERE pID='".$pid."'";
     $result1 = mysqli_query($link, $query1);
     $num_rows_1 = mysqli_num_rows($result1);
+
     if($num_rows_1>0)
     {
         while ($comments=mysqli_fetch_assoc($result1)) 
         {
-        echo $comments['f_name'];
         echo "<br>";
+        echo "<br>";
+
+        echo $comments['f_name'];
+        echo "      :           ";
         echo $comments['comment'];
         echo "<br>";
+        $cid = $comments['comment_id'];
+        $email = $_SESSION['SESS_EMAIL'];
+        echo "Votes   :     ";
+        echo $comments['likes'];
+        echo "<br>";
+
+
+      ///////////////////////////////////////////////////            Citizen Comment       /////////////////////////////////////////////////////////////////////////
+
+        if($_SESSION['SESS_USER_TYPE']=='0')
+        {
+        $query = " SELECT * from users where email = '$email' ";
+        $result = mysqli_query($link, $query);
+        $num_rows = mysqli_num_rows($result);
+        $user_id = mysqli_fetch_assoc($result);
+        $uid = $user_id['uid'];
+        //echo $cid;
+
+        $query_1 = " SELECT * from Citizen_voted_comment where comment_id = '".$cid."' and uid = '".$uid."'";
+        $result_1 = mysqli_query($link, $query_1);
+        $num_rows_2 = mysqli_num_rows($result_1);
+    //    echo $num_rows_2;
+        $comment_vote = mysqli_fetch_assoc($result_1);
+        $comment_votes = $user_id['pID'];
+
+        if ($num_rows_2>0)
+        {
+        $_SESSION['SESS_Comment_VOTE_DOWNVOTE']=1;
+        echo "<form action='vote_comment.php?comment_id=".$cid."' method='post'>
+        <button type='submit' class='positive' name='vote' id='vote' disabled>Upvote</button>
+        <br>
+        <button type='submit
+        ' class='negative' name='downvote' id='downvote' enabled>Downvote</button>
+        <br>
+        </form>";
         }
+
+        else
+        {
+        $_SESSION['SESS_Comment_VOTE_DOWNVOTE']=0;
+        echo "<form action='vote_comment.php?comment_id=".$cid."' method='post'>
+        <button type='submit' class='positive' name='vote' id='vote' enabled>Upvote</button>
+        <br>
+        <button type='submit' class='negative' name='downvote' id='downvote' disabled>Downvote</button>
+        <br>
+        </form>";
+        }
+        }
+
+        /////////////////////////////////////////////////////             Government Comment     //////////////////////////////////////////////////////////////////
+
+      //  $_SESSION['SESS_Comment_VOTE_DOWNVOTE']=0;
+        if($_SESSION['SESS_USER_TYPE']=='1')
+        {
+        $query_2 = " SELECT * from govt_dept where email = '$email' ";
+        $result_2 = mysqli_query($link, $query_2);
+        $num_rows_3 = mysqli_num_rows($result_2);
+        $user_id = mysqli_fetch_assoc($result_2);
+        $gID = $user_id['gID'];
+     //   echo $cid;
+
+        $query_4 = " SELECT * from Govt_voted_comment where comment_id = '".$cid."' and gID = '".$gID."'";
+        $result_4 = mysqli_query($link, $query_4);
+        $num_rows_4 = mysqli_num_rows($result_4);
+     //   echo $num_rows_4;
+        $comment_vote = mysqli_fetch_assoc($result_4);
+        $comment_votes = $user_id['pID'];
+      //  echo $_SESSION['SESS_Comment_VOTE_DOWNVOTE'];
+
+        if ($num_rows_4 > 0)
+        {
+        $_SESSION['SESS_Comment_VOTE_DOWNVOTE']=1;
+        echo $_SESSION['Comment_VOTE_DOWNVOTE'];
+        echo "<form action='govt_vote_comment.php?comment_id=".$cid."' method='post'>
+        <button type='submit' class='positive' name='vote' id='vote' disabled>Upvote</button>
+        <br>
+        <button type='submit
+        ' class='negative' name='downvote' id='downvote' enabled>Downvote</button>
+        <br>
+        </form>";
+        }
+
+        else
+        {
+        $_SESSION['SESS_Comment_VOTE_DOWNVOTE']=0;
+        echo $_SESSION['Comment_VOTE_DOWNVOTE'];
+        echo "<form action='govt_vote_comment.php?comment_id=".$cid."' method='post'>
+        <button type='submit' class='positive' name='vote' id='vote' enabled>Upvote</button>
+        <br>
+        <button type='submit' class='negative' name='downvote' id='downvote' disabled>Downvote</button>
+        <br>
+        </form>";
+        }
+        }
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
+    }
+
     $email = $_SESSION['SESS_EMAIL'];
     $query = "SELECT * from user_voted where pID = '$pid' and email = '$email' ";
     $result = mysqli_query($link, $query);
@@ -128,7 +313,7 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
         $vote_button = "enabled";
         $downvote_button = "disabled";
     }
-
+    echo "</div>";
 ?>
 
 <br>

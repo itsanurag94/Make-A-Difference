@@ -4,7 +4,7 @@ server with default setting (user 'root' with no password) */
 
 require_once('connection.php');
 require('phpmailer/class.phpmailer.php');
-echo $_POST['email'];
+
 if(isset($_POST['email']) && !empty($_POST['email']) AND isset($_POST['pswd']) && !empty($_POST['pswd']) AND isset($_POST['confirm_pswd']) && !empty($_POST['confirm_pswd']) AND isset($_POST['district']) && !empty($_POST['district']))
 {
  
@@ -26,24 +26,27 @@ $pin_code = mysqli_real_escape_string($link, $_POST['pin_code']);
 else
 {
 //	echo "Hello1";
-//	echo $f_name;
-	header("location: signup.php");
+//	echo $email;
+//	header("location: signup.php");
 } 
 //email validation
 
-if(!eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$", $email)){
+if(!eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$", $email))
+{
     // Return Error - Invalid Email
     $msg = 'The email you have entered is invalid, please try again.';
-    header("location: new_signup.php");
+//    header("location: new_signup.php");
 }
 
 
-if($pswd==$confirm_pswd){
+if($pswd==$confirm_pswd)
+{
 	$hash = md5($pswd);
 }
-else{
+else
+{
 	echo "Passwords do not match";
-	header("location: new_signup.php");
+//	header("location: new_signup.php");
 }
 
 //Valid Email (from the regular expression above)
@@ -51,18 +54,22 @@ else{
 
 
 // attempt insert query execution
-$sql = "INSERT INTO users VALUES ('','$f_name', '$l_name', '$email', '$mob', '$address_line1', '$address_line2', '$city', '$district', '$state', '$pin_code')";
+$sql = "INSERT INTO users VALUES ('','$f_name', '$l_name', '$email', '$mob', '$address_line1', '$address_line2', '$city', '$district', '$state', '$pin_code','')";
 
 
-if(mysqli_query($link, $sql)){
-//    echo "Records added successfully.";
-} else{
+if(mysqli_query($link, $sql))
+{
+    echo "Records added successfully.";
+} 
+else
+{
     echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
 }
 
 $sql = "INSERT INTO user_reg VALUES('$email', '$hash', '0')";
 
-if(mysqli_query($link, $sql)){
+if(mysqli_query($link, $sql))
+{
     echo "Records added successfully.";
 
 //send verification mail
@@ -108,14 +115,19 @@ if(mysqli_query($link, $sql)){
 	$mail->Subject = $subject;
 	$mail->Body = $body;
 	$mail->AddAddress($to);
-	if($mail->Send()) {
+	if($mail->Send()) 
+	{
 		echo "You have successfully registered! Please click on the verification link sent to your registered email id."; 
-	} else {
+	} 
+	else 
+	{
 		echo "Mail error: ".$mail->ErrorInfo;
 	}
 
 	exit();
-} else{
+} 
+else
+{
     echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
 }
 

@@ -34,6 +34,16 @@ if(isset($_GET['pID']) && !empty($_GET['pID'])){
 
 		$query = "UPDATE Problems SET votes='$votes' where pID='".$pid."'";
 
+		$query_1 = "SELECT email FROM users where district = '".$location."' ";
+   		$result_1 = mysqli_query($link, $query_1);
+   		$number_users = mysqli_num_rows($result_1);
+
+   		if($votes > $number_users/2)
+   		{
+   			$query_2 = "INSERT INTO Problem_notified VALUES('$pid',now()) ";
+   			$result_2 = mysqli_query($link, $query_2);
+   		}
+
 		$result = mysqli_query($link, $query);
 		if($result)
 		{

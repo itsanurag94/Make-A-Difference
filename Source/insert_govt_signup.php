@@ -13,7 +13,7 @@ $d_name = mysqli_real_escape_string($link, $_POST['d_name']);
 $email = mysqli_real_escape_string($link, $_POST['email']);
 $pswd = mysqli_real_escape_string($link, $_POST['pswd']);
 $confirm_pswd = mysqli_real_escape_string($link, $_POST['confirm_pswd']);
-$contact_no = mysqli_real_escape_string($link, $_POST['contact_no']);
+$contact_num = mysqli_real_escape_string($link, $_POST['contact_no']);
 $city = mysqli_real_escape_string($link, $_POST['city']);
 $district = mysqli_real_escape_string($link, $_POST['district']);
 $state = mysqli_real_escape_string($link, $_POST['state']);
@@ -46,11 +46,11 @@ else
 	exit;
 }
 
-$query="Select * from govt_reg where email='$email'";
+$query="Select * from Govt_reg where email='$email'";
 $result=mysqli_query($link,$query);
 $num_rows=mysqli_num_rows($result);
 
-$query1="Select * from govt_reg where email='$email'";
+$query1="Select * from Govt_reg where email='$email'";
 $result1=mysqli_query($link,$query1);
 $num_rows_1=mysqli_num_rows($result1);
 
