@@ -18,7 +18,7 @@ if(isset($_GET['comment_id']) && !empty($_GET['comment_id'])){
         $query_4 = " SELECT * from Govt_voted_comment where comment_id = '".$comment_id."' and gID = '".$gID."' ";
         $result_4 = mysqli_query($link, $query_4);
         $num_rows_4 = mysqli_num_rows($result_4);
- 
+ 		echo $num_rows_4;
     if($num_rows_4 == '0')
     {
     	$query = "SELECT * FROM Problem_comment WHERE comment_id='".$comment_id."'";

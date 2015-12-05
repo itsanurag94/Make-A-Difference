@@ -69,9 +69,14 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
     $result4 = mysqli_query($link, $query4);
     $citizen = mysqli_fetch_assoc($result4);
     $cID=$citizen['cID'];
+    $cid=$problem['cID'];
 
- //   echo $email;
- //   echo $cID;
+    if($cid == $cID)
+    {
+    echo "<form action='delete_problem.php?pID=$pID' method='post'>
+          <input type='submit' value='Delete problem' id='post_comment'><br>
+          </form>";
+    }
 
     if($num_rows_1>0) 
     {
@@ -308,28 +313,43 @@ if($_SESSION['SESS_USER_TYPE']==0)
     if($Problem_status['status']=='solved')
     {
         echo "Problem has been solved by the local administration.<br>";
+      /*  if($_SESSION['SESS_USER_TYPE']==1)
+        {
+        echo 
+        "<form action='problem_solved.php?pID=".$pID."' method='post' >
+        <input type='submit' value='Problem has been solved' name='solved' id='solved'><br>
+        </form>"
+        }
+        if($_SESSION['SESS_USER_TYPE']==0)
+        {
+        echo 
+        "<form action='problem_solved.php?pID=".$pID."' method='post' >
+        <input type='submit' value='Problem has been solved' name='solved' id='solved'><br>
+        </form>"
+        }*/
     }
 
-
-echo "<br>";
-echo "<h4>Comments</h4>";
 
 $query = "SELECT comment_ID, cID, comment, likes FROM Problem_comment WHERE pID='$pID'";
 $result = mysqli_query($link, $query);
 $num_rows = mysqli_num_rows($result);
+//$cID = mysqli_fetch_assoc($result);
 
 if($num_rows>0)
 {
+    echo "<br>";
+    echo "<h4>Comments</h4>";
     while ($problem_comment=mysqli_fetch_assoc($result)) 
     {
     echo "<br>";
     echo "<br>";
- //   echo $cID;
-    $query = "SELECT f_name, l_name FROM Citizen WHERE cID='$cID'";
-    $result1 = mysqli_query($link, $query);
+    $cid = $problem_comment['cID'];
+    $query1 = "SELECT f_name, l_name FROM Citizen WHERE cID='$cid'";
+    $result1 = mysqli_query($link, $query1);
     $citizen=mysqli_fetch_assoc($result1);
 
-    echo $citizen['f_name'];
+    echo $citizen['f_name'] ;
+    echo " ";
     echo $citizen['l_name'];
     echo "      :           ";
     echo $problem_comment['comment'];
@@ -338,7 +358,10 @@ if($num_rows>0)
     echo "Votes   :     ";
     echo $problem_comment['likes'];
     echo "<br>";
-
+    if($cID == $cid)
+        echo "<form action='update_comment.php?pID=$pID' method='post'>
+            <input type='submit' value='Edit comment' id='post_comment'><br>
+            </form>";
 
   ///////////////////////////////////////////////////            Citizen Comment       /////////////////////////////////////////////////////////////////////////
 
@@ -350,14 +373,13 @@ if($num_rows>0)
     $comment_vote = mysqli_fetch_assoc($result_1);
  //   $comment_votes = $user_id['pID'];
 
-    if ($num_rows_2>0)
+    if ($num_rows_2>'0')
     {
     $_SESSION['SESS_Comment_VOTE_DOWNVOTE']=1;
     echo "<form action='vote_comment.php?comment_id=".$comment_id."' method='post'>
     <button type='submit' class='positive' name='vote' id='vote' disabled>Upvote</button>
     <br>
-    <button type='submit
-    ' class='negative' name='downvote' id='downvote' enabled>Downvote</button>
+    <button type='submit' class='negative' name='downvote' id='downvote' enabled>Downvote</button>
     <br>
     </form>";
     }
@@ -374,7 +396,7 @@ if($num_rows>0)
     }
     }
 
-    /////////////////////////////////////////////////////             Government Comment     //////////////////////////////////////////////////////////////////
+/*    /////////////////////////////////////////////////////             Government Comment     //////////////////////////////////////////////////////////////////
 
   //  $_SESSION['SESS_Comment_VOTE_DOWNVOTE']=0;
     else if($_SESSION['SESS_USER_TYPE']=='1')
@@ -384,20 +406,17 @@ if($num_rows>0)
     $num_rows_3 = mysqli_num_rows($result_2);
     $user_id = mysqli_fetch_assoc($result_2);
     $gID = $user_id['gID'];
- //   echo $cid;
 
     $query_4 = " SELECT * from Govt_voted_comment where comment_id = '".$comment_id."' and gID = '".$gID."'";
     $result_4 = mysqli_query($link, $query_4);
     $num_rows_4 = mysqli_num_rows($result_4);
     $comment_vote = mysqli_fetch_assoc($result_4);
  //   $comment_votes = $user_id['pID'];
-  //  echo $_SESSION['SESS_Comment_VOTE_DOWNVOTE'];
-
-    if ($num_rows_4 > 0)
+    echo $num_rows_4;
+    if($num_rows_4 > '0')
     {
-    $_SESSION['SESS_Comment_VOTE_DOWNVOTE']=1;
-    echo $_SESSION['Comment_VOTE_DOWNVOTE'];
-    echo "<form action='govt_vote_comment.php?comment_id=".$cid."' method='post'>
+    echo "Here";
+    echo "<form action='govt_vote_comment.php?comment_id=".$comment_id."' method='post'>
     <button type='submit' class='positive' name='vote' id='vote' disabled>Upvote</button>
     <br>
     <button type='submit
@@ -406,11 +425,10 @@ if($num_rows>0)
     </form>";
     }
 
-    else
+    else if($num_rows=='0')
     {
-    $_SESSION['SESS_Comment_VOTE_DOWNVOTE']=0;
-    echo $_SESSION['Comment_VOTE_DOWNVOTE'];
-    echo "<form action='govt_vote_comment.php?comment_id=".$cid."' method='post'>
+    echo "Here_2";
+    echo "<form action='govt_vote_comment.php?comment_id=".$comment_id."' method='post'>
     <button type='submit' class='positive' name='vote' id='vote' enabled>Upvote</button>
     <br>
     <button type='submit' class='negative' name='downvote' id='downvote' disabled>Downvote</button>
@@ -418,11 +436,13 @@ if($num_rows>0)
     </form>";
     }
     }
-
+*/
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-}
+    }
 }
 
+if($_SESSION['SESS_USER_TYPE']=='0')
+{
 $query = "SELECT * from Citizen_voted_problem where pID = '$pID' and cID = '$cID' ";
 $result = mysqli_query($link, $query);
 $num_rows = mysqli_num_rows($result);
@@ -439,26 +459,24 @@ else
     $downvote_button = "disabled";
 }
 echo "</div>";
-?>
 
-<br>
+echo "<br>";
 
-<form action="vote.php?pID=<?php echo $pID; ?>" method="POST">
+echo "<form action='vote.php?pID=$pID' method='POST'>
+<button type='submit' class='positive' name='vote' id='vote' $vote_button>Vote</button>
 
-<button type="submit" class="positive" name="vote" id="vote" 
-<?php echo $vote_button;?>
->Vote</button>
-
-<button type="submit" class="negative" name="downvote" id="downvote" 
-<?php echo $downvote_button;?>
->Downvote</button>
+<button type='submit' class='negative' name='downvote' id='downvote' 
+$downvote_button>Downvote</button>
 <br><br>
-</form>
+</form>";
 
-<form action="post_comment.php?pID=<?php echo $_GET['pID']; ?>" method="post">
-<input class="test" placeholder="Write a comment" name="comment" id="comment"><br><br>
-<input type="submit" value="Post comment" id="post_comment"><br>
-</form>
+echo "<form action='post_comment.php?pID=$pID' method='post'>
+<input class='test' placeholder='Write a comment' name='comment' id='comment'><br><br>
+<input type='submit' value='Post comment' id='post_comment'><br>
+</form>";
+
+}
+?>
 
 </body>
 </html>

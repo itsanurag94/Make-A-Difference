@@ -45,9 +45,9 @@ if($problem_status == 'notified_local')
 }
 if($problem_status == 'solved')
 {
-	$query_1 = "UPDATE Problem_status set status='solved', date_solved=now() where pID='$pID'";
-	$result_1 = mysqli_query($link, $query_1);
-	if($result_1)
+	//$query_1 = "UPDATE Problem_status set status='solved', date_solved=now() where pID='$pID'";
+	//$result_1 = mysqli_query($link, $query_1);
+	//if($result_1)
 		header("location: problem.php?pID=$pID");
 }
 }
