@@ -7,7 +7,7 @@ $email = $_SESSION['SESS_EMAIL'];
 $cID = $_SESSION['SESS_MEMBER_ID'];
 
 $title = mysqli_real_escape_string($link, $_POST['title']);
-$to_whom = mysqli_real_escape_string($link, $_POST['to_whom']);
+$to_whom = mysqli_real_escape_string($link, $_POST['Departments']);
 $description = mysqli_real_escape_string($link, $_POST['description']); 
 
 $query = "SELECT district, pin_code, state FROM Citizen WHERE email='".$email."'";

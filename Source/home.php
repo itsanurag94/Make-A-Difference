@@ -47,7 +47,12 @@
 		<input type="text" placeholder="Title" name="title" id="title"><br><br>
 		</div>
 		<div class="input-sign details">
-		<input type="text" placeholder="Department" name = "to_whom" id="to_whom"><br><br>
+		<select id='Departments' value='Departments' name='Departments'>
+			<option value="">Select</option>
+			<option value='Water' selected="Water"> Water </option>
+			<option value='Power' name="Power">Power </option>
+			<option value='Roads' name="PWD"> PWD </option>
+		</select>
 		</div>   
 		<div class="input-sign details">
 		<input type="text" placeholder="Description" name = "description" id="description"><br><br>
