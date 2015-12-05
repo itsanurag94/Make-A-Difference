@@ -52,14 +52,14 @@
 		<div class="input-sign details">
 		<input type="text" placeholder="Description" name = "description" id="description"><br><br>
 		</div>
-		<P></p>
- 	    <P>File name: <br><INPUT class="inputform" TYPE="file" name="userfile" style="width:250px;"></p>
+		<p></p>
+ 	    <p>File name: <br><input class="inputform" TYPE="file" name="userfile" style="width:250px;"></p>
 <!--        <P><INPUT class="inputform" TYPE="submit" VALUE="Upload File"></p>    -->
 		<div class="input-sign details">
-		<INPUT class="inputform" TYPE=hidden name="MAX_FILE_SIZE" value="513024">
+		<input class="inputform" TYPE=hidden name="MAX_FILE_SIZE" value="513024">
 		</div>
 		<div class="input-sign details">
-		<INPUT class="inputform" TYPE=hidden name="users_ID" value="<?print($users_ID);?>">
+		<input class="inputform" TYPE=hidden name="users_ID" value="<?print($users_ID);?>">
 		</div>
 		<div class="submit">
 		<input class="bluebutton submitbotton" type="submit" value="<?php echo $lang['MENU_OUR_PRODUCTS']; ?>"><br><br>

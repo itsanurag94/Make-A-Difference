@@ -1,0 +1,35 @@
+body{
+    padding:10px;
+}
+
+.show-on-hover:hover > ul.dropdown-menu {
+    display: block;    
+}
+
+/* Set height of the grid so .sidenav can be 100% (adjust if needed) */
+.row.content {height: 1500px}
+
+/* Set black background color, white text and some padding */
+footer {
+  background-color: #555;
+  color: white;
+  padding: 15px;
+}
+
+/* On small screens, set height to 'auto' for sidenav and grid */
+@media screen and (max-width: 767px) {
+  .row.content {height: auto;} 
+}
+
+/*for table displaying problems*/
+.custab{
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin: 5% 0;
+    box-shadow: 3px 3px 2px #ccc;
+    transition: 0.5s;
+    }
+.custab:hover{
+    box-shadow: 3px 3px 0px transparent;
+    transition: 0.5s;
+    }
