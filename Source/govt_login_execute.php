@@ -54,7 +54,7 @@
 			}
 
 			session_regenerate_id();
-			$_SESSION['SESS_MEMBER_ID'] = $govt['user_id'];
+			$_SESSION['SESS_MEMBER_ID'] = $govt['gID'];
 			$_SESSION['SESS_EMAIL'] = $govt['email'];
 			$_SESSION['SESS_PASSWORD'] = $govt['password'];
 			$_SESSION['SESS_USER_TYPE'] = 1;

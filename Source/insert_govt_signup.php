@@ -58,7 +58,7 @@ if($num_rows>0)
 	exit;
 }
 
-$query = "INSERT INTO Govt_reg VALUES('','$email', '$hash', 'NOW()', '0')";
+$query = "INSERT INTO Govt_reg VALUES('','$email', '$hash', now(), '0')";
 
 if(mysqli_query($link, $query))
 {

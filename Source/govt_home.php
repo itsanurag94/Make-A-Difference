@@ -31,8 +31,8 @@ $dep_name = $govt["dep_name"];
 $district = $govt["district"];
 $state = $govt["state"];
 */
-echo $_SESSION['SESS_MEMBER_ID'];
-$query="SELECT * FROM Problem where to_whom='1'";
+echo $gID;
+$query="SELECT * FROM Problem where to_whom='$gID'";
 $result=mysqli_query($link, $query);
 $num_rows = mysqli_num_rows($result);
 //echo $_SESSION['SESS_MEMBER_ID'];
