@@ -30,15 +30,13 @@
 require_once('connection.php');
 session_start();
 
-echo $_GET['pID'];
-$_SESSION['Responded']='enabled';
 if(isset($_GET['pID']) && !empty($_GET['pID']))
 {
     $pid = mysqli_escape_string($link, $_GET['pID']);
     $pID = $_GET['pID'];
     //echo $pid;
     $response = mysqli_real_escape_string($link, $_POST['Response']);
-
+    echo $response;
     $query = "INSERT INTO Problem_responded (pID, response, likes) VALUES ('$pID','$response','0')";
     if(mysqli_query($link, $query))
     {

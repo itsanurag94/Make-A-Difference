@@ -59,15 +59,17 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
     $query2 = "SELECT * FROM Problem_responded WHERE pID='$pID'";
     $result2 = mysqli_query($link, $query2);
     $problem_responded = mysqli_fetch_assoc($result2);
+    $response_rows = mysqli_num_rows($result2);
 
-    $query3 = "SELECT * FROM Problem_notified WHERE pID='$pID'";
+    $query3 = "SELECT * FROM Problem_status WHERE pID='$pID'";
     $result3 = mysqli_query($link, $query3);
-    $problem_notified = mysqli_fetch_assoc($result3);
+    $Problem_status = mysqli_fetch_assoc($result3);
 
     $query4= "SELECT cID FROM Citizen WHERE email='$email'";
     $result4 = mysqli_query($link, $query4);
     $citizen = mysqli_fetch_assoc($result4);
     $cID=$citizen['cID'];
+
  //   echo $email;
  //   echo $cID;
 
@@ -93,9 +95,14 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
             $problem_media = mysqli_fetch_assoc($result);
             $img_path = $problem_media['media_path'];    
         }
-        
-        $date_respond_date=$problem_responded['date_responded'];
-        $notification_date=$problem_notified['date_notified'];
+       
+        $date_respond_date=$Problem_responded['date_responded'];
+        $creation_date=$Problem_status['date_created'];
+        $notification_date=$Problem_status['date_notified'];
+        $notification_taken_up_date=$Problem_status['date_taken_up'];
+        $notification_pincode_date=$Problem_status['date_notified_pincode'];
+        $notification_local_date=$Problem_status['date_notified_local'];
+        $notification_solved_date=$Problem_status['date_solved'];
      //   $date_created = '01-12-2015';
         $img_url=localhost;
 
@@ -138,16 +145,49 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
         echo $date_created;
         echo "<br>";
 
-        echo "Problem Notified:  ";
-        echo $notification_date;
-        echo "<br>";
-
+       if($response_rows > 0)
+        {
         echo "Problem Responded:  ";
         echo $date_respond_date;
         echo "<br>";
+        }
+
+        if($notification_date != 'NULL')
+        {
+        echo "Problem Notified     :  ";
+        echo $notification_date;
+        echo "<br>";
+        }
+
+        if($notification_taken_up_date != 'NULL')
+        {
+        echo "Problem Taken up     :  ";
+        echo $notification_taken_up_date;
+        echo "<br>";
+        }
+
+        if($notification_pincode_date != 'NULL')
+        {
+        echo "Problem Notified to local administration    :  ";
+        echo $notification_pincode_date;
+        echo "<br>";
+        }
+
+        if($notification_local_date != 'NULL')
+        {
+        echo "Problem Notified to local person incharge     :  ";
+        echo $notification_local_date;
+        echo "<br>";
+        }
+
+        if($notification_solved_date != 'NULL')
+        {
+        echo "Problem Solved     :  ";
+        echo $notification_solved_date;
+        echo "<br>";
+        } 
     }
 }
-
 //echo $_SESSION['SESS_USER_TYPE'];
 if($_SESSION['SESS_USER_TYPE']==1)
 {
@@ -176,12 +216,47 @@ if($_SESSION['SESS_USER_TYPE']==1)
     else
     {
 			echo 
-			"</form>
-			<form action='post_response.php?pID='".$pID."' method='post' >
-			<input class='test' value='Write a Response' name='Response' id='Response'><br><br>
+			"<form action='post_response.php?pID=".$pID."' method='post' >
+			<input class='test' placeholder='Write a Response' name='Response' id='Response'><br><br>
 			<input type='submit' value='Post Response' id='post_comment'><br>
 			</form>";
 	}
+    if($Problem_status['status']=='notified')
+    {
+   //     echo "Problem has been notified to the government <br><br> ";
+        echo "<form action='status_update.php?pID=$pID' method='post' >
+        <input type='submit' value='Take Up' name='taken_up' id='taken_up'><br>
+        </form>";
+        echo "<form action='status_update.php?pID=".$pID." method='post' >
+        <input type='submit' value='Decline' name='Decline' id='Decline'><br>
+        </form>";
+    }
+    if($Problem_status['status']=='Decline')
+        echo "Problem has been cited as not so serious";
+
+    if($Problem_status['status']=='taken_up')
+    {
+        echo 
+        "<form action='status_update.php?pID=$pID' method='post' >
+        <input type='submit' value='Notify to local administration' name='notified_pincode' id='notified_pincode'><br>
+        </form>";
+    }
+    if($Problem_status['status']=='notified_pincode')
+    {
+    //    echo "Problem has been taken up by the government <br>";
+        echo 
+        "<form action='status_update.php?pID=".$pID."' method='post' >
+        <input type='submit' value='Notified to local person' name='notified_local' id='notified_local'><br>
+        </form>";
+    }
+    if($Problem_status['status']=='notified_local')
+    {
+   //     echo "Problem has been notified to the local administration.<br>";
+        echo 
+        "<form action='status_update.php?pID=".$pID."' method='post' >
+        <input type='submit' value='Problem has been solved' name='solved' id='solved'><br>
+        </form>";
+    }
 }
 
 if($_SESSION['SESS_USER_TYPE']==0)
@@ -205,12 +280,36 @@ if($_SESSION['SESS_USER_TYPE']==0)
         echo "<br>";
    //     echo "</div>";
     }
-    else
-    {
-        echo "<br>";
-        echo "Problem yet not taken up by the government";
-    }
 }
+
+    if($Problem_status['status']=='created')
+    {
+        echo "Problem yet not notified to the government due to insufficient number of votes. <br><br> ";
+    }
+    if($Problem_status['status']=='notified')
+    {
+        echo "Problem has been notified to the government <br><br> ";
+    }
+    if($Problem_status['status']=='Decline')
+        echo "Problem has been cited as not so serious";
+
+    if($Problem_status['status']=='taken_up')
+    {
+        echo "Problem has been taken up by the government <br>";
+    }
+    if($Problem_status['status']=='notified_pincode')
+    {
+        echo "Problem has been notified to the local administration. <br>";
+    }
+    if($Problem_status['status']=='notified_local')
+    {
+        echo "Problem has been notified to the local person in charge and the problem will be resolved soon.<br>";
+    }
+    if($Problem_status['status']=='solved')
+    {
+        echo "Problem has been solved by the local administration.<br>";
+    }
+
 
 echo "<br>";
 echo "<h4>Comments</h4>";
@@ -357,7 +456,7 @@ echo "</div>";
 </form>
 
 <form action="post_comment.php?pID=<?php echo $_GET['pID']; ?>" method="post">
-<input class="test" value="Write a comment" name="comment" id="comment"><br><br>
+<input class="test" placeholder="Write a comment" name="comment" id="comment"><br><br>
 <input type="submit" value="Post comment" id="post_comment"><br>
 </form>
 

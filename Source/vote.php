@@ -42,7 +42,7 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
 	   			if($result_2){
 	   			}
 
-	   			$query_2 = "SELECT date_notified FROM Problem_notified";
+	   			$query_2 = "SELECT date_notified FROM Problem_notified where pID='$pID'";
 				$result_2 = mysqli_query($link, $query_2);
 	   			if($result_2)
 	   			{
@@ -50,6 +50,7 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
 	   				$date_notified = $problem_notified['date_notified'];
 	   			}
 
+	   			echo $date_notified;
 
 	   			$query_2 = "UPDATE Problem_status SET status = 'notified', date_notified = '$date_notified' where pID = '$pID'";
 	   			$result_2 = mysqli_query($link, $query_2);
