@@ -23,7 +23,7 @@ if($entered_password_1==$reentered_password_2)
 	$query = "UPDATE Govt_reg SET password='$new_password' where email='$email'";
 	mysqli_query($link, $query);
 	echo "Password updated successfully";
-	header("Location: home.php"); // Redirecting To Home Page
+	header("Location: logout.php"); // Redirecting To Home Page
 }
 else
 {

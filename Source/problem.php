@@ -35,7 +35,7 @@ require_once('auth.php');
 require_once('connection.php');
 session_start();
 $email = $_SESSION['SESS_EMAIL'];
-$cID = $_SESSION['SESS_MEMBER_ID'];
+//$cID = $_SESSION['SESS_MEMBER_ID'];
 
 echo "<div class='Welcome_Message'>";
 echo "Welcome ".$email."";
@@ -63,7 +63,14 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
     $query3 = "SELECT * FROM Problem_notified WHERE pID='$pID'";
     $result3 = mysqli_query($link, $query3);
     $problem_notified = mysqli_fetch_assoc($result3);
-    
+
+    $query4= "SELECT cID FROM Citizen WHERE email='$email'";
+    $result4 = mysqli_query($link, $query4);
+    $citizen = mysqli_fetch_assoc($result4);
+    $cID=$citizen['cID'];
+ //   echo $email;
+ //   echo $cID;
+
     if($num_rows_1>0) 
     {
     //    echo $resname1;
@@ -217,16 +224,17 @@ if($num_rows>0)
     {
     echo "<br>";
     echo "<br>";
+ //   echo $cID;
     $query = "SELECT f_name, l_name FROM Citizen WHERE cID='$cID'";
     $result1 = mysqli_query($link, $query);
-    $citizen=mysqli_fetch_assoc($result1)
+    $citizen=mysqli_fetch_assoc($result1);
 
     echo $citizen['f_name'];
     echo $citizen['l_name'];
     echo "      :           ";
     echo $problem_comment['comment'];
     echo "<br>";
-    $comment_id = $problem_comment['comment_id'];
+    $comment_id = $problem_comment['comment_ID'];
     echo "Votes   :     ";
     echo $problem_comment['likes'];
     echo "<br>";
@@ -236,24 +244,16 @@ if($num_rows>0)
 
     if($_SESSION['SESS_USER_TYPE']=='0')
     {
-    $query = " SELECT * from users where email = '$email' ";
-    $result = mysqli_query($link, $query);
-    $num_rows = mysqli_num_rows($result);
-    $user_id = mysqli_fetch_assoc($result);
-    $uid = $user_id['uid'];
-    //echo $cid;
-
-    $query_1 = " SELECT * from Citizen_voted_comment where comment_id = '".$cid."' and uid = '".$uid."'";
+    $query_1 = " SELECT * from Citizen_voted_comment where comment_id = '".$comment_id."' and cID = '".$cID."'";
     $result_1 = mysqli_query($link, $query_1);
     $num_rows_2 = mysqli_num_rows($result_1);
-//    echo $num_rows_2;
     $comment_vote = mysqli_fetch_assoc($result_1);
-    $comment_votes = $user_id['pID'];
+ //   $comment_votes = $user_id['pID'];
 
     if ($num_rows_2>0)
     {
     $_SESSION['SESS_Comment_VOTE_DOWNVOTE']=1;
-    echo "<form action='vote_comment.php?comment_id=".$cid."' method='post'>
+    echo "<form action='vote_comment.php?comment_id=".$comment_id."' method='post'>
     <button type='submit' class='positive' name='vote' id='vote' disabled>Upvote</button>
     <br>
     <button type='submit
@@ -265,7 +265,7 @@ if($num_rows>0)
     else
     {
     $_SESSION['SESS_Comment_VOTE_DOWNVOTE']=0;
-    echo "<form action='vote_comment.php?comment_id=".$cid."' method='post'>
+    echo "<form action='vote_comment.php?comment_id=".$comment_id."' method='post'>
     <button type='submit' class='positive' name='vote' id='vote' enabled>Upvote</button>
     <br>
     <button type='submit' class='negative' name='downvote' id='downvote' disabled>Downvote</button>
@@ -279,19 +279,18 @@ if($num_rows>0)
   //  $_SESSION['SESS_Comment_VOTE_DOWNVOTE']=0;
     else if($_SESSION['SESS_USER_TYPE']=='1')
     {
-    $query_2 = " SELECT * from govt_dept where email = '$email' ";
+    $query_2 = " SELECT * from Govt where email = '$email' ";
     $result_2 = mysqli_query($link, $query_2);
     $num_rows_3 = mysqli_num_rows($result_2);
     $user_id = mysqli_fetch_assoc($result_2);
     $gID = $user_id['gID'];
  //   echo $cid;
 
-    $query_4 = " SELECT * from Govt_voted_comment where comment_id = '".$cid."' and gID = '".$gID."'";
+    $query_4 = " SELECT * from Govt_voted_comment where comment_id = '".$comment_id."' and gID = '".$gID."'";
     $result_4 = mysqli_query($link, $query_4);
     $num_rows_4 = mysqli_num_rows($result_4);
- //   echo $num_rows_4;
     $comment_vote = mysqli_fetch_assoc($result_4);
-    $comment_votes = $user_id['pID'];
+ //   $comment_votes = $user_id['pID'];
   //  echo $_SESSION['SESS_Comment_VOTE_DOWNVOTE'];
 
     if ($num_rows_4 > 0)
@@ -320,13 +319,11 @@ if($num_rows>0)
     }
     }
 
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 }
 
-$email = $_SESSION['SESS_EMAIL'];
-$query = "SELECT * from Citizen_voted_problem where pID = '$pID' and email = '$email' ";
+$query = "SELECT * from Citizen_voted_problem where pID = '$pID' and cID = '$cID' ";
 $result = mysqli_query($link, $query);
 $num_rows = mysqli_num_rows($result);
 if ($num_rows>0)
@@ -346,7 +343,7 @@ echo "</div>";
 
 <br>
 
-<form action="vote.php?pID=<?php echo '$pID'; ?>" method="post">
+<form action="vote.php?pID=<?php echo $pID; ?>" method="POST">
 
 <button type="submit" class="positive" name="vote" id="vote" 
 <?php echo $vote_button;?>

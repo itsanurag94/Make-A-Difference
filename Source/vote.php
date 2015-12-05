@@ -3,34 +3,28 @@
 session_start();
 require_once('auth.php');
 require_once('connection.php');
-
-if(isset($_GET['pID']) && !empty($_GET['pID'])){
+echo $_GET['pID'];
+if(isset($_GET['pID']) && !empty($_GET['pID']))
+{
     // Verify data
-
+	echo "Hello";
     $pID = mysqli_escape_string($link, $_GET['pID']); // Set pid variable
     
     $vote_downvote=$_SESSION['SESS_VOTE_DOWNVOTE'];
     $email = $_SESSION['SESS_EMAIL'];
-    $cID = $_SESSION['SESS_MEMBER_ID'];
- 
-   // if(!$result)
-   // {
-   // 	echo "Query to insert into Citizen_voted_problem failed";
-   // }
+ //   $cID = $_SESSION['SESS_MEMBER_ID'];
+ 	echo $_GET['pID'];
+ 	echo $email;
+ 	echo $vote_downvote;
+ 	$cID=1;
 
     if($vote_downvote==0)
     {
-	    $query = "INSERT INTO Citizen_voted_problem VALUES('$cID', $pID')";
+	    $query = "INSERT INTO Citizen_voted_problem VALUES('$cID', '$pID')";
 	    $result = mysqli_query($link, $query);
 
-	    $query = "SELECT * FROM Problem WHERE pID='$pID'";
+	    $query = "SELECT votes FROM Problem WHERE pID='$pID'";
 	    $result = mysqli_query($link, $query);
-	    if($result)
-	    {
-	    $num_rows = mysqli_num_rows($result);
-
-		if($num_rows>0)
-		{
 		//	echo "Here";
 		    $problem = mysqli_fetch_assoc($result);
 			$votes = $problem['votes'];
@@ -45,7 +39,7 @@ if(isset($_GET['pID']) && !empty($_GET['pID'])){
 	   		{
 	   			//send a notification to Govt.
 
-	   			$query_2 = "INSERT INTO Problem_notified VALUES('$pID',NOW()) ";
+	   			$query_2 = "INSERT INTO Problem_notified VALUES('$pID',now()) ";
 	   			$result_2 = mysqli_query($link, $query_2);
 	   			if($result2){}
 
@@ -58,7 +52,7 @@ if(isset($_GET['pID']) && !empty($_GET['pID'])){
 	   			}
 
 
-	   			$query_2 = "UPDATE Problem_status SET status = 'notified', date_notified = $date_notified where pID = '$pID'";
+	   			$query_2 = "UPDATE Problem_status SET status = 'notified', date_notified = '$date_notified' where pID = '$pID'";
 	   			if($result2){}
 	   		}
 
@@ -68,8 +62,6 @@ if(isset($_GET['pID']) && !empty($_GET['pID'])){
 			{
 				header("location: problem.php?pID=".$pID."");
 			}
-		}
-		}
 	}
 
 	if($vote_downvote==1)
