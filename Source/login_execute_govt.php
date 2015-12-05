@@ -12,8 +12,9 @@
 	$errflag = false;
  
 	//Sanitize the POST values
-	$email = mysqli_real_escape_string($link, $_POST['govt_email']);
-	$pswd = mysqli_real_escape_string($link, $_POST['govt_pswd']);
+	$email = mysqli_real_escape_string($link, $_POST['email']);
+	$pswd = mysqli_real_escape_string($link, $_POST['pswd']);
+	
 	if($email == '') {
 		$errmsg_arr[] = 'Username missing';
 		$errflag = true;
@@ -29,7 +30,7 @@
 		$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
 		session_write_close();
 
-		header("location: index.php");
+		header("location: login_govt.php");
 		exit();
 	}
  	
@@ -49,7 +50,7 @@
 			if($govt['active'] == 0)
 		    {
 				echo "Your account is not yet activated.";
-				header("location: index.php");
+				header("location: login_govt.php");
 				exit();
 			}
 
@@ -70,7 +71,7 @@
 			{
 				$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
 				session_write_close();
-				header("location: index.php");
+				header("location: login_govt.php");
 				exit();
 			}
 		}

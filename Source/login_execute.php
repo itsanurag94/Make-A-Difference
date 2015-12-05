@@ -32,7 +32,7 @@
 	{
 		$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
 		session_write_close();
-		header("location: index.php");
+		header("location: login.php");
 		exit();
 	}
  	
@@ -54,7 +54,7 @@
 			if($citizen['active'] == 0) 
 			{
 				echo "Your account is not yet activated.";
-				header("location: index.php");
+				header("location: login.php");
 				exit();
 			}
 //			$user = mysql_fetch_assoc($result);
@@ -76,7 +76,7 @@
 			{
 				$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
 				session_write_close();
-				header("location: index.php");
+				header("location: login.php");
 				exit();
 			}
 		}

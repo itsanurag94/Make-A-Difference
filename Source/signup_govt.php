@@ -12,7 +12,7 @@
 
 			<!----------start form----------- -->
 
-			<form class="sign" action="insert_govt_signup.php" method="post">
+			<form class="sign" action="insert_signup_govt.php" method="post">
 				<div class="formtitle">Sign Up-It's free.</div>
 
 				<!----------start top_section---------- -->
