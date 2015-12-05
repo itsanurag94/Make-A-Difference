@@ -3,20 +3,17 @@
 session_start();
 require_once('auth.php');
 require_once('connection.php');
-echo $_GET['pID'];
+
 if(isset($_GET['pID']) && !empty($_GET['pID']))
 {
     // Verify data
-	echo "Hello";
     $pID = mysqli_escape_string($link, $_GET['pID']); // Set pid variable
     
     $vote_downvote=$_SESSION['SESS_VOTE_DOWNVOTE'];
     $email = $_SESSION['SESS_EMAIL'];
- //   $cID = $_SESSION['SESS_MEMBER_ID'];
- 	echo $_GET['pID'];
- 	echo $email;
- 	echo $vote_downvote;
- 	$cID=1;
+    $cID = $_SESSION['SESS_MEMBER_ID'];
+ 
+    echo $vote_downvote;
 
     if($vote_downvote==0)
     {
@@ -25,7 +22,7 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
 
 	    $query = "SELECT votes FROM Problem WHERE pID='$pID'";
 	    $result = mysqli_query($link, $query);
-		//	echo "Here";
+			
 		    $problem = mysqli_fetch_assoc($result);
 			$votes = $problem['votes'];
 			$votes = $votes + 1;
@@ -37,26 +34,29 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
 
 	   		if($votes > $number_users/2)
 	   		{
+
 	   			//send a notification to Govt.
 
 	   			$query_2 = "INSERT INTO Problem_notified VALUES('$pID',now()) ";
 	   			$result_2 = mysqli_query($link, $query_2);
-	   			if($result2){}
+	   			if($result_2){
+	   			}
 
 	   			$query_2 = "SELECT date_notified FROM Problem_notified";
 				$result_2 = mysqli_query($link, $query_2);
-	   			if($result2)
+	   			if($result_2)
 	   			{
-	   				$problem_notified = mysqli_fetch_assoc($result2);
+	   				$problem_notified = mysqli_fetch_assoc($result_2);
 	   				$date_notified = $problem_notified['date_notified'];
 	   			}
 
 
 	   			$query_2 = "UPDATE Problem_status SET status = 'notified', date_notified = '$date_notified' where pID = '$pID'";
-	   			if($result2){}
+	   			$result_2 = mysqli_query($link, $query_2);
+	   			if($result_2){}
 	   		}
 
-			$query = "UPDATE Problems SET votes='$votes' where pID='".$pID."'";
+			$query = "UPDATE Problem SET votes='$votes' where pID='".$pID."'";
 			$result = mysqli_query($link, $query);
 			if($result)
 			{
@@ -76,9 +76,9 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
 		$votes = $problem['votes'];
 		$votes = $votes - 1;
 
-		$query = "UPDATE Problems SET votes='$votes' where pID='".$pID."'";
+		$query = "UPDATE Problem SET votes='$votes' where pID='".$pID."'";
 		$result = mysqli_query($link, $query);
-		if($result)()
+		if($result){}
 
 		$query = "DELETE FROM Citizen_voted_problem where cID='$cID' and pID='$pID'";
 		$result = mysqli_query($link, $query);

@@ -109,7 +109,7 @@ if($result)
 
 echo $gID;
 
-$query = "INSERT INTO Problem VALUES ('','$cID', '$title', '$description', '$gID', '$city','$district', '$state', '$pin_code', 'NOW()', '0')";
+$query = "INSERT INTO Problem VALUES ('','$cID', '$title', '$description', '$gID', '$city','$district', '$state', '$pin_code', now(), '0')";
 if(mysqli_query($link, $query))
 {
 }

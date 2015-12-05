@@ -15,7 +15,7 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
 	$citizen_details = mysqli_fetch_assoc($result);
 	$f_name=$citizen_details['f_name'];
 	$cID = $citizen_details['cID'];
-	$query = "INSERT INTO Problem_comment VALUES ('','$pid','$cID','$comment','0','$f_name')";
+	$query = "INSERT INTO Problem_comment VALUES ('','$pid','$cID','$comment','0')";
 	
 	if(mysqli_query($link, $query))
 	{
