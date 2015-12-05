@@ -7,7 +7,7 @@ $email = $_SESSION['SESS_EMAIL'];
 $cID = $_SESSION['SESS_MEMBER_ID'];
 
 $title = mysqli_real_escape_string($link, $_POST['title']);
-$to_whom = mysqli_real_escape_string($link, $_POST['Departments']);
+$to_whom = mysqli_real_escape_string($link, $_POST['department']);
 $description = mysqli_real_escape_string($link, $_POST['description']); 
 
 $query = "SELECT district, pin_code, state FROM Citizen WHERE email='".$email."'";
@@ -141,11 +141,12 @@ if(mysqli_query($link, $query))
 {
   //echo "We have receive your valuable suggestions.";
   //echo "<br>";
-  header("location: home.php");
+  header("location: home_new.php");
 }  
 else
 {
     echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
 }
 mysqli_close($link);
+
 ?>

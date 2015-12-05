@@ -37,7 +37,7 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
     //echo $pid;
     $response = mysqli_real_escape_string($link, $_POST['Response']);
     echo $response;
-    $query = "INSERT INTO Problem_responded (pID, response, likes) VALUES ('$pID','$response','0')";
+    $query = "INSERT INTO Problem_responded VALUES ('$pID','$response', now(), '0')";
     if(mysqli_query($link, $query))
     {
          //echo "We have receive your valuable suggestions.";
