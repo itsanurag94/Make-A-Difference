@@ -3,6 +3,7 @@ require_once('auth.php');
 require_once('connection.php');
 session_start();
 $email = $_SESSION['SESS_EMAIL'];
+$cID = $_SESSION['SESS_MEMBER_ID'];
 ?>
 
 <!DOCTYPE html>
@@ -33,8 +34,8 @@ $email = $_SESSION['SESS_EMAIL'];
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="my_problems.php">My Problems</a></li>
+        <li><a href="home_new.php">Home</a></li>
+        <li class="active"><a href="#">My Problems</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown show-on-hover">
@@ -54,7 +55,7 @@ $email = $_SESSION['SESS_EMAIL'];
 
 <div class="container-fluid">
   <div class="row content">
-    <div class="col-md-8 ">
+    <div class="col-md-12 ">
       <form action="#" method="get" id="searchForm" class="input-group">            
         <div class="input-group-btn search-panel">
             <select name="search_param" id="search_param" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -77,20 +78,14 @@ $email = $_SESSION['SESS_EMAIL'];
             <th>Title</th>
             <th>Department</th>
             <th>Votes</th>
+            <th>Status</th>
             <th class="text-center">Action</th>
         </tr>
       </thead>
       <tbody>
       <?php
-        $query="SELECT district, pin_code FROM Citizen where email = '$email'";
-        $result = mysqli_query($link, $query);
-        if($result)
-        {
-          $citizen = mysqli_fetch_assoc($result);
-          $pin_code = $citizen['pin_code'];  
-        }
-
-        $query="SELECT * FROM Problem where pin_code = '$pin_code'";
+        
+        $query="SELECT * FROM Problem where cID = '$cID'";
         $result=mysqli_query($link, $query);
         if($result)
         {
@@ -107,11 +102,16 @@ $email = $_SESSION['SESS_EMAIL'];
             $query="SELECT dep_name FROM Govt where gID = '$to_whom'";  
             $result1=mysqli_query($link, $query);
             $govt = mysqli_fetch_assoc($result1);
+
+            $query="SELECT status FROM Problem_status where pID = '$pID'";  
+            $result2=mysqli_query($link, $query);
+            $problem_status = mysqli_fetch_assoc($result2);
             
             echo '<tr>';
             echo '<td> '.$problem['title'].'</td>';
             echo '<td> '.$govt['dep_name'].'</td>';
             echo '<td> '.$problem['votes'].'</td>';
+            echo '<td> '.$problem_status['status'].'</td>';
             ?>
             <td class="text-center"><a class='btn btn-info btn-md' href="problem.php?pID=<?php echo $pID;?>"><span class="glyphicon glyphicon-edit"></span> View</a></td>
             </tr>
@@ -120,74 +120,6 @@ $email = $_SESSION['SESS_EMAIL'];
       </tbody>
       </table>
     </div>
-
-    <div class="col-md-4">
-      <div class="form-area">
-        <form role="form" action="insert_problem.php" method="post">
-          <br style="clear:both">
-          <h3 style="margin-bottom: 25px; text-align: center;">Post Problem</h3>
-          <div class="form-group">
-            <input type="text" class="form-control" id="name" name="title" placeholder="Title" required>
-          </div>
-          <div class="form-group">
-            <label for="department">Department:</label>
-            <select class="form-control" name='department' id="department">
-              <option value="Electricity">Electricity</option>
-              <option value="Water">Water</option>
-              <option value="PWD">PWD</option>
-  <!--        <?php
-  /*          $query="SELECT district, pin_code FROM Citizen where email = '$email'";
-            $result = mysqli_query($link, $query);
-                if($result)
-            {
-              $citizen = mysqli_fetch_assoc($result);
-              $pin_code = $citizen['pin_code'];
-              $district = $citizen['district'];
-              $state = $citizen['state'];
-
-            }
-            $query = "SELECT dep_name from Govt where district = $district and state = $state";
-            $result2 = mysqli_query($link, $query);
-          ?>
-          <?php if($result2) { ?>
-            <?php
-            $num_rows2 = mysqli_num_rows($result2);
-            ?>
-            
-            <?php if($num_rows2>0) { ?>
-              <?php while($govt = mysqli_fetch_assoc($result2)) : ?>
-                <option><?php echo $govt['dep_name'];?></option>
-            <?php endwhile; ?>
-            <?php } ?>
-          <?php } ?>
-
-          */?>
-  -->
-            </select>
-          </div>
-          <div class="form-group">
-            <textarea class="form-control" type="textarea" id="description" name="description" placeholder="Description" maxlength="250" rows="8" required></textarea>
-                <span class="help-block"><p id="characterLeft" class="help-block ">You have reached the limit</p></span>                    
-          </div>
-          <div class="form-group">
-            <label>Photo</label>
-            <span class="btn btn-default btn-file">
-              Upload <input type="file" class="form-control">
-            </span>
-          </div>
-          <div class="form-group">
-            <input class="inputform" TYPE=hidden name="MAX_FILE_SIZE" value="513024">
-          </div>
-          <div class="form-group">
-            <input class="inputform" TYPE=hidden name="cID" value="<?php print($cID);?>">
-          </div>
-          <input type="submit" id="post" name="post" class="btn btn-primary pull-right" value="Post">
-        </form>
-      </div>
-
-      
-    </div>
-
   </div>
 </div>
 
