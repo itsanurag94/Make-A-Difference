@@ -31,10 +31,11 @@ $dep_name = $govt["dep_name"];
 $district = $govt["district"];
 $state = $govt["state"];
 */
-
-$query="SELECT * FROM Problem where to_whom='$gID'";
+echo $_SESSION['SESS_MEMBER_ID'];
+$query="SELECT * FROM Problem where to_whom='1'";
 $result=mysqli_query($link, $query);
 $num_rows = mysqli_num_rows($result);
+//echo $_SESSION['SESS_MEMBER_ID'];
 
 if ($num_rows > 0)
 	{
@@ -46,6 +47,7 @@ if ($num_rows > 0)
    			$query_1 = "SELECT cID FROM Citizen where district = '".$problem['district']."' and state = '".$problem['state']."' ";
    			$result_1 = mysqli_query($link, $query_1);
    			$number_users = mysqli_num_rows($result_1);
+     //   echo $number_users;
    	//		$number_of_users = $number_users['count'];
    	//		echo $number_users;
    			if($votes > $number_users/2)

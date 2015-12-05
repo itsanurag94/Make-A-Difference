@@ -123,7 +123,8 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
         echo $location;
         echo "</div>";
          echo "<div class='Problem_votes'>";
-        if($img_path !== 'NULL')
+
+        if($img_path != '')
         {
            echo "<img src='/Source/problem_images/".$problem['img_path']."' height='100px' width='100px' />"; 
         }
