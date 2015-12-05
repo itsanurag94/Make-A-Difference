@@ -176,12 +176,54 @@ if($_SESSION['SESS_USER_TYPE']==1)
     else
     {
 			echo 
-			"</form>
-			<form action='post_response.php?pID='".$pID."' method='post' >
+			"<form action='post_response.php?pID=".$pID." method='post' >
 			<input class='test' value='Write a Response' name='Response' id='Response'><br><br>
 			<input type='submit' value='Post Response' id='post_comment'><br>
 			</form>";
 	}
+
+    $query2 = "SELECT status from Problem_status where pID='$pID'";
+    $result2 = mysqli_query($link, $query2);
+    $Problem_status = mysqli_fetch_assoc($result2);
+    if($Problem_status['status']=='notified')
+    {
+        echo $pID;
+        echo "<form action='status_update.php?pID=$pID' method='post' >
+        <input type='submit' value='Take Up' name='taken_up' id='taken_up'><br>
+        </form>";
+        echo "<form action='status_update.php?pID=".$pID." method='post' >
+        <input type='submit' value='Decline' name='Decline' id='Decline'><br>
+        </form>";
+    }
+    if($Problem_status['status']=='Decline')
+        echo "Problem has been cited as not so serious";
+
+    if($Problem_status['status']=='taken_up')
+    {
+        echo "Problem has been taken up by the government <br>";
+        echo 
+        "echo Problem has been notified to the local administration <br>
+        <form action='status_update.php?pID=".$pID." method='post' >
+        <input type='submit' value='Notify to local administration' name='notified_pincode' id='notified_pincode'><br>
+        </form>";
+    }
+    if($Problem_status['status']=='notified_pincode')
+    {
+        echo "Problem has been notified to the local administration.<br>";
+        echo 
+        "<form action='status_update.php?pID=".$pID." method='post' >
+        <input type='submit' value='Notified to local person' name='notified_local' id='notified_local'><br>
+        </form>";
+    }
+    if($Problem_status['status']=='notified_local')
+    {
+        echo "Problem has been notified to the local administration and it has been handed over to the person in charge.<br>";
+        echo 
+        "<form action='status_update.php?pID=".$pID." method='post' >
+        <input type='submit' value='Problem has been solved' name='solved' id='solved'><br>
+        </form>";
+    }
+
 }
 
 if($_SESSION['SESS_USER_TYPE']==0)
