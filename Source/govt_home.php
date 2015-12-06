@@ -55,7 +55,7 @@
 <b>View problems nearby</b>
 <div class="container-fluid">
   <div class="row content">
-    <div class="col-md-8 ">
+    <div class="col-md-12 ">
       <form action="#" method="get" id="searchForm" class="input-group">            
         <div class="input-group-btn search-panel">
             <select name="search_param" id="search_param" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -76,58 +76,63 @@
       <thead>
         <tr>
             <th>Title</th>
-            <th>Department</th>
+            <th>Description</th>
             <th>Votes</th>
             <th class="text-center">Action</th>
         </tr>
       </thead>
       <tbody>
-<?php
+      <?php
 
-$email = $_SESSION['SESS_EMAIL'];
-$gID = $_SESSION['SESS_MEMBER_ID'];
+      $email = $_SESSION['SESS_EMAIL'];
+      $gID = $_SESSION['SESS_MEMBER_ID'];
 
-/*
-$query = "SELECT gID FROM Govt where email = '".$email."'";
-$result = mysqli_query($link, $query);
-$govt = mysqli_fetch_assoc($result);
-$dep_name = $govt["dep_name"];
-$district = $govt["district"];
-$state = $govt["state"];
-*/
+      /*
+      $query = "SELECT gID FROM Govt where email = '".$email."'";
+      $result = mysqli_query($link, $query);
+      $govt = mysqli_fetch_assoc($result);
+      $dep_name = $govt["dep_name"];
+      $district = $govt["district"];
+      $state = $govt["state"];
+      */
 
-$query="SELECT * FROM Problem where to_whom='$gID'";
-$result=mysqli_query($link, $query);
-$num_rows = mysqli_num_rows($result);
-//echo $_SESSION['SESS_MEMBER_ID'];
-?>
-<?php if($result > 0) { ?>
+      $query="SELECT * FROM Problem where to_whom='$gID'";
+      $result=mysqli_query($link, $query);
+      $num_rows = mysqli_num_rows($result);
+      //echo $_SESSION['SESS_MEMBER_ID'];
+      ?>
+      <?php if($result > 0) { ?>
 
-<?php if ($num_rows > 0) { ?>
+      <?php if ($num_rows > 0) { ?>
 
-	<?php	while($problem = mysqli_fetch_assoc($result)) : ?> 
-   		 <?php if ($num_rows > 0) { ?>
-       <?php
-       	$votes=$problem['votes'];
-   			$query_1 = "SELECT cID FROM Citizen where district = '".$problem['district']."' and state = '".$problem['state']."' ";
-   			$result_1 = mysqli_query($link, $query_1);
-   			$number_users = mysqli_num_rows($result_1);
-        ?>
-   			<?php if($votes > $number_users/2) { ?>
-        <?php
-        	echo '<tr>';
-          echo '<td> '.$problem['title'].' </td>';
-          echo '<td> '.$problem['description'].'</td>';
-          echo '<td> '.$problem['votes'].'</td>';
-          $pID = $problem['pID'];
-        ?>
-        <td class="text-center"><a class='btn btn-info btn-md' href="problem.php?pID=<?php echo $pID;?>"><span class="glyphicon glyphicon-edit"></span> View</a></td>
-        </tr>
-       <?php } ?>
-   		 <?php } ?>
-      <?php endwhile; ?>
-   <?php } ?>
-<?php } ?>
+      	<?php	while($problem = mysqli_fetch_assoc($result)) : ?> 
+         		 <?php if ($num_rows > 0) { ?>
+             <?php
+             	$votes=$problem['votes'];
+         			$query_1 = "SELECT cID FROM Citizen where district = '".$problem['district']."' and state = '".$problem['state']."' ";
+         			$result_1 = mysqli_query($link, $query_1);
+         			$number_users = mysqli_num_rows($result_1);
+              ?>
+         			<?php if($votes > $number_users/2) { ?>
+              <?php
+              	echo '<tr>';
+                echo '<td> '.$problem['title'].' </td>';
+                echo '<td> '.$problem['description'].'</td>';
+                echo '<td> '.$problem['votes'].'</td>';
+                $pID = $problem['pID'];
+              ?>
+              <td class="text-center"><a class='btn btn-info btn-md' href="problem.php?pID=<?php echo $pID;?>"><span class="glyphicon glyphicon-edit"></span> View</a></td>
+              </tr>
+             <?php } ?>
+         		 <?php } ?>
+            <?php endwhile; ?>
+         <?php } ?>
+      <?php } ?>
+      </tbody>
+      </table>
+      </div>
+      </div>
+      </div>
 
 
 </body>

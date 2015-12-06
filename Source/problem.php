@@ -2,8 +2,9 @@
 session_start();
 require_once('auth.php');
 require_once('connection.php');
-$_SESSION['SESS_MEMBER_ID'];
+$cID = $_SESSION['SESS_MEMBER_ID'];
 $email = $_SESSION['SESS_EMAIL'];
+$role = $_SESSION['SESS_USER_TYPE'];
 //$cID = $_SESSION['SESS_MEMBER_ID'];
 if(!isset($_GET['pID']) || empty($_GET['pID']))
 {
@@ -89,10 +90,6 @@ if($result)
     $district = $govt['district'];
 }
 
-$query= "SELECT cID FROM Citizen WHERE email='$email'";
-$result = mysqli_query($link, $query);
-$citizen = mysqli_fetch_assoc($result);
-$cID=$citizen['cID'];
 
 $query = "SELECT * FROM Citizen_voted_problem WHERE pID='$pID' and cID='$cID'";
 $result = mysqli_query($link,$query);
@@ -102,16 +99,15 @@ if($num_rows>0)
 {
     $citizen_voted=1;
 }
-//echo $citizen_voted;
-$query3 = "SELECT * FROM Problem_status WHERE pID='$pID'";
+$query3 = "SELECT status FROM Problem_status WHERE pID='$pID'";
 $result3 = mysqli_query($link, $query3);
 $problem_status = mysqli_fetch_assoc($result3);
-$status = $problem['status'];
+$status = $problem_status['status'];
 
 ?>
 
 <div class="container-fluid">
-  <div class="row content">
+<div class="row content">
     <div class="col-md-8 ">
         <div>
           <div class="container-fluid">
@@ -139,13 +135,17 @@ $status = $problem['status'];
             <p class="thumbnail">Location<br><br>
             <button class="btn"><?php echo $district;?></button></p>
         </div>
+        <div class="text-left"> 
+          <h3>Description</h3>
+          <p><?php echo $description; ?></p>
+          <hr>
+        </div>
     </div>
     <div class="col-sm-4 container text-center"><br>
           <a href="vote.php?pID=<?php echo $pID; ?>" role="button" class="btn btn-info
           <?php
-          if($citizen_voted=='1')
+          if($citizen_voted=='1' || $creator_id == $cID || $role == 1)
           {
-        //    echo "hello";
             echo "disabled";
           }
           ?>
@@ -153,9 +153,8 @@ $status = $problem['status'];
           
           <a href="downvote.php?pID=<?php echo $pID; ?>" role="button" class="btn btn-info
           <?php
-          if($citizen_voted=='0')
+          if($citizen_voted=='0' || $creator_id == $cID || $role == 1)
           {
-        //    echo "hello";
             echo "disabled";
           }
           ?>
@@ -163,7 +162,7 @@ $status = $problem['status'];
           
           <a href="#" role="button" class="btn btn-info 
           <?php
-          if($creator_id != $cID || $status != 'created')
+          if($creator_id != $cID || $status != 'created' || $role == 1)
             echo "disabled";
           ?>
           ">Edit</a>
@@ -193,10 +192,10 @@ $status = $problem['status'];
 
           <a href="" data-href="delete_problem.php?pID=<?php echo $pID; ?>" data-toggle="modal" data-target="#confirm-delete" role="button" class="btn btn-info btn-danger
           <?php
-          if($creator_id == $cID || $status == 'created')
+          if($creator_id != $cID || $status != 'created' || $role == 1)
           {
      //       echo "hello";
-            echo "enabled";
+            echo "disabled";
           } ?>
           ">Delete</a>
           <script>
@@ -206,17 +205,8 @@ $status = $problem['status'];
             $('.debug-url').html('Delete URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
             });
           </script>
-        
-    </div> 
-    <div class="col-sm-8 text-left"> 
-      <h3>Description</h3>
-      <p><?php echo $description; ?></p>
-      <hr>
     </div>
-
-    
-
-   </div>
+</div>
 </div>
 
 
@@ -252,12 +242,6 @@ $result4 = mysqli_query($link, $query4);
 $citizen = mysqli_fetch_assoc($result4);
 $cID=$citizen['cID'];
 
-if($cid == $cID)
-{
-echo "<form action='delete_problem.php?pID=$pID' method='post'>
-      <input type='submit' value='Delete problem' id='post_comment'><br>
-      </form>";
-}
 
 if($num_rows_1>0) 
 {
@@ -376,7 +360,7 @@ if($_SESSION['SESS_USER_TYPE']==1)
     {
    //     echo "Problem has been notified to the government <br><br> ";
         echo "<form action='status_update.php?pID=$pID' method='post' >
-        <input type='submit' value='Take Up' name='taken_up' id='taken_up' ><br>
+        <input type='submit' value='Take Up' name='taken_up' id='taken_up'><br>
         </form>";
         echo "<form action='status_update.php?pID=".$pID." method='post' >
         <input type='submit' value='Decline' name='Decline' id='Decline'><br>
@@ -603,32 +587,6 @@ if($num_rows>0)
 
 if($_SESSION['SESS_USER_TYPE']=='0')
 {
-$query = "SELECT * from Citizen_voted_problem where pID = '$pID' and cID = '$cID' ";
-$result = mysqli_query($link, $query);
-$num_rows = mysqli_num_rows($result);
-if ($num_rows>0)
-{
-    $_SESSION['SESS_VOTE_DOWNVOTE']=1;
-    $vote_button = "disabled";
-    $downvote_button = "enabled";
-} 
-else
-{
-    $_SESSION['SESS_VOTE_DOWNVOTE']=0;
-    $vote_button = "enabled";
-    $downvote_button = "disabled";
-}
-echo "</div>";
-
-echo "<br>";
-
-echo "<form action='vote.php?pID=$pID' method='POST'>
-<button type='submit' class='positive' name='vote' id='vote' $vote_button>Vote</button>
-
-<button type='submit' class='negative' name='downvote' id='downvote' 
-$downvote_button>Downvote</button>
-<br><br>
-</form>";
 
 echo "<form action='post_comment.php?pID=$pID' method='post'>
 <input class='test' placeholder='Write a comment' name='comment' id='comment' ><br><br>

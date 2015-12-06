@@ -65,7 +65,7 @@
 						<span class="input-group-addon"><i class="fa fa-lock"></i></span>
 						<input  type="password" class="form-control" name="pswd" placeholder="Password">
 					</div>
-                    <span class="help-block">Password error</span>
+                    <span class="help-block"></span>
 
 					<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
 				</form>
