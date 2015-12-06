@@ -56,7 +56,7 @@ if($num_rows==0)
         <li class="dropdown show-on-hover">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> My Profile <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="#">View Profile</a></li>
+              <li><a href="my_profile.php">View Profile</a></li>
               <li><a href="change_password.php">Change Password</a></li>
               <li><a href="#">Account Settings</a></li>
             </ul>
@@ -376,7 +376,7 @@ if($_SESSION['SESS_USER_TYPE']==1)
     {
    //     echo "Problem has been notified to the government <br><br> ";
         echo "<form action='status_update.php?pID=$pID' method='post' >
-        <input type='submit' value='Take Up' name='taken_up' id='taken_up'><br>
+        <input type='submit' value='Take Up' name='taken_up' id='taken_up' ><br>
         </form>";
         echo "<form action='status_update.php?pID=".$pID." method='post' >
         <input type='submit' value='Decline' name='Decline' id='Decline'><br>
