@@ -418,24 +418,27 @@ if($_SESSION['SESS_USER_TYPE']==1)
         <input type='submit' value='Notified to local person' name='notified_local' id='notified_local'><br>
         </form>";
     }
+    if($problem_status['status']=='notified_local')
+    {
+    echo 
+    "<form action='problem_solved.php?pID=".$pID."' method='post' >
+    <input type='submit' value='Problem has been solved' name='solved' id='solved'><br>
+    </form>";
+    }
   
 }
+$query_10 = "SELECT * FROM Problem_solved where pID='$pID'";
+$result_10 = mysqli_query($link, $query_10);
+$problem_solve = mysqli_fetch_assoc($result_10);
 
-if($_SESSION['SESS_USER_TYPE']==1 && $problem_status['status']=='notified_local')
+if($_SESSION['SESS_USER_TYPE']==1 && $problem_status['status']=='solved' && $problem_solve['verified_by_govt']==0)
 {
     echo 
     "<form action='problem_solved.php?pID=".$pID."' method='post' >
     <input type='submit' value='Problem has been solved' name='solved' id='solved'><br>
     </form>";
 }
-if($_SESSION['SESS_USER_TYPE']==1 && $problem_status['status']=='solved_citizen')
-{
-    echo 
-    "<form action='problem_solved.php?pID=".$pID."' method='post' >
-    <input type='submit' value='Problem has been solved' name='solved' id='solved'><br>
-    </form>";
-}
-if($_SESSION['SESS_USER_TYPE']==0 && $problem_status['status']=='notified_local' && $creator_id == $cID)
+if($_SESSION['SESS_USER_TYPE']==0 && $problem_status['status']=='notified_local' && $creator_id == $cID & $problem_solve['verified_by_citizen']==0)
 {
     echo 
     "<form action='problem_solved_citizen.php?pID=".$pID."' method='post' >
@@ -443,7 +446,7 @@ if($_SESSION['SESS_USER_TYPE']==0 && $problem_status['status']=='notified_local'
     </form>";
 }
 
-if($_SESSION['SESS_USER_TYPE']==0 && $problem_status['status']=='solved_govt' && $creator_id == $cID)
+if($_SESSION['SESS_USER_TYPE']==0 && $problem_status['status']=='solved' && $creator_id == $cID && $problem_solve['verified_by_citizen']==0)
 {
    echo 
    "<form action='problem_solved_citizen.php?pID=".$pID."' method='post' >
@@ -497,8 +500,18 @@ if($_SESSION['SESS_USER_TYPE']==0)
     {
         echo "Problem has been notified to the local person in charge and the problem will be resolved soon.<br>";
     }
-    if($problem_status['status']=='solved')
+
+    $query_10 = "SELECT * FROM Problem_solved where pID='$pID'";
+    $result_10 = mysqli_query($link, $query_10);
+    $problem_solve = mysqli_fetch_assoc($result_10);
+  //  echo mysqli_num_rows($result_10);
+  //  echo $problem_solve['pID'];
+  //  echo $problem_solve['date_verified_by_govt'];
+  //  echo $problem_solve['verified_by_citizen'];
+    if($problem_solve['verified_by_govt']==1 && $problem_solve['verified_by_citizen']==1)
     {
+        $query_1 = "UPDATE Problem_solved set solved='1', date_solved=now() where pID='$pID'";
+        $result_1 = mysqli_query($link, $query_1);
         echo "Problem has been solved and it has been acknowledged from both the citizen and the government.<br>";
     }
 
