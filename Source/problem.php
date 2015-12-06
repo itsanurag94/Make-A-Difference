@@ -362,6 +362,12 @@ if($num_rows>0)
         echo "<form action='update_comment.php?pID=$pID' method='post'>
             <input type='submit' value='Edit comment' id='post_comment'><br>
             </form>";
+    if($cid == $cID)
+    {
+    echo "<form action='delete_comment.php?comment_ID=$comment_id' method='post'>
+          <input type='submit' value='Delete comment' id='post_comment'><br>
+          </form>";
+    }
 
   ///////////////////////////////////////////////////            Citizen Comment       /////////////////////////////////////////////////////////////////////////
 
@@ -471,7 +477,7 @@ $downvote_button>Downvote</button>
 </form>";
 
 echo "<form action='post_comment.php?pID=$pID' method='post'>
-<input class='test' placeholder='Write a comment' name='comment' id='comment'><br><br>
+<input class='test' placeholder='Write a comment' name='comment' id='comment' ><br><br>
 <input type='submit' value='Post comment' id='post_comment'><br>
 </form>";
 
