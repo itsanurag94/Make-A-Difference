@@ -1,198 +1,337 @@
 <?php
+session_start();
 require_once('auth.php');
+require_once('connection.php');
+
+$email = $_SESSION['SESS_EMAIL'];
+//$cID = $_SESSION['SESS_MEMBER_ID'];
+if(!isset($_GET['pID']) || empty($_GET['pID']))
+{
+    echo "Error: pID not set";
+}
+
+$pID = mysqli_escape_string($link, $_GET['pID']); // Set pid variable
+
+$query = "SELECT pID from Problem where pID='$pID'";
+$result = mysqli_query($link, $query);
+$num_rows = mysqli_num_rows($result);
+if($num_rows==0)
+{
+    header("location:home_new.php");
+}
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>Problem</title>
-    <meta charset="utf-8">
-    <link href="homepage.css" rel="stylesheet" type="text/css" media="all" />
+  <title>Problem</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="homepage.css" rel="stylesheet" type="text/css" media="all" />
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <link href="css/problem.css" rel="stylesheet" type="text/css" />
+
+  <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+  <script type="text/javascript" src="js/home.js"></script>
 </head>
 <body>
 
-<div class="account_manage" style="align:center; margin-left:490px;">
-    <div class="change_password">
-        <form action="change_password.php">
-            <button class="Change_password">Change password</button>
-        </form>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">MaD</a>
     </div>
-        &nbsp;
-        &nbsp;
-        &nbsp;
-    <div class="logout">
-        <form action="logout.php">
-            <button class="Logout">Logout</button>
-        </form>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="home_new.php">Home</a></li>
+        <li><a href="my_problems.php">My Problems</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown show-on-hover">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> My Profile <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">View Profile</a></li>
+              <li><a href="change_password.php">Change Password</a></li>
+              <li><a href="#">Account Settings</a></li>
+            </ul>
+        </li>
+        <li><a href="logout.php">Logout</a></li>
+      </ul>
     </div>
+  </div>
+</nav>
+
+<?php
+
+$query1 = "SELECT * FROM Problem WHERE pID='$pID'";
+$result1 = mysqli_query($link, $query1);
+$problem = mysqli_fetch_assoc($result1);
+$num_rows_1 = mysqli_num_rows($result1);
+$title = $problem['title'];
+$date_created = $problem['date_created'];
+$votes = $problem['votes'];
+$to_whom = $problem['to_whom'];
+$description = $problem['description'];
+$creator_id=$problem['cID'];
+
+$query = "SELECT dep_name, district from Govt where gID = '$to_whom'";
+$result = mysqli_query($link, $query);
+if($result)
+{
+    $govt = mysqli_fetch_assoc($result);
+    $dep_name = $govt['dep_name'];
+    $district = $govt['district'];
+}
+
+$query= "SELECT cID FROM Citizen WHERE email='$email'";
+$result = mysqli_query($link, $query);
+$citizen = mysqli_fetch_assoc($result);
+$cID=$citizen['cID'];
+
+$query = "SELECT * FROM Citizen_voted_problem WHERE pID='$pID' and cID='$cID'";
+$result = mysqli_query($link,$query);
+$num_rows = mysqli_num_rows($result);
+if($num_rows>0)
+{
+    $citizen_voted=1;
+}
+
+$query3 = "SELECT * FROM Problem_status WHERE pID='$pID'";
+$result3 = mysqli_query($link, $query3);
+$problem_status = mysqli_fetch_assoc($result3);
+$status = $problem['status'];
+
+?>
+
+<div class="container-fluid">
+  <div class="row content">
+    <div class="col-md-8 ">
+        <div>
+          <div class="container-fluid">
+            <h3 style="color:#5bc0de"><?php echo $title;?></h3>
+          </div>
+        </div>
+        
+          <div class="col-md-3 col-sm-4 col-xs-6">
+            <div class="dummy"></div>
+            <p class="thumbnail">Date Added<br><br>
+            <button class="btn"><?php echo $date_created;?></button></p>
+          </div>
+          <div class="col-md-3 col-sm-4 col-xs-6">
+            <div class="dummy"></div>
+            <p class="thumbnail">Votes<br><br>
+            <button class="btn"><?php echo $votes;?></button></p>
+          </div>
+          <div class="col-md-3 col-sm-4 col-xs-6">
+            <div class="dummy"></div>
+            <p class="thumbnail">Department<br><br>
+            <button class="btn"><?php echo $dep_name;?></button></p>
+           </div>
+           <div class="col-md-3 col-sm-4 col-xs-6">
+            <div class="dummy"></div>
+            <p class="thumbnail">Location<br><br>
+            <button class="btn"><?php echo $district;?></button></p>
+        </div>
+    </div>
+    <div class="col-sm-4 container text-center"><br>
+          <a href="vote.php?pID=<?php echo $pID; ?>" role="button" class="btn btn-info
+          <?php
+          if($citizen_voted==1 || $creator_id == $cID)
+            echo "disabled";
+          ?>
+          ">Vote</a>
+          
+          <a href="downvote.php?pID=<?php echo $pID; ?>" role="button" class="btn btn-info
+          <?php
+          if($citizen_voted==0 || $creator_id == $cID )
+            echo "disabled";
+          ?>
+          ">Downvote</a>
+          
+          <a href="#" role="button" class="btn btn-info 
+          <?php
+          if($creator_id != $cID || $status != 'created')
+            echo "disabled";
+          ?>
+          ">Edit</a>
+          
+          <!-- Modal (pop-up to confirm delete event)-->
+            <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+                        </div>
+                    
+                        <div class="modal-body">
+                            <p>You are about to delete this problem, this procedure is irreversible.</p>
+                            <p>Do you want to proceed?</p>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <a class="btn btn-danger btn-ok">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+          <a href="" data-href="delete_problem.php?pID=<?php echo $pID; ?>" data-toggle="modal" data-target="#confirm-delete" role="button" class="btn btn-info btn-danger
+          <?php
+          if($creator_id != $cID || $status != 'created')
+          {
+            echo "disabled";
+          } ?>
+          ">Delete</a>
+          <script>
+            $('#confirm-delete').on('show.bs.modal', function(e) {
+            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+            
+            $('.debug-url').html('Delete URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
+            });
+          </script>
+        
+    </div> 
+    <div class="col-sm-8 text-left"> 
+      <h3>Description</h3>
+      <p><?php echo $description; ?></p>
+      <hr>
+    </div>
+
+    
+
+   </div>
 </div>
-<br>
-<br>
 
 
 <?php
 
-require_once('connection.php');
-session_start();
-$email = $_SESSION['SESS_EMAIL'];
-//$cID = $_SESSION['SESS_MEMBER_ID'];
-
-echo "<div class='Welcome_Message'>";
-echo "Welcome ".$email."";
-echo "<br>";
-echo "<br>";
-echo "</div>";
-if(isset($_GET['pID']) && !empty($_GET['pID']))
+if(!isset($_GET['pID']) || empty($_GET['pID']))
 {
-    // Verify data
-    $pID = mysqli_escape_string($link, $_GET['pID']); // Set pid variable
-
-    $query = "SELECT * FROM Citizen_voted_problem WHERE pID='$pID' and cID='$cID'";
-    $result = mysqli_query($link,$query);
-    $num_rows = mysqli_num_rows($result);
-
-    $query1 = "SELECT * FROM Problem WHERE pID='$pID'";
-    $result1 = mysqli_query($link, $query1);
-    $problem = mysqli_fetch_assoc($result1);
-    $num_rows_1 = mysqli_num_rows($result1);
-  
-    $query2 = "SELECT * FROM Problem_responded WHERE pID='$pID'";
-    $result2 = mysqli_query($link, $query2);
-    $problem_responded = mysqli_fetch_assoc($result2);
-    $response_rows = mysqli_num_rows($result2);
-
-    $query3 = "SELECT * FROM Problem_status WHERE pID='$pID'";
-    $result3 = mysqli_query($link, $query3);
-    $Problem_status = mysqli_fetch_assoc($result3);
-
-    $query4= "SELECT cID FROM Citizen WHERE email='$email'";
-    $result4 = mysqli_query($link, $query4);
-    $citizen = mysqli_fetch_assoc($result4);
-    $cID=$citizen['cID'];
-    $cid=$problem['cID'];
-
-    if($cid == $cID)
-    {
-    echo "<form action='delete_problem.php?pID=$pID' method='post'>
-          <input type='submit' value='Delete problem' id='post_comment'><br>
-          </form>";
-    }
-
-    if($num_rows_1>0) 
-    {
-    //    echo $resname1;
-        echo "<br>";
-        $title = $problem['title'];
-        $description = $problem['description'];
-        $gID = $problem['to_whom'];
-        $city = $problem['city'];
-        $district = $problem['district'];
-        $state = $problem['state'];
-        $pin_code = $problem['pin_code'];
-        $date_created = $problem['date_created'];
-        $votes = $problem['votes'];
-
-        $query = "SELECT media_path FROM Problem_media where pID = '$pID'";
-        $result = mysqli_query($link,$query);
-        if($result)
-        {
-            //if more than one media, run through loop
-            $problem_media = mysqli_fetch_assoc($result);
-            $img_path = $problem_media['media_path'];    
-        }
-       
-        $date_respond_date=$Problem_responded['date_responded'];
-        $creation_date=$Problem_status['date_created'];
-        $notification_date=$Problem_status['date_notified'];
-        $notification_taken_up_date=$Problem_status['date_taken_up'];
-        $notification_pincode_date=$Problem_status['date_notified_pincode'];
-        $notification_local_date=$Problem_status['date_notified_local'];
-        $notification_solved_date=$Problem_status['date_solved'];
-     //   $date_created = '01-12-2015';
-        $img_url=localhost;
-
-        $query = "SELECT dep_name FROM Govt where gID = '$gID'";
-        $result = mysqli_query($link,$query);
-        if($result)
-        {
-            $govt = mysqli_fetch_assoc($result);
-            $to_whom = $govt['dep_name'];    
-        }
-
-        echo "<div class='Problem_title'>";
-        echo  $title;
-        echo "</div>";
-        echo "<br>";
-        echo "<div class='Problem_towhom'>";
-        echo $to_whom;
-        echo "</div>";
-        echo "<br>";
-        echo "<div class='Problem_description'>";
-        echo $description;
-        echo "</div>";
-        echo "<br>";
-        echo "<div class='Problem_location'>";
-        echo $location;
-        echo "</div>";
-         echo "<div class='Problem_votes'>";
-
-        if($img_path != '')
-        {
-           echo "<img src='/Source/problem_images/".$problem['img_path']."' height='100px' width='100px' />"; 
-        }
-        echo "<br>";
-        echo "Number of votes      :            ";
-        echo $votes;
-        echo "<br>";
-        echo "<br>";
-
-        echo "Problem Posted:  ";
-        echo $date_created;
-        echo "<br>";
-
-       if($response_rows > 0)
-        {
-        echo "Problem Responded:  ";
-        echo $date_respond_date;
-        echo "<br>";
-        }
-
-        if($notification_date != 'NULL')
-        {
-        echo "Problem Notified     :  ";
-        echo $notification_date;
-        echo "<br>";
-        }
-
-        if($notification_taken_up_date != 'NULL')
-        {
-        echo "Problem Taken up     :  ";
-        echo $notification_taken_up_date;
-        echo "<br>";
-        }
-
-        if($notification_pincode_date != 'NULL')
-        {
-        echo "Problem Notified to local administration    :  ";
-        echo $notification_pincode_date;
-        echo "<br>";
-        }
-
-        if($notification_local_date != 'NULL')
-        {
-        echo "Problem Notified to local person incharge     :  ";
-        echo $notification_local_date;
-        echo "<br>";
-        }
-
-        if($notification_solved_date != 'NULL')
-        {
-        echo "Problem Solved     :  ";
-        echo $notification_solved_date;
-        echo "<br>";
-        } 
-    }
+    echo "Error: pID not set";
 }
+
+$pID = mysqli_escape_string($link, $_GET['pID']); // Set pid variable
+
+$query = "SELECT * FROM Citizen_voted_problem WHERE pID='$pID' and cID='$cID'";
+$result = mysqli_query($link,$query);
+$num_rows = mysqli_num_rows($result);
+
+$query1 = "SELECT * FROM Problem WHERE pID='$pID'";
+$result1 = mysqli_query($link, $query1);
+$problem = mysqli_fetch_assoc($result1);
+$num_rows_1 = mysqli_num_rows($result1);
+
+$query2 = "SELECT * FROM Problem_responded WHERE pID='$pID'";
+$result2 = mysqli_query($link, $query2);
+$problem_responded = mysqli_fetch_assoc($result2);
+$response_rows = mysqli_num_rows($result2);
+
+$query3 = "SELECT * FROM Problem_status WHERE pID='$pID'";
+$result3 = mysqli_query($link, $query3);
+$problem_status = mysqli_fetch_assoc($result3);
+
+$query4= "SELECT cID FROM Citizen WHERE email='$email'";
+$result4 = mysqli_query($link, $query4);
+$citizen = mysqli_fetch_assoc($result4);
+$cID=$citizen['cID'];
+
+if($cid == $cID)
+{
+echo "<form action='delete_problem.php?pID=$pID' method='post'>
+      <input type='submit' value='Delete problem' id='post_comment'><br>
+      </form>";
+}
+
+if($num_rows_1>0) 
+{
+//    echo $resname1;
+    echo "<br>";
+    
+    $query = "SELECT media_path FROM Problem_media where pID = '$pID'";
+    $result = mysqli_query($link,$query);
+    if($result)
+    {
+        //if more than one media, run through loop
+        $problem_media = mysqli_fetch_assoc($result);
+        $img_path = $problem_media['media_path'];    
+    }
+   
+    $date_respond_date=$Problem_responded['date_responded'];
+    $creation_date=$problem_status['date_created'];
+    $notification_date=$problem_status['date_notified'];
+    $notification_taken_up_date=$problem_status['date_taken_up'];
+    $notification_pincode_date=$problem_status['date_notified_pincode'];
+    $notification_local_date=$problem_status['date_notified_local'];
+    $notification_solved_date=$problem_status['date_solved'];
+ 
+    //$img_url=localhost;
+
+    $query = "SELECT dep_name FROM Govt where gID = '$gID'";
+    $result = mysqli_query($link,$query);
+    if($result)
+    {
+        $govt = mysqli_fetch_assoc($result);
+        $to_whom = $govt['dep_name'];    
+    }
+
+    if($img_path != '')
+    {
+       echo "<img src='/mad/problem_images/".$problem['img_path']."' height='100px' width='100px' />"; 
+    }
+
+   if($response_rows > 0)
+    {
+    echo "Problem Responded:  ";
+    echo $date_respond_date;
+    echo "<br>";
+    }
+
+    if($notification_date != 'NULL')
+    {
+    echo "Problem Notified     :  ";
+    echo $notification_date;
+    echo "<br>";
+    }
+
+    if($notification_taken_up_date != 'NULL')
+    {
+    echo "Problem Taken up     :  ";
+    echo $notification_taken_up_date;
+    echo "<br>";
+    }
+
+    if($notification_pincode_date != 'NULL')
+    {
+    echo "Problem Notified to local administration    :  ";
+    echo $notification_pincode_date;
+    echo "<br>";
+    }
+
+    if($notification_local_date != 'NULL')
+    {
+    echo "Problem Notified to local person incharge     :  ";
+    echo $notification_local_date;
+    echo "<br>";
+    }
+
+    if($notification_solved_date != 'NULL')
+    {
+    echo "Problem Solved     :  ";
+    echo $notification_solved_date;
+    echo "<br>";
+    } 
+}
+
 //echo $_SESSION['SESS_USER_TYPE'];
 if($_SESSION['SESS_USER_TYPE']==1)
 {
@@ -226,7 +365,7 @@ if($_SESSION['SESS_USER_TYPE']==1)
 			<input type='submit' value='Post Response' id='post_comment'><br>
 			</form>";
 	}
-    if($Problem_status['status']=='notified')
+    if($problem_status['status']=='notified')
     {
    //     echo "Problem has been notified to the government <br><br> ";
         echo "<form action='status_update.php?pID=$pID' method='post' >
@@ -236,17 +375,17 @@ if($_SESSION['SESS_USER_TYPE']==1)
         <input type='submit' value='Decline' name='Decline' id='Decline'><br>
         </form>";
     }
-    if($Problem_status['status']=='Decline')
+    if($problem_status['status']=='Decline')
         echo "Problem has been cited as not so serious";
 
-    if($Problem_status['status']=='taken_up')
+    if($problem_status['status']=='taken_up')
     {
         echo 
         "<form action='status_update.php?pID=$pID' method='post' >
         <input type='submit' value='Notify to local administration' name='notified_pincode' id='notified_pincode'><br>
         </form>";
     }
-    if($Problem_status['status']=='notified_pincode')
+    if($problem_status['status']=='notified_pincode')
     {
     //    echo "Problem has been taken up by the government <br>";
         echo 
@@ -254,7 +393,7 @@ if($_SESSION['SESS_USER_TYPE']==1)
         <input type='submit' value='Notified to local person' name='notified_local' id='notified_local'><br>
         </form>";
     }
-    if($Problem_status['status']=='notified_local')
+    if($problem_status['status']=='notified_local')
     {
    //     echo "Problem has been notified to the local administration.<br>";
         echo 
@@ -287,30 +426,30 @@ if($_SESSION['SESS_USER_TYPE']==0)
     }
 }
 
-    if($Problem_status['status']=='created')
+    if($problem_status['status']=='created')
     {
         echo "Problem yet not notified to the government due to insufficient number of votes. <br><br> ";
     }
-    if($Problem_status['status']=='notified')
+    if($problem_status['status']=='notified')
     {
         echo "Problem has been notified to the government <br><br> ";
     }
-    if($Problem_status['status']=='Decline')
+    if($problem_status['status']=='Decline')
         echo "Problem has been cited as not so serious";
 
-    if($Problem_status['status']=='taken_up')
+    if($problem_status['status']=='taken_up')
     {
         echo "Problem has been taken up by the government <br>";
     }
-    if($Problem_status['status']=='notified_pincode')
+    if($problem_status['status']=='notified_pincode')
     {
         echo "Problem has been notified to the local administration. <br>";
     }
-    if($Problem_status['status']=='notified_local')
+    if($problem_status['status']=='notified_local')
     {
         echo "Problem has been notified to the local person in charge and the problem will be resolved soon.<br>";
     }
-    if($Problem_status['status']=='solved')
+    if($problem_status['status']=='solved')
     {
         echo "Problem has been solved by the local administration.<br>";
       /*  if($_SESSION['SESS_USER_TYPE']==1)

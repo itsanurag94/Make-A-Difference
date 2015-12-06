@@ -15,7 +15,7 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
  
   //  echo $vote_downvote;
 
- //   if($vote_downvote==0)
+ /*   if($vote_downvote==0)
    // {
 	    $query = "INSERT INTO Citizen_voted_problem VALUES('$cID', '$pID')";
 	    $result = mysqli_query($link, $query);
@@ -67,6 +67,7 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
 
 	if($vote_downvote==1)
     {
+*/
     $query = "SELECT * FROM Problem WHERE pID='$pID'";
     $result = mysqli_query($link, $query);
     $num_rows = mysqli_num_rows($result);
@@ -88,8 +89,8 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
 			header("location: problem.php?pID=".$pID."");
 		}
 	}
-	}
-*/
+//	}
+
 }
 
 ?>

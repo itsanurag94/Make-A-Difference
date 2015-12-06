@@ -52,7 +52,7 @@ $contents = fread ($fd, filesize($filename));
 fclose($fd); 
 
 //set the path for your saving directory 
-$respath = "/var/www/html/Source/problem_images/";    //include trailing slash 
+$respath = "/var/www/html/mad/problem_images/";    //include trailing slash 
 
 //check for valid file extension 
 $resext = ""; 

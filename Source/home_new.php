@@ -76,7 +76,7 @@ $email = $_SESSION['SESS_EMAIL'];
         <tr>
             <th>Title</th>
             <th>Department</th>
-            <th>Votes</th>
+            <th class="text-center">Votes</th>
             <th class="text-center">Action</th>
         </tr>
       </thead>
@@ -111,7 +111,7 @@ $email = $_SESSION['SESS_EMAIL'];
             echo '<tr>';
             echo '<td> '.$problem['title'].'</td>';
             echo '<td> '.$govt['dep_name'].'</td>';
-            echo '<td> '.$problem['votes'].'</td>';
+            echo '<td class="text-center"> '.$problem['votes'].'</td>';
             ?>
             <td class="text-center"><a class='btn btn-info btn-md' href="problem.php?pID=<?php echo $pID;?>"><span class="glyphicon glyphicon-edit"></span> View</a></td>
             </tr>
@@ -172,7 +172,7 @@ $email = $_SESSION['SESS_EMAIL'];
           <div class="form-group">
             <label>Photo</label>
             <span class="btn btn-default btn-file">
-              Upload <input type="file" class="form-control">
+              Upload <input type="file" class="form-control" name="userfile">
             </span>
           </div>
           <div class="form-group">

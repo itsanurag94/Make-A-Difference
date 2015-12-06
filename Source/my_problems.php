@@ -77,7 +77,7 @@ $cID = $_SESSION['SESS_MEMBER_ID'];
         <tr>
             <th>Title</th>
             <th>Department</th>
-            <th>Votes</th>
+            <th class="text-center">Votes</th>
             <th>Status</th>
             <th class="text-center">Action</th>
         </tr>
@@ -110,7 +110,7 @@ $cID = $_SESSION['SESS_MEMBER_ID'];
             echo '<tr>';
             echo '<td> '.$problem['title'].'</td>';
             echo '<td> '.$govt['dep_name'].'</td>';
-            echo '<td> '.$problem['votes'].'</td>';
+            echo '<td class="text-center"> '.$problem['votes'].'</td>';
             echo '<td> '.$problem_status['status'].'</td>';
             ?>
             <td class="text-center"><a class='btn btn-info btn-md' href="problem.php?pID=<?php echo $pID;?>"><span class="glyphicon glyphicon-edit"></span> View</a></td>
