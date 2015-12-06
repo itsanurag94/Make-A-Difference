@@ -119,6 +119,7 @@ $num_rows = mysqli_num_rows($result);
           echo '<td> '.$problem['title'].' </td>';
           echo '<td> '.$problem['description'].'</td>';
           echo '<td> '.$problem['votes'].'</td>';
+          $pID = $problem['pID'];
         ?>
         <td class="text-center"><a class='btn btn-info btn-md' href="problem.php?pID=<?php echo $pID;?>"><span class="glyphicon glyphicon-edit"></span> View</a></td>
         </tr>
