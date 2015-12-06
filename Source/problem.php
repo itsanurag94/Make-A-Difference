@@ -115,22 +115,22 @@ $status = $problem_status['status'];
           </div>
         </div>
         
-          <div class="col-md-3 col-sm-4 col-xs-6">
+        <div class="col-md-3 col-sm-4 col-xs-6">
             <div class="dummy"></div>
             <p class="thumbnail">Date Added<br><br>
             <button class="btn"><?php echo $date_created;?></button></p>
-          </div>
-          <div class="col-md-3 col-sm-4 col-xs-6">
+        </div>
+        <div class="col-md-3 col-sm-4 col-xs-6">
             <div class="dummy"></div>
             <p class="thumbnail">Votes<br><br>
             <button class="btn"><?php echo $votes;?></button></p>
-          </div>
-          <div class="col-md-3 col-sm-4 col-xs-6">
+        </div>
+        <div class="col-md-3 col-sm-4 col-xs-6">
             <div class="dummy"></div>
             <p class="thumbnail">Department<br><br>
             <button class="btn"><?php echo $dep_name;?></button></p>
-           </div>
-           <div class="col-md-3 col-sm-4 col-xs-6">
+        </div>
+        <div class="col-md-3 col-sm-4 col-xs-6">
             <div class="dummy"></div>
             <p class="thumbnail">Location<br><br>
             <button class="btn"><?php echo $district;?></button></p>
@@ -141,7 +141,8 @@ $status = $problem_status['status'];
           <hr>
         </div>
     </div>
-    <div class="col-sm-4 container text-center"><br>
+    <div class="col-sm-4 container-fluid text-center"><br>
+        <div class = "container-fluid">
           <a href="vote.php?pID=<?php echo $pID; ?>" role="button" class="btn btn-info
           <?php
           if($citizen_voted=='1' || $creator_id == $cID || $role == 1)
@@ -205,6 +206,39 @@ $status = $problem_status['status'];
             $('.debug-url').html('Delete URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
             });
           </script>
+        </div>
+        <div>
+            <span class="help-block"></span>
+        </div>
+        <div class="container">
+            <div class="col-lg-4 col-sm-3 text-center">
+            <div class="well">
+                <h4>Comments</h4>
+            <div class="input-group">
+                <form class="form" action="post_comment.php?pID=<?php echo $pID; ?>" role="form">
+                <input type="text" name="comment" id="userComment" class="form-control input-sm chat-input" placeholder="Write your comment here..." />
+                <span class="input-group-btn" onclick="addComment()">     
+                    <a href="#" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-comment"></span> Add Comment</a>
+                </span>
+                </form>
+            </div>
+            <hr data-brackets-id="12673">
+            <ul data-brackets-id="12674" id="sortable" class="list-unstyled ui-sortable">
+                <strong class="pull-left primary-font">James</strong>
+                <small class="pull-right text-muted">
+                   <span class="glyphicon glyphicon-time"></span>7 mins ago</small>
+                </br>
+                <li class="ui-state-default">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </li>
+                </br>
+                 <strong class="pull-left primary-font">Taylor</strong>
+                <small class="pull-right text-muted">
+                   <span class="glyphicon glyphicon-time"></span>14 mins ago</small>
+                </br>
+                <li class="ui-state-default">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</li>
+                
+            </ul>
+            </div>
+        </div>
     </div>
 </div>
 </div>
