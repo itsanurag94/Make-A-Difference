@@ -438,24 +438,27 @@ if($_SESSION['SESS_USER_TYPE']==1)
         <input type='submit' value='Notified to local person' name='notified_local' id='notified_local'><br>
         </form>";
     }
+    if($problem_status['status']=='notified_local')
+    {
+    echo 
+    "<form action='problem_solved.php?pID=".$pID."' method='post' >
+    <input type='submit' value='Problem has been solved' name='solved' id='solved'><br>
+    </form>";
+    }
   
 }
+$query_10 = "SELECT * FROM Problem_solved where pID='$pID'";
+$result_10 = mysqli_query($link, $query_10);
+$problem_solve = mysqli_fetch_assoc($result_10);
 
-if($_SESSION['SESS_USER_TYPE']==1 && $problem_status['status']=='notified_local')
+if($_SESSION['SESS_USER_TYPE']==1 && $problem_status['status']=='solved' && $problem_solve['verified_by_govt']==0)
 {
     echo 
     "<form action='problem_solved.php?pID=".$pID."' method='post' >
     <input type='submit' value='Problem has been solved' name='solved' id='solved'><br>
     </form>";
 }
-if($_SESSION['SESS_USER_TYPE']==1 && $problem_status['status']=='solved_citizen')
-{
-    echo 
-    "<form action='problem_solved.php?pID=".$pID."' method='post' >
-    <input type='submit' value='Problem has been solved' name='solved' id='solved'><br>
-    </form>";
-}
-if($_SESSION['SESS_USER_TYPE']==0 && $problem_status['status']=='notified_local' && $creator_id == $cID)
+if($_SESSION['SESS_USER_TYPE']==0 && $problem_status['status']=='notified_local' && $creator_id == $cID & $problem_solve['verified_by_citizen']==0)
 {
     echo 
     "<form action='problem_solved_citizen.php?pID=".$pID."' method='post' >
@@ -463,7 +466,7 @@ if($_SESSION['SESS_USER_TYPE']==0 && $problem_status['status']=='notified_local'
     </form>";
 }
 
-if($_SESSION['SESS_USER_TYPE']==0 && $problem_status['status']=='solved_govt' && $creator_id == $cID)
+if($_SESSION['SESS_USER_TYPE']==0 && $problem_status['status']=='solved' && $creator_id == $cID && $problem_solve['verified_by_citizen']==0)
 {
    echo 
    "<form action='problem_solved_citizen.php?pID=".$pID."' method='post' >
