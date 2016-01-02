@@ -50,7 +50,7 @@ if($num_rows==0)
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li><a href="home_new.php">Home</a></li>
+        <li><?php if($role==0) echo'<a href="home_new.php">'; else echo'<a href="govt_home.php">';?>Home</a></li>
         <li><a href="my_problems.php">My Problems</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -99,10 +99,17 @@ if($num_rows>0)
 {
     $citizen_voted=1;
 }
-$query3 = "SELECT status FROM Problem_status WHERE pID='$pID'";
+$query3 = "SELECT * FROM Problem_status WHERE pID='$pID'";
 $result3 = mysqli_query($link, $query3);
 $problem_status = mysqli_fetch_assoc($result3);
 $status = $problem_status['status'];
+$date_created = $problem_status['date_created'];
+$date_notified = $problem_status['date_notified'];
+$date_taken_up = $problem_status['date_taken_up'];
+$date_declined = $problem_status['date_declined'];
+$date_notified_pincode = $problem_status['date_notified_pincode'];
+$date_notified_local = $problem_status['date_notified_local'];
+$date_solved = $problem_status['date_solved'];
 
 ?>
 
@@ -140,7 +147,72 @@ $status = $problem_status['status'];
           <p><?php echo $description; ?></p>
           <hr>
         </div>
+
+        <h3>Timeline</h3>
+        <div class="stepwizard">
+        <div class="stepwizard-row">
+            <div class="col-md-2 ">
+            <div class="stepwizard-step">
+                <a type="button" class="btn btn-outline  btn-circle <?php if($date_created != NULL)echo "active btn-success"; else echo "btn-default"; ?>"><?php if($date_created != NULL)echo '<i class="glyphicon glyphicon-ok"></i>'; ?></a>
+                <p>Created</p>
+            </div>
+            </div>
+            <div class="col-md-2 ">
+            <div class="stepwizard-step">
+                <a type="button" class="btn btn-outline  btn-circle <?php if($date_notified != NULL)echo "active btn-success"; else echo "btn-default"; ?>"><?php if($date_notified != NULL)echo '<i class="glyphicon glyphicon-ok"></i>'; ?></a>
+                <p>Notified to Government</p>
+            </div>
+            </div>
+            <div class="col-md-1 ">
+            <div class="stepwizard-step">
+                <a type="button" class="btn btn-outline  btn-circle <?php if($date_taken_up != NULL)echo "active btn-success"; else echo "btn-default"; ?>"><?php if($date_taken_up != NULL)echo '<i class="glyphicon glyphicon-ok"></i>'; ?></a>
+                <p>Taken Up</p>
+            </div> 
+            </div>
+            <div class="col-md-3 ">
+            <div class="stepwizard-step">
+                <a type="button" class="btn btn-outline  btn-circle <?php if($date_notified_pincode != NULL)echo "active btn-success"; else echo "btn-default"; ?>"><?php if($date_notified_pincode != NULL)echo '<i class="glyphicon glyphicon-ok"></i>'; ?></a>
+                <p>Notified to Municipal/Panchayat Authority</p>
+            </div>
+            </div>
+            <div class="col-md-2 ">
+            <div class="stepwizard-step">
+                <a type="button" class="btn btn-outline  btn-circle <?php if($date_notified_local != NULL)echo "active btn-success"; else echo "btn-default"; ?>"><?php if($date_notified_local != NULL)echo '<i class="glyphicon glyphicon-ok"></i>'; ?></a>
+                <p>Notified to Local authority</p>
+            </div>
+            </div>
+            <div class="col-md-2 ">
+            <div class="stepwizard-step">
+                <a type="button" class="btn btn-outline  btn-circle <?php if($date_solved != NULL)echo "active btn-success"; else echo "btn-default"; ?>"><?php if($date_solved != NULL)echo '<i class="glyphicon glyphicon-ok"></i>'; ?></a>
+                <p>Solved</p>
+            </div>
+            </div> 
+        </div>
+        </div>
+
+        <div class="col-md-2 ">
+            <button type="button" class="btn btn-info"><?php if($date_created!=NULL) echo date('d-M-Y', strtotime($date_created)); else echo "NA"; ?></button>
+        </div>
+        <div class="col-md-2 ">
+            <button type="button" class="btn btn-info"><?php if($date_notified!=NULL) echo date('d-M-Y', strtotime($date_notified)); else echo "NA"; ?></button>
+        </div>
+        <div class="col-md-2 ">
+            <button type="button" class="btn btn-info"><?php if($date_taken_up!=NULL) echo date('d-M-Y', strtotime($date_taken_up)); else echo "NA"; ?></button>
+        </div>
+        <div class="col-md-2 ">
+            <button type="button" class="btn btn-info"><?php if($date_notified_pincode!=NULL)echo date('d-M-Y', strtotime($date_notified_pincode)); else echo "NA"; ?></button>
+        </div>
+        <div class="col-md-2 ">
+            <button type="button" class="btn btn-info"><?php if($date_notified_local!=NULL)echo date('d-M-Y', strtotime($date_notified_local)); else echo "NA"; ?></button>
+        </div>
+        <div class="col-md-2 ">
+            <button type="button" class="btn btn-info"><?php if($date_solved!=NULL)echo date('d-M-Y', strtotime($date_solved)); else echo "NA"; ?></button>
+        </div> 
+        
     </div>
+
+
+
     <div class="col-sm-4 container-fluid text-center"><br>
         <div class = "container-fluid">
           <a href="vote.php?pID=<?php echo $pID; ?>" role="button" class="btn btn-info
@@ -267,10 +339,6 @@ $result2 = mysqli_query($link, $query2);
 $problem_responded = mysqli_fetch_assoc($result2);
 $response_rows = mysqli_num_rows($result2);
 
-$query3 = "SELECT * FROM Problem_status WHERE pID='$pID'";
-$result3 = mysqli_query($link, $query3);
-$problem_status = mysqli_fetch_assoc($result3);
-
 $query4= "SELECT cID FROM Citizen WHERE email='$email'";
 $result4 = mysqli_query($link, $query4);
 $citizen = mysqli_fetch_assoc($result4);
@@ -292,12 +360,6 @@ if($num_rows_1>0)
     }
    
     $date_respond_date=$Problem_responded['date_responded'];
-    $creation_date=$problem_status['date_created'];
-    $notification_date=$problem_status['date_notified'];
-    $notification_taken_up_date=$problem_status['date_taken_up'];
-    $notification_pincode_date=$problem_status['date_notified_pincode'];
-    $notification_local_date=$problem_status['date_notified_local'];
-    $notification_solved_date=$problem_status['date_solved'];
  
     //$img_url=localhost;
 
@@ -313,48 +375,6 @@ if($num_rows_1>0)
     {
        echo "<img src='/mad/problem_images/".$problem['img_path']."' height='100px' width='100px' />"; 
     }
-
-   if($response_rows > 0)
-    {
-    echo "Problem Responded:  ";
-    echo $date_respond_date;
-    echo "<br>";
-    }
-
-    if($notification_date != 'NULL')
-    {
-    echo "Problem Notified     :  ";
-    echo $notification_date;
-    echo "<br>";
-    }
-
-    if($notification_taken_up_date != 'NULL')
-    {
-    echo "Problem Taken up     :  ";
-    echo $notification_taken_up_date;
-    echo "<br>";
-    }
-
-    if($notification_pincode_date != 'NULL')
-    {
-    echo "Problem Notified to local administration    :  ";
-    echo $notification_pincode_date;
-    echo "<br>";
-    }
-
-    if($notification_local_date != 'NULL')
-    {
-    echo "Problem Notified to local person incharge     :  ";
-    echo $notification_local_date;
-    echo "<br>";
-    }
-
-    if($notification_solved_date != 'NULL')
-    {
-    echo "Problem Solved     :  ";
-    echo $notification_solved_date;
-    echo "<br>";
-    } 
 }
 
 //echo $_SESSION['SESS_USER_TYPE'];
@@ -371,7 +391,7 @@ if($_SESSION['SESS_USER_TYPE']==1)
     	$problem_responded = mysqli_fetch_assoc($result1);
     	$response = $problem_responded['response'];
     	$response_likes = $problem_responded['likes'];
-        echo "<br> <br>";
+/*        echo "<br> <br>";
         echo "Response from the government       :                 ";
 
   //      echo "<br>";
@@ -381,16 +401,16 @@ if($_SESSION['SESS_USER_TYPE']==1)
    // 	echo $response_likes;
     	echo "<br>";
    //     echo "</div>";
-    }
+*/    }
     else
     {
-			echo 
+/*			echo 
 			"<form action='post_response.php?pID=".$pID."' method='post' >
 			<input class='test' placeholder='Write a Response' name='Response' id='Response'><br><br>
 			<input type='submit' value='Post Response' id='post_comment'><br>
 			</form>";
-	}
-    if($problem_status['status']=='notified')
+*/	}
+/*    if($problem_status['status']=='notified')
     {
    //     echo "Problem has been notified to the government <br><br> ";
         echo "<form action='status_update.php?pID=$pID' method='post' >
@@ -464,53 +484,22 @@ if($_SESSION['SESS_USER_TYPE']==0)
         $problem_responded = mysqli_fetch_assoc($result1);
         $response = $problem_responded['response'];
         $response_likes = $problem_responded['likes'];
-        echo "<br>";
-    //    echo "<div class='Problem_votes'>";
+/*        echo "<br>";
         echo $response;
         echo "<br>";
-   //   echo $response_likes;
         echo "<br>";
-   //     echo "</div>";
     }
+        */
 }
-
-    if($problem_status['status']=='created')
-    {
-        echo "Problem yet not notified to the government due to insufficient number of votes. <br><br> ";
-    }
-    if($problem_status['status']=='notified')
-    {
-        echo "Problem has been notified to the government <br><br> ";
-    }
-    if($problem_status['status']=='Decline')
-        echo "Problem has been cited as not so serious";
-
-    if($problem_status['status']=='taken_up')
-    {
-        echo "Problem has been taken up by the government <br>";
-    }
-    if($problem_status['status']=='notified_pincode')
-    {
-        echo "Problem has been notified to the local administration. <br>";
-    }
-    if($problem_status['status']=='notified_local')
-    {
-        echo "Problem has been notified to the local person in charge and the problem will be resolved soon.<br>";
-    }
-    if($problem_status['status']=='solved')
-    {
-        echo "Problem has been solved and it has been acknowledged from both the citizen and the government.<br>";
-    }
 
 $query = "SELECT comment_ID, cID, comment, likes FROM Problem_comment WHERE pID='$pID'";
 $result = mysqli_query($link, $query);
 $num_rows = mysqli_num_rows($result);
-//$cID = mysqli_fetch_assoc($result);
 
 if($num_rows>0)
 {
-    echo "<br>";
-    echo "<h4>Comments</h4>";
+ //   echo "<br>";
+//    echo "<h4>Comments</h4>";
     while ($problem_comment=mysqli_fetch_assoc($result)) 
     {
     echo "<br>";
@@ -519,7 +508,7 @@ if($num_rows>0)
     $query1 = "SELECT f_name, l_name FROM Citizen WHERE cID='$cid'";
     $result1 = mysqli_query($link, $query1);
     $citizen=mysqli_fetch_assoc($result1);
-
+/*
     echo $citizen['f_name'] ;
     echo " ";
     echo $citizen['l_name'];
@@ -540,7 +529,7 @@ if($num_rows>0)
           <input type='submit' value='Delete comment' id='post_comment'><br>
           </form>";
     }
-
+*/
   ///////////////////////////////////////////////////            Citizen Comment       /////////////////////////////////////////////////////////////////////////
 
     if($_SESSION['SESS_USER_TYPE']=='0')
@@ -574,51 +563,10 @@ if($num_rows>0)
     }
     }
 
-/*    /////////////////////////////////////////////////////             Government Comment     //////////////////////////////////////////////////////////////////
-
-  //  $_SESSION['SESS_Comment_VOTE_DOWNVOTE']=0;
-    else if($_SESSION['SESS_USER_TYPE']=='1')
-    {
-    $query_2 = " SELECT * from Govt where email = '$email' ";
-    $result_2 = mysqli_query($link, $query_2);
-    $num_rows_3 = mysqli_num_rows($result_2);
-    $user_id = mysqli_fetch_assoc($result_2);
-    $gID = $user_id['gID'];
-
-    $query_4 = " SELECT * from Govt_voted_comment where comment_id = '".$comment_id."' and gID = '".$gID."'";
-    $result_4 = mysqli_query($link, $query_4);
-    $num_rows_4 = mysqli_num_rows($result_4);
-    $comment_vote = mysqli_fetch_assoc($result_4);
- //   $comment_votes = $user_id['pID'];
-    echo $num_rows_4;
-    if($num_rows_4 > '0')
-    {
-    echo "Here";
-    echo "<form action='govt_vote_comment.php?comment_id=".$comment_id."' method='post'>
-    <button type='submit' class='positive' name='vote' id='vote' disabled>Upvote</button>
-    <br>
-    <button type='submit
-    ' class='negative' name='downvote' id='downvote' enabled>Downvote</button>
-    <br>
-    </form>";
-    }
-
-    else if($num_rows=='0')
-    {
-    echo "Here_2";
-    echo "<form action='govt_vote_comment.php?comment_id=".$comment_id."' method='post'>
-    <button type='submit' class='positive' name='vote' id='vote' enabled>Upvote</button>
-    <br>
-    <button type='submit' class='negative' name='downvote' id='downvote' disabled>Downvote</button>
-    <br>
-    </form>";
-    }
-    }
-*/
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 }
-
+/*
 if($_SESSION['SESS_USER_TYPE']=='0')
 {
 
@@ -628,6 +576,7 @@ echo "<form action='post_comment.php?pID=$pID' method='post'>
 </form>";
 
 }
+*/
 ?>
 
 </body>
