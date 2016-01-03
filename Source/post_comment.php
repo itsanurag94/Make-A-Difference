@@ -14,8 +14,6 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
 	{
 		header('Location: ' . $_SERVER["HTTP_REFERER"] );
 		exit;
-		//header("location:javascript://history.go(-1)");
-		//header("location: problem.php?pID=".$pid."");
 	}
 }
 ?>

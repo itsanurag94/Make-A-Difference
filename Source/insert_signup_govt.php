@@ -31,7 +31,7 @@ if(!eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$
     // Return Error - Invalid Email
     $msg = 'The email you have entered is invalid, please try again.';
     echo $msg;
-//    header("location: govt_signup.php");
+    header("location: govt_signup.php");
 }
 
 
@@ -53,7 +53,7 @@ $num_rows=mysqli_num_rows($result);
 if($num_rows>0)
 {
 	echo "Email already registered with us. Try again";
-	//header("location: govt_signup.php");
+	header("location: govt_signup.php");
 	echo "<br>Click here to sign up again: <a href='govt_signup.php'></a>";
 	exit;
 }
@@ -131,11 +131,12 @@ if(mysqli_query($link, $query)){
 	$mail->AddAddress($to);
 	if($mail->Send()) {
 		echo "You have successfully registered! Please click on the verification link sent to your registered email id."; 
+		header("location: login_govt.php");
+		exit();
 	} else {
 		echo "Mail error: ".$mail->ErrorInfo;
 	}
 
-	exit();
 } else{
     echo "ERROR: Could not able to execute $query. " . mysqli_error($link);
 }

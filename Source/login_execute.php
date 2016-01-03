@@ -64,7 +64,7 @@
 			$_SESSION['SESS_PASSWORD'] = $citizen['password'];
 			$_SESSION['SESS_USER_TYPE'] = 0;
 			session_write_close();
-			header("location: home_new.php");
+			header("location: home.php");
 			exit();
 		}
 		else 

@@ -12,12 +12,14 @@ if(!isset($_GET['pID']) || empty($_GET['pID']))
 }
 
 $pID = mysqli_escape_string($link, $_GET['pID']); // Set pid variable
+
+//if such a problem corresponding to the pID doesn't exist
 $query = "SELECT pID from Problem where pID='$pID'";
 $result = mysqli_query($link, $query);
 $num_rows = mysqli_num_rows($result);
 if($num_rows==0)
 {
-    header("location:home_new.php");
+    header("location:home.php");
 }
 ?>
 
@@ -50,7 +52,7 @@ if($num_rows==0)
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li><?php if($role==0) echo'<a href="home_new.php">'; else echo'<a href="govt_home.php">';?>Home</a></li>
+        <li><?php if($role==0) echo'<a href="home.php">'; else echo'<a href="govt_home.php">';?>Home</a></li>
         <li><a href="my_problems.php">My Problems</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -114,6 +116,25 @@ $date_solved = $problem_status['date_solved'];
 
 ?>
 
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#status3").click(function(){
+        $.ajax({
+            url: "status_update.php?pID=<?php echo $pID; ?>",
+            type: "POST",
+            data: {status: 3}, //this sends the user-id to php as a post variable, in php it can be accessed as $_POST['uid']
+            success: function(data){
+                data = JSON.parse(data);
+                //update some fields with the updated data
+                //you can access the data like 'data["driver"]'
+            }
+        });
+        document.getElementById("demo").innerHTML = 5 + 6;
+    });
+  });
+</script>
+
+<p id="demo"> </p>
 <div class="container-fluid">
 <div class="row content">
     <div class="col-md-8 ">
@@ -154,38 +175,46 @@ $date_solved = $problem_status['date_solved'];
         <div class="stepwizard-row">
             <div class="col-md-2 ">
             <div class="stepwizard-step">
-                <a type="button" class="btn btn-outline  btn-circle <?php if($date_created != NULL)echo "active btn-success"; else echo "btn-default"; ?>"><?php if($date_created != NULL)echo '<i class="glyphicon glyphicon-ok"></i>'; ?></a>
+                <button class="btn btn-outline  btn-circle <?php if($date_created != NULL)echo "btn-success"; else echo "btn-default"; ?>" disabled><?php if($date_created != NULL)echo '<i class="glyphicon glyphicon-ok"></i>'; ?></button>
                 <p>Created</p>
             </div>
             </div>
             <div class="col-md-2 ">
             <div class="stepwizard-step">
-                <a type="button" class="btn btn-outline  btn-circle <?php if($date_notified != NULL)echo "active btn-success"; else echo "btn-default"; ?>"><?php if($date_notified != NULL)echo '<i class="glyphicon glyphicon-ok"></i>'; ?></a>
+                <button class="btn btn-outline  btn-circle <?php if($date_notified != NULL)echo " btn-success"; else echo "btn-default"; ?>" disabled><?php if($date_notified != NULL)echo '<i class="glyphicon glyphicon-ok"></i>'; ?></button>
                 <p>Notified to Government</p>
             </div>
             </div>
             <div class="col-md-1 ">
             <div class="stepwizard-step">
-                <a type="button" class="btn btn-outline  btn-circle <?php if($date_taken_up != NULL)echo "active btn-success"; else echo "btn-default"; ?>"><?php if($date_taken_up != NULL)echo '<i class="glyphicon glyphicon-ok"></i>'; ?></a>
+              <form action="status_update.php?pID=<?php echo $pID; ?>&status=3" method="post">
+                <button class="btn btn-outline  btn-circle <?php if($date_taken_up != NULL)echo " btn-success"; else echo "btn-default"; ?>" <?php if($role == 0 || $date_taken_up != NULL) echo " disabled";?>><?php if($date_taken_up != NULL)echo '<i class="glyphicon glyphicon-ok"></i>'; ?></button>
                 <p>Taken Up</p>
+              </form>
             </div> 
             </div>
             <div class="col-md-3 ">
             <div class="stepwizard-step">
-                <a type="button" class="btn btn-outline  btn-circle <?php if($date_notified_pincode != NULL)echo "active btn-success"; else echo "btn-default"; ?>"><?php if($date_notified_pincode != NULL)echo '<i class="glyphicon glyphicon-ok"></i>'; ?></a>
+              <form action="status_update.php?pID=<?php echo $pID; ?>&status=4" method="post">
+                <button class="btn btn-outline  btn-circle <?php if($date_notified_pincode != NULL)echo " btn-success"; else echo "btn-default"; ?>" <?php if($role == 0 || $date_notified_pincode != NULL) echo " disabled";?>><?php if($date_notified_pincode != NULL)echo '<i class="glyphicon glyphicon-ok"></i>'; ?></button>
                 <p>Notified to Municipal/Panchayat Authority</p>
+              </form>
             </div>
             </div>
             <div class="col-md-2 ">
             <div class="stepwizard-step">
-                <a type="button" class="btn btn-outline  btn-circle <?php if($date_notified_local != NULL)echo "active btn-success"; else echo "btn-default"; ?>"><?php if($date_notified_local != NULL)echo '<i class="glyphicon glyphicon-ok"></i>'; ?></a>
+              <form action="status_update.php?pID=<?php echo $pID; ?>&status=5" method="post">
+                <button class="btn btn-outline  btn-circle <?php if($date_notified_local != NULL)echo " btn-success"; else echo "btn-default"; ?>" <?php if($role == 0 || $date_notified_local != NULL) echo " disabled";?>><?php if($date_notified_local != NULL)echo '<i class="glyphicon glyphicon-ok"></i>'; ?></button>
                 <p>Notified to Local authority</p>
+              </form>
             </div>
             </div>
             <div class="col-md-2 ">
             <div class="stepwizard-step">
-                <a type="button" class="btn btn-outline  btn-circle <?php if($date_solved != NULL)echo "active btn-success"; else echo "btn-default"; ?>"><?php if($date_solved != NULL)echo '<i class="glyphicon glyphicon-ok"></i>'; ?></a>
+              <form action="status_update.php?pID=<?php echo $pID; ?>&status=6" method="post">
+                <button class="btn btn-outline  btn-circle <?php if($date_solved != NULL) echo " btn-success"; else echo "btn-default"; ?>" <?php if($role == 0 || $date_solved != NULL) echo " disabled";?>><?php if($date_solved != NULL)echo '<i class="glyphicon glyphicon-ok"></i>'; ?></button>
                 <p>Solved</p>
+              </form>
             </div>
             </div> 
         </div>
@@ -442,109 +471,6 @@ if($num_rows_1>0)
     {
        echo "<img src='/mad/problem_images/".$problem['img_path']."' height='100px' width='100px' />"; 
     }
-}
-
-//echo $_SESSION['SESS_USER_TYPE'];
-if($_SESSION['SESS_USER_TYPE']==1)
-{
-	  $query = "SELECT * FROM Problem_responded WHERE pID='$pID'";
-    $result = mysqli_query($link, $query);
-    $num_rows = mysqli_num_rows($result);
-
-    if($num_rows>0)
-    {
-    	$query1 = "SELECT * FROM Problem_responded WHERE pID='$pID'";
-    	$result1 = mysqli_query($link, $query1);
-    	$problem_responded = mysqli_fetch_assoc($result1);
-    	$response = $problem_responded['response'];
-    	$response_likes = $problem_responded['likes'];
-/*        echo "<br> <br>";
-        echo "Response from the government       :                 ";
-
-  //      echo "<br>";
-    //    echo "<div class='Problem_votes'>";
-    	echo $response;
-    	echo "<br>";
-   // 	echo $response_likes;
-    	echo "<br>";
-   //     echo "</div>";
-*/  }
-    else
-    {
-/*			echo 
-			"<form action='post_response.php?pID=".$pID."' method='post' >
-			<input class='test' placeholder='Write a Response' name='Response' id='Response'><br><br>
-			<input type='submit' value='Post Response' id='post_comment'><br>
-			</form>";
-*/	}
-/*    if($problem_status['status']=='notified')
-    {
-   //     echo "Problem has been notified to the government <br><br> ";
-        echo "<form action='status_update.php?pID=$pID' method='post' >
-        <input type='submit' value='Take Up' name='taken_up' id='taken_up'><br>
-        </form>";
-        echo "<form action='status_update.php?pID=".$pID." method='post' >
-        <input type='submit' value='Decline' name='Decline' id='Decline'><br>
-        </form>";
-    }
-    if($problem_status['status']=='Decline')
-        echo "Problem has been cited as not so serious";
-
-    if($problem_status['status']=='taken_up')
-    {
-        echo 
-        "<form action='status_update.php?pID=$pID' method='post' >
-        <input type='submit' value='Notify to local administration' name='notified_pincode' id='notified_pincode'><br>
-        </form>";
-    }
-    if($problem_status['status']=='notified_pincode')
-    {
-    //    echo "Problem has been taken up by the government <br>";
-        echo 
-        "<form action='status_update.php?pID=".$pID."' method='post' >
-        <input type='submit' value='Notified to local person' name='notified_local' id='notified_local'><br>
-        </form>";
-    }
-    if($problem_status['status']=='notified_local')
-    {
-    echo 
-    "<form action='problem_solved.php?pID=".$pID."' method='post' >
-    <input type='submit' value='Problem has been solved' name='solved' id='solved'><br>
-    </form>";
-    }
-  
-}
-$query_10 = "SELECT * FROM Problem_solved where pID='$pID'";
-$result_10 = mysqli_query($link, $query_10);
-$problem_solve = mysqli_fetch_assoc($result_10);
-
-if($_SESSION['SESS_USER_TYPE']==1 && $problem_status['status']=='solved' && $problem_solve['verified_by_govt']==0)
-{
-    echo 
-    "<form action='problem_solved.php?pID=".$pID."' method='post' >
-    <input type='submit' value='Problem has been solved' name='solved' id='solved'><br>
-    </form>";
-}
-if($_SESSION['SESS_USER_TYPE']==0 && $problem_status['status']=='notified_local' && $creator_id == $cID & $problem_solve['verified_by_citizen']==0)
-{
-    echo 
-    "<form action='problem_solved_citizen.php?pID=".$pID."' method='post' >
-    <input type='submit' value='Problem has been solved' name='solved' id='solved'><br>
-    </form>";
-}
-
-if($_SESSION['SESS_USER_TYPE']==0 && $problem_status['status']=='solved' && $creator_id == $cID && $problem_solve['verified_by_citizen']==0)
-{
-   echo 
-   "<form action='problem_solved_citizen.php?pID=".$pID."' method='post' >
-   <input type='submit' value='Problem has been solved' name='solved' id='solved'><br>
-   </form>";
-}
-
-if($_SESSION['SESS_USER_TYPE']==0)
-{
-
-        */
 }
 ?>
 

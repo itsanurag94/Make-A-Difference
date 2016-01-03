@@ -34,7 +34,7 @@ $cID = $_SESSION['SESS_MEMBER_ID'];
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li><a href="home_new.php">Home</a></li>
+        <li><a href="home.php">Home</a></li>
         <li class="active"><a href="#">My Problems</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">

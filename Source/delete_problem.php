@@ -46,7 +46,7 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
 	$query = "DELETE from Response_govt_comment where pID='$pID'";
 	$result = mysqli_query($link, $query);
 
-	header("location: home_new.php");
+	header("location: home.php");
 }
 
 ?>

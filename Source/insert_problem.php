@@ -21,8 +21,6 @@ $pin_code = $citizen['pin_code'];
 // attempt insert query execution
 
 $okext = array(".doc", ".pdf", ".ppt", ".pps", ".xls", ".csv", ".rtf", ".txt", ".htm", ".html", ".jpg", ".gif", ".png", ".svg");
-
-//echo "Hello";
 //check for oversize files or empty uploads 
 $thesize = $_FILES['userfile']['size']; 
 
@@ -95,10 +93,6 @@ $resw = fopen($resname, "w");
     fclose($resw);
 
 echo $resname1;
-
-//echo $to_whom;
-//echo $district;
-//echo $state;
 $query = "SELECT gID FROM Govt where dep_name = '$to_whom' AND district = '$district' AND state = '$state'";
 $result = mysqli_query($link, $query);
 if($result)
@@ -141,7 +135,7 @@ if(mysqli_query($link, $query))
 {
   //echo "We have receive your valuable suggestions.";
   //echo "<br>";
-  header("location: home_new.php");
+  header("location: home.php");
 }  
 else
 {

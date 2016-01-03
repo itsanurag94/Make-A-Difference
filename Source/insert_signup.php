@@ -26,9 +26,7 @@ $pin_code = mysqli_real_escape_string($link, $_POST['pin_code']);
 else
 {
 	echo "Invalid Signup_1";
-//	echo "Hello1";
-//	echo $email;
-//	header("location: signup.php");
+	header("location: signup.php");
 } 
 //email validation
 
@@ -37,7 +35,7 @@ if(!eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$
     // Return Error - Invalid Email
     $msg = 'The email you have entered is invalid, please try again.';
     echo "Invalid Signup_2";
-//    header("location: signup.php");
+    header("location: signup.php");
 }
 
 
@@ -49,7 +47,7 @@ else
 {
 	echo "Passwords do not match";
 	echo "Invalid Signup_2";
-//	header("location: signup.php");
+	header("location: signup.php");
 }
 	
 //Valid Email (from the regular expression above)
@@ -129,13 +127,14 @@ if(mysqli_query($link, $query)){
 	if($mail->Send()) 
 	{
 		echo "You have successfully registered! Please click on the verification link sent to your registered email id."; 
+		header("location: login.php");
+		exit();
 	} 
 	else 
 	{
 		echo "Mail error: ".$mail->ErrorInfo;
 	}
 
-	exit();
 } else{
     echo "ERROR: Could not able to execute $query. " . mysqli_error($link);
 }

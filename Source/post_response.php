@@ -13,7 +13,6 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
     {   
         header('Location: ' . $_SERVER["HTTP_REFERER"] );
         exit;
-//        header("location: problem.php?pID=$pID");
     }
     else
     {

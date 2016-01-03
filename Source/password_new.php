@@ -15,7 +15,6 @@ echo $reentered_password_2;
 
 if($entered_password_1==$reentered_password_2)
 {
-	echo "Here";
 	$new_password=md5($entered_password_1);
 	if($user_type==0)
 	$query = "UPDATE Citizen_reg SET password='$new_password' where email='$email'";
