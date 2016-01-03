@@ -1,5 +1,5 @@
 <?php
-require_once('auth.php');
+require_once('auth_govt.php');
 require_once('connection.php');
 session_start();
 $email = $_SESSION['SESS_EMAIL'];

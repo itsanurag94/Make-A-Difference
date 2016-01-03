@@ -1,13 +1,14 @@
 <?php
-require_once('auth.php');
 session_start();
 
 if($_SESSION['SESS_USER_TYPE'] == 0)
 {
+	require_once('auth.php');
 	$role = 0;
-}
+}	
 else if($_SESSION['SESS_USER_TYPE'] == 1)
 {
+	require_once('auth_govt.php');
 	$role = 1;
 }
 

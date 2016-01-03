@@ -1,6 +1,10 @@
 <?php
 session_start();
-require_once('auth.php');
+if($_SESSION['SESS_USER_TYPE'] == 0)
+  require_once('auth.php');
+else if($_SESSION['SESS_USER_TYPE'] == 1)
+  require_once('auth_govt.php');
+
 require_once('connection.php');
 $cID = $_SESSION['SESS_MEMBER_ID'];
 $email = $_SESSION['SESS_EMAIL'];

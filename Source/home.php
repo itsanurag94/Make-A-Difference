@@ -1,7 +1,9 @@
 <?php
+session_start();
+
 require_once('auth.php');
 require_once('connection.php');
-session_start();
+
 $email = $_SESSION['SESS_EMAIL'];
 ?>
 

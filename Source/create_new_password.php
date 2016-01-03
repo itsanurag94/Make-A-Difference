@@ -1,3 +1,10 @@
+<?php
+	session_start();
+	if($_SESSION['SESS_USER_TYPE'] == 0)
+		require_once('auth.php');
+	else if($_SESSION['SESS_USER_TYPE'] == 1)
+		require_once('auth_govt.php');
+?>
 <!DOCTYPE html>
 <html>
 <head>

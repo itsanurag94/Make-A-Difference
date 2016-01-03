@@ -1,7 +1,11 @@
 <?php
-//echo "Password updated successfully";
 session_start();
 require_once('connection.php');
+
+if($_SESSION['SESS_USER_TYPE'] == 0)
+	require_once('auth.php');
+else if($_SESSION['SESS_USER_TYPE'] == 1)
+	require_once('auth_govt.php');
 
 $email = $_SESSION['SESS_EMAIL'];
 echo $email;

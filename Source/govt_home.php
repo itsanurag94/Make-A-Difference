@@ -2,7 +2,7 @@
 	session_start();
 	require_once('connection.php');
 	include_once 'common.php';
-	require_once('auth.php');
+	require_once('auth_govt.php');
 ?>
 
 <!DOCTYPE html>
