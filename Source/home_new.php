@@ -81,21 +81,21 @@ $email = $_SESSION['SESS_EMAIL'];
         </tr>
       </thead>
       <tbody>
-      <?php
-        $query="SELECT district, pin_code FROM Citizen where email = '$email'";
-        $result = mysqli_query($link, $query);
-        if($result)
-        {
-          $citizen = mysqli_fetch_assoc($result);
-          $pin_code = $citizen['pin_code'];  
-        }
+        <?php
+          $query="SELECT district, pin_code FROM Citizen where email = '$email'";
+          $result = mysqli_query($link, $query);
+          if($result)
+          {
+            $citizen = mysqli_fetch_assoc($result);
+            $pin_code = $citizen['pin_code'];  
+          }
 
-        $query="SELECT * FROM Problem where pin_code = '$pin_code'";
-        $result=mysqli_query($link, $query);
-        if($result)
-        {
-          $num_rows = mysqli_num_rows($result);  
-        }
+          $query="SELECT * FROM Problem where pin_code = '$pin_code'";
+          $result=mysqli_query($link, $query);
+          if($result)
+          {
+            $num_rows = mysqli_num_rows($result);  
+          }
         ?>
                 
         <?php if($num_rows > 0) { ?>

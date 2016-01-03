@@ -5,7 +5,7 @@ require_once('connection.php');
 $cID = $_SESSION['SESS_MEMBER_ID'];
 $email = $_SESSION['SESS_EMAIL'];
 $role = $_SESSION['SESS_USER_TYPE'];
-//$cID = $_SESSION['SESS_MEMBER_ID'];
+
 if(!isset($_GET['pID']) || empty($_GET['pID']))
 {
     echo "Error: pID not set";
@@ -99,6 +99,7 @@ if($num_rows>0)
 {
     $citizen_voted=1;
 }
+
 $query3 = "SELECT * FROM Problem_status WHERE pID='$pID'";
 $result3 = mysqli_query($link, $query3);
 $problem_status = mysqli_fetch_assoc($result3);
@@ -267,7 +268,6 @@ $date_solved = $problem_status['date_solved'];
           <?php
           if($creator_id != $cID || $status != 'created' || $role == 1)
           {
-     //       echo "hello";
             echo "disabled";
           } ?>
           ">Delete</a>
@@ -279,36 +279,103 @@ $date_solved = $problem_status['date_solved'];
             });
           </script>
         </div>
+
+        <div>
+              <span class="help-block"></span>
+        </div>
+  
+  <!--Government Response to Problem-->
+        <?php
+          $query = "SELECT * FROM Problem_responded WHERE pID='$pID'";
+          $result = mysqli_query($link, $query);
+          $num_rows = mysqli_num_rows($result);
+
+          if($num_rows>0)
+          {
+              $query = "SELECT * FROM Problem_responded WHERE pID='$pID'";
+              $result = mysqli_query($link, $query);
+              $problem_responded = mysqli_fetch_assoc($result);
+              $response = $problem_responded['response'];
+              $response_date = $problem_responded['date_responded'];
+          }      
+        ?>
+        <div class="container">
+            <div class="col-lg-4 col-sm-3 text-left">
+            <div class="well">
+                <h4 class="text-center">Response</h4>
+            <div class="input-group">
+                <form class="form" action="post_response.php?pID=<?php echo $pID; ?>" method="post">
+                <input type="text" name="response" id="response" class="form-control input-sm chat-input" placeholder="Write your response here..." />
+                <span class="input-group-btn">     
+                    <button class="btn btn-primary btn-sm
+                    <?php
+                    if($num_rows>0 || $role == 0)
+                    {
+                      echo "disabled";
+                    } ?>
+                    "><span class="glyphicon glyphicon-comment"></span> Post Response</button>
+                </span>
+                </form>
+            </div>                
+            <strong class="pull-left primary-font"><?php if($response_date!=NULL) echo date('d-M-Y', strtotime($response_date)); ?></strong>
+            </br>
+            <p><?php echo $response; ?>. </p>
+            </br>
+            </div>
+            </div>
+        </div>
+
         <div>
             <span class="help-block"></span>
         </div>
+  <!--Comments Section on Problem-->
         <div class="container">
             <div class="col-lg-4 col-sm-3 text-center">
             <div class="well">
                 <h4>Comments</h4>
             <div class="input-group">
-                <form class="form" action="post_comment.php?pID=<?php echo $pID; ?>" role="form">
-                <input type="text" name="comment" id="userComment" class="form-control input-sm chat-input" placeholder="Write your comment here..." />
-                <span class="input-group-btn" onclick="addComment()">     
-                    <a href="#" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-comment"></span> Add Comment</a>
+                <form class="form" action="post_comment.php?pID=<?php echo $pID; ?>" method="post">
+                <input type="text" name="comment" id="comment" class="form-control input-sm chat-input" placeholder="Write your comment here..." />
+                <span class="input-group-btn">     
+                    <button class="btn btn-primary btn-sm
+                    <?php
+                    if($role == 1)
+                    {
+                      echo "disabled";
+                    } ?>
+                    "><span class="glyphicon glyphicon-comment"></span> Add Comment</button>
                 </span>
                 </form>
             </div>
+            <?php
+              $query="SELECT cID, comment FROM Problem_comment where pID = '$pID'";
+              $result = mysqli_query($link, $query);
+              if($result)
+              {
+                $num_rows = mysqli_num_rows($result);  
+              }
+            ?>            
+              
             <hr data-brackets-id="12673">
             <ul data-brackets-id="12674" id="sortable" class="list-unstyled ui-sortable">
-                <strong class="pull-left primary-font">James</strong>
-                <small class="pull-right text-muted">
-                   <span class="glyphicon glyphicon-time"></span>7 mins ago</small>
+              <?php if($num_rows>0) { ?>
+                <?php while($problem_comment = mysqli_fetch_assoc($result)) : ?>
+                <?php
+                  $comment = $problem_comment['comment'];
+                  $comment_cID = $problem_comment['cID'];  
+                  $query1 = "SELECT f_name from Citizen where cID='$comment_cID'";
+                  $result1 = mysqli_query($link, $query1);
+                  $comment_citizen_details = mysqli_fetch_assoc($result1);
+                  $comment_f_name=$comment_citizen_details['f_name'];
+                ?>               
+                <strong class="pull-left primary-font"><?php echo $comment_f_name; ?></strong>
                 </br>
-                <li class="ui-state-default">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </li>
+                <li class="ui-state-default"><?php echo $comment; ?>. </li>
                 </br>
-                 <strong class="pull-left primary-font">Taylor</strong>
-                <small class="pull-right text-muted">
-                   <span class="glyphicon glyphicon-time"></span>14 mins ago</small>
-                </br>
-                <li class="ui-state-default">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</li>
-                
+                <?php endwhile; ?>
+              <?php } ?>  
             </ul>
+            </div>
             </div>
         </div>
     </div>
@@ -380,7 +447,7 @@ if($num_rows_1>0)
 //echo $_SESSION['SESS_USER_TYPE'];
 if($_SESSION['SESS_USER_TYPE']==1)
 {
-	$query = "SELECT * FROM Problem_responded WHERE pID='$pID'";
+	  $query = "SELECT * FROM Problem_responded WHERE pID='$pID'";
     $result = mysqli_query($link, $query);
     $num_rows = mysqli_num_rows($result);
 
@@ -401,7 +468,7 @@ if($_SESSION['SESS_USER_TYPE']==1)
    // 	echo $response_likes;
     	echo "<br>";
    //     echo "</div>";
-*/    }
+*/  }
     else
     {
 /*			echo 
@@ -476,110 +543,9 @@ if($_SESSION['SESS_USER_TYPE']==0 && $problem_status['status']=='solved' && $cre
 
 if($_SESSION['SESS_USER_TYPE']==0)
 {
-    $query = "SELECT * FROM Problem_responded WHERE pID='$pID'";
-    $result = mysqli_query($link, $query);
-    $num_rows = mysqli_num_rows($result);
 
-    if($num_rows>0)
-    {
-        $query1 = "SELECT * FROM Problem_responded WHERE pID='$pID'";
-        $result1 = mysqli_query($link, $query1);
-        $problem_responded = mysqli_fetch_assoc($result1);
-        $response = $problem_responded['response'];
-        $response_likes = $problem_responded['likes'];
-/*        echo "<br>";
-        echo $response;
-        echo "<br>";
-        echo "<br>";
-    }
         */
 }
-
-$query = "SELECT comment_ID, cID, comment, likes FROM Problem_comment WHERE pID='$pID'";
-$result = mysqli_query($link, $query);
-$num_rows = mysqli_num_rows($result);
-
-if($num_rows>0)
-{
- //   echo "<br>";
-//    echo "<h4>Comments</h4>";
-    while ($problem_comment=mysqli_fetch_assoc($result)) 
-    {
-    echo "<br>";
-    echo "<br>";
-    $cid = $problem_comment['cID'];
-    $query1 = "SELECT f_name, l_name FROM Citizen WHERE cID='$cid'";
-    $result1 = mysqli_query($link, $query1);
-    $citizen=mysqli_fetch_assoc($result1);
-/*
-    echo $citizen['f_name'] ;
-    echo " ";
-    echo $citizen['l_name'];
-    echo "      :           ";
-    echo $problem_comment['comment'];
-    echo "<br>";
-    $comment_id = $problem_comment['comment_ID'];
-    echo "Votes   :     ";
-    echo $problem_comment['likes'];
-    echo "<br>";
-    if($cID == $cid)
-        echo "<form action='update_comment.php?pID=$pID' method='post'>
-            <input type='submit' value='Edit comment' id='post_comment'><br>
-            </form>";
-    if($cid == $cID)
-    {
-    echo "<form action='delete_comment.php?comment_ID=$comment_id' method='post'>
-          <input type='submit' value='Delete comment' id='post_comment'><br>
-          </form>";
-    }
-*/
-  ///////////////////////////////////////////////////            Citizen Comment       /////////////////////////////////////////////////////////////////////////
-
-    if($_SESSION['SESS_USER_TYPE']=='0')
-    {
-    $query_1 = " SELECT * from Citizen_voted_comment where comment_id = '".$comment_id."' and cID = '".$cID."'";
-    $result_1 = mysqli_query($link, $query_1);
-    $num_rows_2 = mysqli_num_rows($result_1);
-    $comment_vote = mysqli_fetch_assoc($result_1);
- //   $comment_votes = $user_id['pID'];
-
-    if ($num_rows_2>'0')
-    {
-    $_SESSION['SESS_Comment_VOTE_DOWNVOTE']=1;
-    echo "<form action='vote_comment.php?comment_id=".$comment_id."' method='post'>
-    <button type='submit' class='positive' name='vote' id='vote' disabled>Upvote</button>
-    <br>
-    <button type='submit' class='negative' name='downvote' id='downvote' enabled>Downvote</button>
-    <br>
-    </form>";
-    }
-
-    else
-    {
-    $_SESSION['SESS_Comment_VOTE_DOWNVOTE']=0;
-    echo "<form action='vote_comment.php?comment_id=".$comment_id."' method='post'>
-    <button type='submit' class='positive' name='vote' id='vote' enabled>Upvote</button>
-    <br>
-    <button type='submit' class='negative' name='downvote' id='downvote' disabled>Downvote</button>
-    <br>
-    </form>";
-    }
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    }
-}
-/*
-if($_SESSION['SESS_USER_TYPE']=='0')
-{
-
-echo "<form action='post_comment.php?pID=$pID' method='post'>
-<input class='test' placeholder='Write a comment' name='comment' id='comment' ><br><br>
-<input type='submit' value='Post comment' id='post_comment'><br>
-</form>";
-
-}
-*/
 ?>
 
 </body>
