@@ -76,10 +76,10 @@ if($num_rows==0)
 
 <?php
 
-$query1 = "SELECT * FROM Problem WHERE pID='$pID'";
-$result1 = mysqli_query($link, $query1);
-$problem = mysqli_fetch_assoc($result1);
-$num_rows_1 = mysqli_num_rows($result1);
+$query = "SELECT * FROM Problem WHERE pID='$pID'";
+$result = mysqli_query($link, $query);
+$problem = mysqli_fetch_assoc($result);
+
 $title = $problem['title'];
 $date_created = $problem['date_created'];
 $votes = $problem['votes'];
@@ -117,31 +117,12 @@ $date_declined = $problem_status['date_declined'];
 $date_notified_pincode = $problem_status['date_notified_pincode'];
 $date_notified_local = $problem_status['date_notified_local'];
 $date_solved = $problem_status['date_solved'];
-
 ?>
 
-<script type="text/javascript">
-  $(document).ready(function(){
-    $("#status3").click(function(){
-        $.ajax({
-            url: "status_update.php?pID=<?php echo $pID; ?>",
-            type: "POST",
-            data: {status: 3}, //this sends the user-id to php as a post variable, in php it can be accessed as $_POST['uid']
-            success: function(data){
-                data = JSON.parse(data);
-                //update some fields with the updated data
-                //you can access the data like 'data["driver"]'
-            }
-        });
-        document.getElementById("demo").innerHTML = 5 + 6;
-    });
-  });
-</script>
-
-<p id="demo"> </p>
 <div class="container-fluid">
 <div class="row content">
     <div class="col-md-8 ">
+  <!-- Problem Details -->
         <div>
           <div class="container-fluid">
             <h3 style="color:#5bc0de"><?php echo $title;?></h3>
@@ -151,7 +132,7 @@ $date_solved = $problem_status['date_solved'];
         <div class="col-md-3 col-sm-4 col-xs-6">
             <div class="dummy"></div>
             <p class="thumbnail">Date Added<br><br>
-            <button class="btn"><?php echo $date_created;?></button></p>
+            <button class="btn"><?php echo date('d-M-Y', strtotime($date_created));?></button></p>
         </div>
         <div class="col-md-3 col-sm-4 col-xs-6">
             <div class="dummy"></div>
@@ -174,6 +155,7 @@ $date_solved = $problem_status['date_solved'];
           <hr>
         </div>
 
+  <!-- Timeline Section -->
         <h3>Timeline</h3>
         <div class="stepwizard">
         <div class="stepwizard-row">
@@ -414,69 +396,5 @@ $date_solved = $problem_status['date_solved'];
     </div>
 </div>
 </div>
-
-
-<?php
-
-if(!isset($_GET['pID']) || empty($_GET['pID']))
-{
-    echo "Error: pID not set";
-}
-
-$pID = mysqli_escape_string($link, $_GET['pID']); // Set pid variable
-
-$query = "SELECT * FROM Citizen_voted_problem WHERE pID='$pID' and cID='$cID'";
-$result = mysqli_query($link,$query);
-$num_rows = mysqli_num_rows($result);
-
-$query1 = "SELECT * FROM Problem WHERE pID='$pID'";
-$result1 = mysqli_query($link, $query1);
-$problem = mysqli_fetch_assoc($result1);
-$num_rows_1 = mysqli_num_rows($result1);
-
-$query2 = "SELECT * FROM Problem_responded WHERE pID='$pID'";
-$result2 = mysqli_query($link, $query2);
-$problem_responded = mysqli_fetch_assoc($result2);
-$response_rows = mysqli_num_rows($result2);
-
-$query4= "SELECT cID FROM Citizen WHERE email='$email'";
-$result4 = mysqli_query($link, $query4);
-$citizen = mysqli_fetch_assoc($result4);
-$cID=$citizen['cID'];
-
-
-if($num_rows_1>0) 
-{
-//    echo $resname1;
-    echo "<br>";
-    
-    $query = "SELECT media_path FROM Problem_media where pID = '$pID'";
-    $result = mysqli_query($link,$query);
-    if($result)
-    {
-        //if more than one media, run through loop
-        $problem_media = mysqli_fetch_assoc($result);
-        $img_path = $problem_media['media_path'];    
-    }
-   
-    $date_respond_date=$Problem_responded['date_responded'];
- 
-    //$img_url=localhost;
-
-    $query = "SELECT dep_name FROM Govt where gID = '$gID'";
-    $result = mysqli_query($link,$query);
-    if($result)
-    {
-        $govt = mysqli_fetch_assoc($result);
-        $to_whom = $govt['dep_name'];    
-    }
-
-    if($img_path != '')
-    {
-       echo "<img src='/mad/problem_images/".$problem['img_path']."' height='100px' width='100px' />"; 
-    }
-}
-?>
-
 </body>
 </html>

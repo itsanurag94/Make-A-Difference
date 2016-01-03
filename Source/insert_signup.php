@@ -1,13 +1,9 @@
 <?php
-/* Attempt MySQL server connection. Assuming you are running MySQL
-server with default setting (user 'root' with no password) */
-
 require_once('connection.php');
 require('phpmailer/class.phpmailer.php');
 
 if(isset($_POST['email']) && !empty($_POST['email']) AND isset($_POST['pswd']) && !empty($_POST['pswd']) AND isset($_POST['confirm_pswd']) && !empty($_POST['confirm_pswd']) AND isset($_POST['district']) && !empty($_POST['district']))
 {
-// Escape user inputs for security
 $f_name = mysqli_real_escape_string($link, $_POST['f_name']);
 $l_name = mysqli_real_escape_string($link, $_POST['l_name']);
 $email = mysqli_real_escape_string($link, $_POST['email']);
@@ -50,15 +46,10 @@ else
 	header("location: signup.php");
 }
 	
-//Valid Email (from the regular expression above)
-//$msg = 'Your account has been made, <br /> please verify it by clicking the activation link that has been send to your email.';
-
-
-// attempt insert query execution
 $query = "INSERT INTO Citizen_reg VALUES('','$email', '$hash', now(), '0')";
 
 if(mysqli_query($link, $query)){
-//    echo "Records added successfully.";
+//    Records added successfully
 } else{
     echo "ERROR: Could not able to execute $query. " . mysqli_error($link);
 }
@@ -77,12 +68,9 @@ if($result)
 
 }
 
-
 $query = "INSERT INTO Citizen VALUES ('$cID','$f_name', '$l_name', '$email', '$mob', '$dob', '$address_line1', '$address_line2', '$city', '$district', '$state', '$pin_code','','')";
 
 if(mysqli_query($link, $query)){
-//send verification mail
-
 	//random hash to be included in verification url
 	$hash_random = md5(rand(0,1000));
 
@@ -120,7 +108,6 @@ if(mysqli_query($link, $query)){
 	$mail->Password = GPWD;           
 	$Mail->From = 'makeadifferencetransformers@gmail.com';
 	$Mail->FromName = 'MakeADifference';
-//	$mail->SetFrom($from, $from_name);
 	$mail->Subject = $subject;
 	$mail->Body = $body;
 	$mail->AddAddress($to);
@@ -138,7 +125,5 @@ if(mysqli_query($link, $query)){
 } else{
     echo "ERROR: Could not able to execute $query. " . mysqli_error($link);
 }
-
-// close connection
 mysqli_close($link);
 ?>

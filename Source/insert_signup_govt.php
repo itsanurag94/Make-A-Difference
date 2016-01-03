@@ -1,14 +1,10 @@
 <?php
-/* Attempt MySQL server connection. Assuming you are running MySQL
-server with default setting (user 'root' with no password) */
-
 require_once('connection.php');
 require('phpmailer/class.phpmailer.php');
 
 if(isset($_POST['email']) && !empty($_POST['email']) AND isset($_POST['pswd']) && !empty($_POST['pswd']) AND isset($_POST['confirm_pswd']) && !empty($_POST['confirm_pswd']) AND isset($_POST['district']) && !empty($_POST['district']))
 {
  
-// Escape user inputs for security
 $dep_name = mysqli_real_escape_string($link, $_POST['d_name']);
 $email = mysqli_real_escape_string($link, $_POST['email']);
 $pswd = mysqli_real_escape_string($link, $_POST['pswd']);
@@ -23,10 +19,10 @@ $pin_code = mysqli_real_escape_string($link, $_POST['pin_code']);
 else 
 {
 	echo "Hello";
-//	header("location: govt_signup.php");
+	header("location: govt_signup.php");
 } 
-//email validation
 
+//email validation
 if(!eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$", $email)){
     // Return Error - Invalid Email
     $msg = 'The email you have entered is invalid, please try again.';
@@ -41,7 +37,6 @@ if($pswd==$confirm_pswd)
 }
 else
 {
-//	echo "Passwords do not match";
 	header("location: govt_signup.php");
 	exit;
 }
@@ -62,7 +57,7 @@ $query = "INSERT INTO Govt_reg VALUES('','$email', '$hash', now(), '0')";
 
 if(mysqli_query($link, $query))
 {
-//    echo "Records added successfully.";
+//    Records added successfully
 } 
 else
 {
@@ -125,7 +120,6 @@ if(mysqli_query($link, $query)){
 	$mail->Password = GPWD;           
 	$Mail->From = 'makeadifferencetransformers@gmail.com';
 	$Mail->FromName = 'MakeADifference';
-//	$mail->SetFrom($from, $from_name);
 	$mail->Subject = $subject;
 	$mail->Body = $body;
 	$mail->AddAddress($to);
@@ -141,6 +135,5 @@ if(mysqli_query($link, $query)){
     echo "ERROR: Could not able to execute $query. " . mysqli_error($link);
 }
 
-// close connection
 mysqli_close($link);
 ?>

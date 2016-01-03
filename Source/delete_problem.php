@@ -48,5 +48,4 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
 
 	header("location: home.php");
 }
-
 ?>

@@ -35,17 +35,14 @@
 	}
  	
  	$pswd = md5($pswd);
-	//Create query
+	
 	$query="SELECT * FROM Govt_reg WHERE email='$email' AND password='$pswd'";
 	$result=mysqli_query($link, $query);
  
 	$num_rows = mysqli_num_rows($result);
-	//Check whether the query was successful or not
 	if($result) {
 		if($num_rows > 0)
 	    {
-			//Login Successful
-			
 			$govt = mysqli_fetch_assoc($result);
 			if($govt['active'] == 0)
 		    {

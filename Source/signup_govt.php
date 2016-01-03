@@ -4,7 +4,6 @@
 <title>Login form and sign up</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'> -->
 <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
 </head>
 <body>
@@ -29,9 +28,9 @@
 					<div class="clear"> </div>
 				</div>
 
-				<!----------end top_section---------- -->
-				<!----------start personal Details----------->
-				<!----------start bottom-section---------- -->
+				<!----------end top_section-------------->
+				<!----------start personal Details------------>
+				<!----------start bottom-section-------------->
 
 				<div class="bottom-section">
 					<div class="title" style="text-align:center;">Department Details</div>

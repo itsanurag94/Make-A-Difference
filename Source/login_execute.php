@@ -38,18 +38,15 @@
  	
  	$pswd = md5($pswd);
 
-	//Create query
 	$query="SELECT * FROM Citizen_reg WHERE email='$email' AND password='$pswd'";
 	$result=mysqli_query($link, $query);
 	 
 	$num_rows = mysqli_num_rows($result);
-	//Check whether the query was successful or not.
+
 	if($result) 
 	{
 		if($num_rows > 0) 
-		{
-			//Login Successful
-			
+		{			
 			$citizen = mysqli_fetch_assoc($result);
 			if($citizen['active'] == 0) 
 			{
@@ -57,7 +54,6 @@
 				header("location: login.php");
 				exit();
 			}
-//			$user = mysql_fetch_assoc($result);
 			session_regenerate_id();
 			$_SESSION['SESS_MEMBER_ID'] = $citizen['cID'];
 			$_SESSION['SESS_EMAIL'] = $citizen['email'];
@@ -69,7 +65,6 @@
 		}
 		else 
 		{
-			//Login failed
 			$errmsg_arr[] = 'user name and password not found';
 			$errflag = true;
 			if($errflag) 

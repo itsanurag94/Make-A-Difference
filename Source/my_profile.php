@@ -32,5 +32,4 @@ echo "State   :  ";
 echo $citizen['district'];
 echo " - ";
 echo $citizen['pin_code'];
-
 ?>

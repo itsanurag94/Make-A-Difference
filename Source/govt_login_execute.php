@@ -2,7 +2,6 @@
 	//Start session
 	session_start();
  
-	//Include database connection details
 	require_once('connection.php');
 
 	//Array to store validation errors
@@ -11,7 +10,6 @@
 	//Validation error flag
 	$errflag = false;
  
-	//Sanitize the POST values
 	$email = mysqli_real_escape_string($link, $_POST['govt_email']);
 	$pswd = mysqli_real_escape_string($link, $_POST['govt_pswd']);
 	if($email == '') {
@@ -34,17 +32,14 @@
 	}
  	
  	$pswd = md5($pswd);
-	//Create query
+	
 	$query="SELECT * FROM Govt_reg WHERE email='$email' AND password='$pswd'";
 	$result=mysqli_query($link, $query);
  
 	$num_rows = mysqli_num_rows($result);
-	//Check whether the query was successful or not
 	if($result) {
 		if($num_rows > 0)
 	    {
-			//Login Successful
-			
 			$govt = mysqli_fetch_assoc($result);
 			if($govt['active'] == 0)
 		    {

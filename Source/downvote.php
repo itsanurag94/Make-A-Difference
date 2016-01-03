@@ -6,9 +6,7 @@ require_once('connection.php');
 
 if(isset($_GET['pID']) && !empty($_GET['pID']))
 {
-    // Verify data
-    $pID = mysqli_escape_string($link, $_GET['pID']); // Set pid variable
-    
+    $pID = mysqli_escape_string($link, $_GET['pID']);
     $email = $_SESSION['SESS_EMAIL'];
     $cID = $_SESSION['SESS_MEMBER_ID'];
  

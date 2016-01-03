@@ -25,6 +25,5 @@ if($role==0){
 else if($role==1){
 	header("Location: login_govt.php");
 }
-
-exit;
+exit();
 ?>

@@ -16,7 +16,7 @@ if(isset($_GET['pID']) && !empty($_GET['pID']))
     }
     else
     {
-    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+        echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
     }
 }
 ?>

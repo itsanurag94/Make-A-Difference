@@ -71,7 +71,7 @@ $cID = $_SESSION['SESS_MEMBER_ID'];
                <span class="glyphicon glyphicon-search"></span>
             </button>
         </span>
-      </form><!-- end form -->
+      </form>
     
       <table class="table table-striped custab">
       <thead>

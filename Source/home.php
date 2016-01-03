@@ -71,7 +71,7 @@ $email = $_SESSION['SESS_EMAIL'];
                <span class="glyphicon glyphicon-search"></span>
             </button>
         </span>
-      </form><!-- end form -->
+      </form>
     
       <table class="table table-striped custab">
       <thead>

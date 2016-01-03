@@ -18,7 +18,6 @@ $city = $citizen['city'];
 $district = $citizen['district'];
 $state = $citizen['state'];
 $pin_code = $citizen['pin_code'];
-// attempt insert query execution
 
 $okext = array(".doc", ".pdf", ".ppt", ".pps", ".xls", ".csv", ".rtf", ".txt", ".htm", ".html", ".jpg", ".gif", ".png", ".svg");
 //check for oversize files or empty uploads 
@@ -133,13 +132,11 @@ $query = "INSERT INTO Problem_status (pID, status, date_created) VALUES ('$pID',
 
 if(mysqli_query($link, $query))
 {
-  //echo "We have receive your valuable suggestions.";
-  //echo "<br>";
   header("location: home.php");
 }  
 else
 {
-    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+  echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
 }
 mysqli_close($link);
 

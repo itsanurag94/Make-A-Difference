@@ -162,6 +162,7 @@ if(isset($_GET['email']) && !empty($_GET['email']) AND isset($_GET['hash']) && !
         $query = "UPDATE Citizen_reg SET active='1' WHERE email='".$email."' AND active='0'";
         if(mysqli_query($link, $query)){
             echo '<div >Your account has been activated, you can now login</div>';
+            header("location:login.php");
         }else{
             echo "Query failed";
         }
